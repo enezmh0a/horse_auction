@@ -1,0 +1,18 @@
+{
+  "@@locale": "ar",
+  "appTitle": "مزادات الخيل",
+  "tabHome": "الرئيسية",
+  "tabLots": "العروض",
+  "tabBidding": "المزايدة",
+  "tabSeller": "البائع",
+  "tabProfile": "حسابي",
+  "homeLive": "المزادات المباشرة",
+  "homeEnding": "تنتهي قريباً",
+  "homeSell": "بيع حصان",
+  "homeLiveSub": "انضم للمزادات الجارية مع تمديد مضاد للقنص.",
+  "homeEndingSub": "الدقائق الأخيرة — قدّم مزايدتك الآن.",
+  "homeSellSub": "أنشئ عرضاً وحدد الحد الأدنى وارفع المستندات.",
+  "lotReserveMet": "تم بلوغ الحد الأدنى",
+  "lotReserveNotMet": "لم يُبلغ الحد الأدنى",
+  "registerToBid": "التسجيل للمزايدة"
+}
