@@ -1,37 +1,11 @@
 {
-  "flutter": {
-    "platforms": {
-      "android": {
-        "default": {
-          "projectId": "horse-auction-saudi",
-          "appId": "1:1006357064889:android:125bd03368bd6146cabf68",
-          "fileOutput": "android/app/google-services.json"
-        }
-      },
-      "dart": {
-        "lib/firebase_options.dart": {
-          "projectId": "horse-auction-saudi",
-          "configurations": {
-            "android": "1:1006357064889:android:125bd03368bd6146cabf68",
-            "ios": "1:1006357064889:ios:314b04c3f88532eecabf68",
-            "web": "1:1006357064889:web:abd6e5b1eac292c8cabf68",
-            "windows": "1:1006357064889:web:63125d205a2d8d70cabf68"
-          }
-        }
-      }
-    }
-  },
-  "functions": [
-    {
-      "source": "functions",
-      "codebase": "default",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ]
-    }
-  ]
+  "hosting": {
+    "site": "horse-auction-saudi",
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
 }
