@@ -1,111 +1,83 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// at top:
 import 'package:flutter/material.dart';
-import 'package:horse_auction_app/services/firestore_service.dart';
-import 'horse_detail_screen.dart';
+import '../../l10n/generated/app_localizations.dart';
+import '../../services/firestore_service.dart';
 
 class HorseListScreen extends StatelessWidget {
-  const HorseListScreen({super.key});
+  const HorseListScreen({super.key, this.onLocaleChange});
+  final void Function(Locale?)? onLocaleChange;
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Horse Auction Lots')),
-      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+      appBar: AppBar(
+        title: Text(t?.lotsTitle ?? 'Lots'),
+        actions: [
+          PopupMenuButton<String>(
+            tooltip: t?.language ?? 'Language',
+            onSelected: (v) {
+              if (onLocaleChange == null) return;
+              if (v == 'en') onLocaleChange!(const Locale('en'));
+              if (v == 'ar') onLocaleChange!(const Locale('ar'));
+              if (v == 'system') onLocaleChange!(null);
+            },
+            itemBuilder: (_) => [
+              PopupMenuItem(value: 'en', child: Text(t?.english ?? 'English')),
+              PopupMenuItem(value: 'ar', child: Text(t?.arabic ?? 'العربية')),
+              PopupMenuItem(value: 'system', child: Text(t?.systemLanguage ?? 'System')),
+            ],
+          ),
+        ],
+      ),
+      body: StreamBuilder<List<Map<String, dynamic>>>(
         stream: FirestoreService.instance.lotsStream(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+        builder: (context, snap) {
+          if (snap.hasError) {
+            return Center(child: Text(t?.errorLoadingLots ?? 'Error loading lots'));
           }
-          if (!snapshot.hasData) {
+          if (!snap.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
-          final docs = snapshot.data!.docs;
-          if (docs.isEmpty) {
-            return const Center(child: Text('No horses available yet'));
+          final lots = snap.data!;
+          if (lots.isEmpty) {
+            return Center(child: Text(t?.noLots ?? 'No lots'));
           }
           return ListView.separated(
-            itemCount: docs.length,
+            itemCount: lots.length,
             separatorBuilder: (_, __) => const Divider(height: 1),
-            itemBuilder: (context, index) {
-              final doc = docs[index];
-              final data = doc.data();
-              final title = (data['name'] ?? 'Unnamed') as String;
-              final breed = (data['breed'] ?? '') as String;
-              final currentHighest = (data['currentHighest'] ?? 0) as num;
-              final minIncrement = (data['minIncrement'] ?? 50) as num;
-              final startingPrice = (data['startingPrice'] ?? 0) as num;
+            itemBuilder: (_, i) {
+              final lot = lots[i];
+              final id = (lot['id'] as String?) ?? (lot['lotId'] as String?) ?? '';
+              final name = (lot['name'] as String?) ?? id;
+              final city = (lot['city'] as String?) ?? '';
+              final highest = (lot['currentHighest'] is num)
+                  ? (lot['currentHighest'] as num).toInt()
+                  : 0;
+              final images = (lot['images'] as List?)?.cast<String>() ??
+                  (lot['imageUrls'] as List?)?.cast<String>() ??
+                  const <String>[];
 
               return ListTile(
-                title: Text(title),
-                subtitle: Text('$breed • Highest: ${currentHighest.toInt()} • Min +${minIncrement.toInt()} • Start ${startingPrice.toInt()}'),
-                trailing: const Icon(Icons.chevron_right),
+                leading: images.isNotEmpty
+                    ? Image.network(images.first, width: 64, height: 64, fit: BoxFit.cover)
+                    : const Icon(Icons.image_not_supported),
+                title: Text(name),
+                subtitle: Text('${t?.cityLabel ?? "City"}: $city • '
+                               '${t?.highestLabel ?? "Highest"}: $highest'),
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => HorseDetailScreen(horseId: doc.id),
-                    ),
-                  );
+                  if (id.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                     const SnackBar(content: Text('Missing lot id')),
+                    );
+                    return;
+                  }
+                  Navigator.of(context).pushNamed('/horse', arguments: id);
                 },
               );
             },
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          // quick adder to keep things simple (optional)
-          final ok = await showDialog<bool>(
-            context: context,
-            builder: (ctx) {
-              final nameCtrl = TextEditingController();
-              final breedCtrl = TextEditingController(text: 'Arabian');
-              final ageCtrl = TextEditingController(text: '4');
-              final ownerCtrl = TextEditingController(text: 'owner');
-              final startCtrl = TextEditingController(text: '20000');
-              return AlertDialog(
-                title: const Text('Add Horse'),
-                content: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'Name')),
-                      TextField(controller: breedCtrl, decoration: const InputDecoration(labelText: 'Breed')),
-                      TextField(controller: ageCtrl, decoration: const InputDecoration(labelText: 'Age (int)'), keyboardType: TextInputType.number),
-                      TextField(controller: ownerCtrl, decoration: const InputDecoration(labelText: 'Owner')),
-                      TextField(controller: startCtrl, decoration: const InputDecoration(labelText: 'Starting price (int)'), keyboardType: TextInputType.number),
-                    ],
-                  ),
-                ),
-                actions: [
-                  TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
-                  FilledButton(
-                    onPressed: () async {
-                      try {
-                        final age = int.tryParse(ageCtrl.text.trim()) ?? 0;
-                        final start = int.tryParse(startCtrl.text.trim()) ?? 0;
-                        await FirestoreService.instance.addHorse(
-                          name: nameCtrl.text.trim().isEmpty ? 'Horse' : nameCtrl.text.trim(),
-                          breed: breedCtrl.text.trim(),
-                          age: age,
-                          owner: ownerCtrl.text.trim(),
-                          startingPrice: start,
-                        );
-                        // close dialog
-                        if (ctx.mounted) Navigator.pop(ctx, true);
-                      } catch (e) {
-                        ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Add failed: $e')));
-                      }
-                    },
-                    child: const Text('Add'),
-                  ),
-                ],
-              );
-            },
-          );
-          if (ok == true && context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Horse added')));
-          }
-        },
-        child: const Icon(Icons.add),
       ),
     );
   }

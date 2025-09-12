@@ -1,0 +1,240 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../services/firestore_service.dart';
+import '../../widgets/badge.dart';
+
+class HorseDetailScreen extends StatefulWidget {
+  final String lotId;
+  const HorseDetailScreen({super.key, required this.lotId});
+
+  @override
+  State<HorseDetailScreen> createState() => _HorseDetailScreenState();
+}
+
+class _HorseDetailScreenState extends State<HorseDetailScreen> {
+  final _amountCtrl = TextEditingController();
+  bool _submitting = false;
+
+  @override
+  void dispose() {
+    _amountCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final service = FirestoreService.instance;
+    return Scaffold(
+      appBar: AppBar(title: const Text('Horse Details')),
+      body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        stream: service.streamHorse(widget.lotId),
+        builder: (context, snap) {
+          if (snap.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (!snap.hasData || !snap.data!.exists) {
+            return const Center(child: Text('Lot not found'));
+          }
+          final d = snap.data!.data()!;
+          final String name = (d['name'] ?? 'Unnamed').toString();
+          final String breed = (d['breed'] ?? '').toString();
+          final String sex = (d['sex'] ?? '').toString();
+          final String color = (d['color'] ?? '').toString();
+          final int age = (d['age'] ?? 0) as int;
+          final String owner = (d['owner'] ?? '').toString();
+          final String location = (d['location'] ?? '').toString();
+          final int startingPrice = (d['startingPrice'] ?? 0) as int;
+          final int currentHighest = (d['currentHighest'] ?? startingPrice) as int;
+          final int minInc = (d['minIncrement'] ?? 50) as int;
+          final String status = (d['status'] ?? 'published') as String;
+
+          final docsMap = (d['documents'] as Map<String, dynamic>?) ?? {};
+          final String? pedigreeUrl = docsMap['pedigreeCertUrl'] as String?;
+          final bool hasPedigree = (d['pedigreeCertAvailable'] == true) || (pedigreeUrl != null);
+          final Map<String, dynamic> breeding = (d['breeding'] as Map<String, dynamic>?) ?? {};
+          final bool inFoal = breeding['inFoal'] == true;
+          final Map<String, dynamic> bundle = (d['bundle'] as Map<String, dynamic>?) ?? {};
+          final bool hasFilly = bundle['hasFilly'] == true;
+
+          // media (array or thumbnail)
+          final List<dynamic> imgsDyn = (d['imageUrls'] as List<dynamic>?) ?? const [];
+          final List<String> images = imgsDyn.whereType<String>().toList();
+          final String? heroImage = images.isNotEmpty ? images.first : (d['thumbnailUrl'] as String?);
+
+          // DEMO: treat current user as admin (toggle to false if needed)
+          const bool isAdmin = true;
+
+          return Column(
+            children: [
+              if (images.isNotEmpty) ...[
+                SizedBox(
+                  height: MediaQuery.of(context).size.width * 9 / 16,
+                  child: PageView.builder(
+                    itemCount: images.length,
+                    itemBuilder: (_, i) => Image.network(images[i], fit: BoxFit.cover),
+                  ),
+                ),
+              ] else if (heroImage != null) ...[
+                AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: Image.network(heroImage, fit: BoxFit.cover),
+                ),
+              ] else ...[
+                const SizedBox(height: 12),
+                const Icon(Icons.image_not_supported, size: 64),
+              ],
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(name, style: Theme.of(context).textTheme.headlineSmall),
+                        const SizedBox(height: 8),
+                        Text([
+                          if (breed.isNotEmpty) breed,
+                          if (sex.isNotEmpty) sex,
+                          if (color.isNotEmpty) color,
+                          if (age > 0) 'Age $age',
+                          if (location.isNotEmpty) location,
+                        ].join(' • ')),
+                        const SizedBox(height: 12),
+                        Text('Starting: $startingPrice • Current Highest: $currentHighest • Min +$minInc'),
+                        const SizedBox(height: 12),
+
+                        // Badges
+                        Wrap(children: [
+                          if (hasPedigree) const BadgeChip(label: 'Pedigree', icon: Icons.badge),
+                          if (inFoal) const BadgeChip(label: 'In-Foal', icon: Icons.pregnant_woman),
+                          if (hasFilly) const BadgeChip(label: 'Bundle (Filly)', icon: Icons.pets),
+                          BadgeChip(
+                            label: status == 'closed' ? 'Closed' : 'Open',
+                            icon: status == 'closed' ? Icons.lock : Icons.lock_open,
+                          ),
+                        ]),
+                        const SizedBox(height: 8),
+
+                        if (hasPedigree)
+                          TextButton.icon(
+                            onPressed: (pedigreeUrl != null)
+                                ? () => launchUrl(Uri.parse(pedigreeUrl), mode: LaunchMode.externalApplication)
+                                : null,
+                            icon: const Icon(Icons.picture_as_pdf),
+                            label: const Text('شهادة النسب'),
+                          ),
+
+                        const Divider(height: 24),
+
+                        // Bid UI
+                        Row(children: [
+                          Expanded(
+                            child: TextField(
+                              controller: _amountCtrl,
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(labelText: 'Your bid amount'),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          FilledButton(
+                            onPressed: _submitting || status == 'closed'
+                                ? null
+                                : () async {
+                                    final txt = _amountCtrl.text.trim();
+                                    final amount = int.tryParse(txt);
+                                    if (amount == null) {
+                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Enter a valid number')));
+                                      return;
+                                    }
+                                    setState(() => _submitting = true);
+                                    try {
+                                      final userId = FirebaseAuth.instance.currentUser?.uid ?? 'anon';
+                                      await service.placeBid(lotId: widget.lotId, amount: amount, userId: userId);
+                                      _amountCtrl.clear();
+                                    } catch (e) {
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                                    } finally {
+                                      if (mounted) setState(() => _submitting = false);
+                                    }
+                                  },
+                            child: _submitting
+                                ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator())
+                                : Text(status == 'closed' ? 'Auction closed' : 'Place bid'),
+                          ),
+                        ]),
+                        const SizedBox(height: 12),
+
+                        // Admin controls
+                        if (isAdmin) Row(
+                          children: [
+                            OutlinedButton.icon(
+                              onPressed: status == 'closed' ? null : () async {
+                                await FirestoreService.instance.setLotStatus(lotId: widget.lotId, status: 'closed');
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Auction closed')));
+                                }
+                              },
+                              icon: const Icon(Icons.lock),
+                              label: const Text('Close auction'),
+                            ),
+                            const SizedBox(width: 8),
+                            OutlinedButton.icon(
+                              onPressed: status == 'closed' ? () async {
+                                await FirestoreService.instance.setLotStatus(lotId: widget.lotId, status: 'published');
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Auction re-opened')));
+                                }
+                              } : null,
+                              icon: const Icon(Icons.lock_open),
+                              label: const Text('Re-open'),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 16),
+                        Text('Owner: $owner'),
+                        const SizedBox(height: 12),
+                        const Divider(height: 24),
+
+                        // Bids list
+                        StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                          stream: service.bidsStream(widget.lotId),
+                          builder: (context, snap) {
+                            if (snap.connectionState == ConnectionState.waiting) {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+                            final docs = snap.data?.docs ?? [];
+                            if (docs.isEmpty) return const Text('No bids yet');
+                            return ListView.separated(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: docs.length,
+                              separatorBuilder: (_, __) => const Divider(height: 0),
+                              itemBuilder: (_, i) {
+                                final b = docs[i].data();
+                                return ListTile(
+                                  leading: const Icon(Icons.gavel),
+                                  title: Text('SAR ${b['amount']}'),
+                                  subtitle: Text('by ${b['userId']}'),
+                                  trailing: (b['createdAt'] is Timestamp)
+                                      ? Text((b['createdAt'] as Timestamp).toDate().toLocal().toString())
+                                      : const SizedBox.shrink(),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
