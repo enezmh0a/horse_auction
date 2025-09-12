@@ -95,95 +95,161 @@ abstract class AppLocalizations {
     Locale('en')
   ];
 
-  /// No description provided for @appTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Horse Auctions'**
-  String get appTitle;
-
-  /// No description provided for @tabHome.
-  ///
-  /// In en, this message translates to:
-  /// **'Home'**
-  String get tabHome;
-
-  /// No description provided for @tabLots.
+  /// No description provided for @lotsTitle.
   ///
   /// In en, this message translates to:
   /// **'Lots'**
-  String get tabLots;
+  String get lotsTitle;
 
-  /// No description provided for @tabBidding.
+  /// No description provided for @language.
   ///
   /// In en, this message translates to:
-  /// **'Bidding'**
-  String get tabBidding;
+  /// **'Language'**
+  String get language;
 
-  /// No description provided for @tabSeller.
+  /// No description provided for @english.
   ///
   /// In en, this message translates to:
-  /// **'Seller'**
-  String get tabSeller;
+  /// **'English'**
+  String get english;
 
-  /// No description provided for @tabProfile.
+  /// No description provided for @arabic.
   ///
   /// In en, this message translates to:
-  /// **'Profile'**
-  String get tabProfile;
+  /// **'Arabic'**
+  String get arabic;
 
-  /// No description provided for @homeLive.
+  /// No description provided for @systemLanguage.
   ///
   /// In en, this message translates to:
-  /// **'Live Auctions'**
-  String get homeLive;
+  /// **'System'**
+  String get systemLanguage;
 
-  /// No description provided for @homeEnding.
+  /// No description provided for @errorLoadingLots.
   ///
   /// In en, this message translates to:
-  /// **'Ending Soon'**
-  String get homeEnding;
+  /// **'Error loading lots'**
+  String get errorLoadingLots;
 
-  /// No description provided for @homeSell.
+  /// No description provided for @noLots.
   ///
   /// In en, this message translates to:
-  /// **'Sell a Horse'**
-  String get homeSell;
+  /// **'No lots yet'**
+  String get noLots;
 
-  /// No description provided for @homeLiveSub.
+  /// No description provided for @horseDetails.
   ///
   /// In en, this message translates to:
-  /// **'Join ongoing sales with anti-sniping timers.'**
-  String get homeLiveSub;
+  /// **'Horse details'**
+  String get horseDetails;
 
-  /// No description provided for @homeEndingSub.
+  /// No description provided for @cityLabel.
   ///
   /// In en, this message translates to:
-  /// **'Last few minutes — place your bid now.'**
-  String get homeEndingSub;
+  /// **'City'**
+  String get cityLabel;
 
-  /// No description provided for @homeSellSub.
+  /// No description provided for @highestLabel.
   ///
   /// In en, this message translates to:
-  /// **'Create a lot, set reserve, upload documents.'**
-  String get homeSellSub;
+  /// **'Highest'**
+  String get highestLabel;
 
-  /// No description provided for @lotReserveMet.
+  /// No description provided for @startingLabel.
   ///
   /// In en, this message translates to:
-  /// **'Reserve Met'**
-  String get lotReserveMet;
+  /// **'Starting'**
+  String get startingLabel;
 
-  /// No description provided for @lotReserveNotMet.
+  /// No description provided for @currentHighestLabel.
   ///
   /// In en, this message translates to:
-  /// **'Reserve Not Met'**
-  String get lotReserveNotMet;
+  /// **'Current highest'**
+  String get currentHighestLabel;
 
-  /// No description provided for @registerToBid.
+  /// No description provided for @minLabel.
   ///
   /// In en, this message translates to:
-  /// **'Register to Bid'**
-  String get registerToBid;
+  /// **'Min step'**
+  String get minLabel;
+
+  /// No description provided for @enterAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter amount'**
+  String get enterAmount;
+
+  /// No description provided for @decrement.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrement'**
+  String get decrement;
+
+  /// No description provided for @increment.
+  ///
+  /// In en, this message translates to:
+  /// **'Increment'**
+  String get increment;
+
+  /// No description provided for @placeBid.
+  ///
+  /// In en, this message translates to:
+  /// **'Place bid'**
+  String get placeBid;
+
+  /// No description provided for @bidPlaced.
+  ///
+  /// In en, this message translates to:
+  /// **'Bid placed'**
+  String get bidPlaced;
+
+  /// No description provided for @bidFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Bid failed'**
+  String get bidFailed;
+
+  /// No description provided for @recentBids.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent bids'**
+  String get recentBids;
+
+  /// No description provided for @noBidsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No bids yet'**
+  String get noBidsYet;
+
+  /// No description provided for @currency.
+  ///
+  /// In en, this message translates to:
+  /// **'SAR'**
+  String get currency;
+
+  /// No description provided for @byUser.
+  ///
+  /// In en, this message translates to:
+  /// **'By'**
+  String get byUser;
+
+  /// No description provided for @closeAuction.
+  ///
+  /// In en, this message translates to:
+  /// **'Close auction'**
+  String get closeAuction;
+
+  /// No description provided for @reopen.
+  ///
+  /// In en, this message translates to:
+  /// **'Reopen'**
+  String get reopen;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

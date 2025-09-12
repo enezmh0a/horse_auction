@@ -77,4 +77,5 @@ class DefaultFirebaseOptions {
     authDomain: 'horse-auction-saudi.firebaseapp.com',
     storageBucket: 'horse-auction-saudi.firebasestorage.app',
   );
+
 }
