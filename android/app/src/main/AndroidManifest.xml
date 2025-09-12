@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
+<<<<<<< HEAD
         android:label="horse_auction"
+=======
+        android:label="horse_auction_app"
+>>>>>>> 4d8b6a881f3f4e5fc0e0da43e19a305e08eb6813
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
