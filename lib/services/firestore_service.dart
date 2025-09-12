@@ -1,76 +1,113 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
   FirestoreService._();
-  static final FirestoreService instance = FirestoreService._();
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  static final instance = FirestoreService._();
 
-  // Stream all lots (horses)
-  Stream<QuerySnapshot<Map<String, dynamic>>> lotsStream() {
-    return _db.collection('lots').orderBy('createdAt', descending: true).snapshots();
+  final _db = FirebaseFirestore.instance;
+Future<int> countLotsOnce() async {
+  final snap = await _db.collection('lots').get();
+  return snap.docs.length;
+}
+
+  /// Stream lots (list page)
+  Stream<List<Map<String, dynamic>>> lotsStream() {
+    return _db
+        .collection('lots')
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((snap) => snap.docs.map((d) {
+              final data = d.data();
+              data['id'] = d.id;
+              return data;
+            }).toList());
   }
 
-  // Stream a single lot
-  Stream<DocumentSnapshot<Map<String, dynamic>>> streamHorse(String horseId) {
-    return _db.collection('lots').doc(horseId).snapshots();
-  }
-
-  // Add a horse (keeps defaults for bidding fields if missing)
-  Future<void> addHorse({
-    required String name,
-    required String breed,
-    required int age,
-    required String owner,
-    required int startingPrice,
-    String imageUrl = '',
-  }) async {
-    final now = FieldValue.serverTimestamp();
-    await _db.collection('lots').add({
-      'name': name,
-      'breed': breed,
-      'age': age,
-      'owner': owner,
-      'startingPrice': startingPrice,
-      'imageUrl': imageUrl,
-      'createdAt': now,
-      // bidding defaults
-      'currentHighest': 0,
-      'minIncrement': 50,
+  /// Stream single lot (detail page)
+  Stream<Map<String, dynamic>?> streamLot(String lotId) {
+    return _db.collection('lots').doc(lotId).snapshots().map((doc) {
+      if (!doc.exists) return null;
+      final data = doc.data()!;
+      data['id'] = doc.id;
+      return data;
     });
   }
 
-  // Simple place bid: client-side check + add bid + merge currentHighest if needed
-  Future<void> placeBid({
-    required String horseId,
+  /// Stream bids for a lot
+  Stream<List<Map<String, dynamic>>> bidsStream(String lotId) {
+    return _db
+        .collection('lots')
+        .doc(lotId)
+        .collection('bids')
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((snap) => snap.docs.map((d) {
+              final data = d.data();
+              data['id'] = d.id;
+              return data;
+            }).toList());
+  }
+
+  /// Place a bid
+  Future<bool> placeBid({
+    required String lotId,
     required int amount,
     required String userId,
   }) async {
-    final lotRef = _db.collection('lots').doc(horseId);
-    final bidRef = lotRef.collection('bids').doc();
+    try {
+      final lotRef = _db.collection('lots').doc(lotId);
+      await _db.runTransaction((tx) async {
+        final snap = await tx.get(lotRef);
+        if (!snap.exists) {
+          throw FirebaseException(
+            plugin: 'cloud_firestore',
+            message: 'Lot does not exist',
+          );
+        }
+        final data = snap.data() as Map<String, dynamic>;
+        final current = (data['currentHighest'] ?? 0) as int;
+        final minInc = (data['minIncrement'] ?? 0) as int;
 
-    // Write the bid first
-    await bidRef.set({
-      'amount': amount,
-      'userId': userId,
-      'createdAt': FieldValue.serverTimestamp(),
-    });
+        if (amount < current + minInc) {
+          throw FirebaseException(
+            plugin: 'cloud_firestore',
+            message: 'Bid too low',
+          );
+        }
 
-    // Try to lift currentHighest if this bid is higher (simple, non-transactional)
-    await lotRef.set(
-      {
-        'currentHighest': amount,
-      },
-      SetOptions(merge: true),
-    );
+        final bidsCol = lotRef.collection('bids');
+        tx.set(bidsCol.doc(), {
+          'amount': amount,
+          'userId': userId,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+
+        tx.update(lotRef, <String, dynamic>{
+          'currentHighest': amount,
+          'bidsCount': (data['bidsCount'] ?? 0) + 1,
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+      });
+
+      return true;
+    } on FirebaseException catch (e) {
+      // Handle as normal Dart exception on every platform (including web)
+      // You can log e.code / e.message if you want
+      return false;
+    } catch (_) {
+      return false;
+    }
   }
 
-  // Optional: stream bids for a horse
-  Stream<QuerySnapshot<Map<String, dynamic>>> bidsStream(String horseId) {
-    return _db
-        .collection('lots')
-        .doc(horseId)
-        .collection('bids')
-        .orderBy('createdAt', descending: true)
-        .snapshots();
+  /// Update lot status
+  Future<void> setLotStatus({
+    required String lotId,
+    required String status, // 'open' | 'closed' | 'published'
+  }) async {
+    await _db.collection('lots').doc(lotId).update({
+      'status': status,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
   }
 }
