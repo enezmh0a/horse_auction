@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
     "name": "horse_auction",
     "short_name": "horse_auction",
+=======
+    "name": "horse_auction_app",
+    "short_name": "horse_auction_app",
+>>>>>>> 4d8b6a881f3f4e5fc0e0da43e19a305e08eb6813
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

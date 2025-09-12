@@ -1,0 +1,17 @@
+{
+  "hosting": {
+"site": "horse-auction-saudi",
+"public": "build/web",
+"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+"headers": [
+  {
+    "source": "**/*.@(js|css)",
+    "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000" }]
+  },
+  {
+    "source": "assets/**",
+    "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000" }]
+  }
+]
+  }
+}

@@ -1,10 +1,18 @@
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.14)
+<<<<<<< HEAD
 project(horse_auction LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
 set(BINARY_NAME "horse_auction")
+=======
+project(horse_auction_app LANGUAGES CXX)
+
+# The name of the executable created for the application. Change this to change
+# the on-disk name of your application.
+set(BINARY_NAME "horse_auction_app")
+>>>>>>> 4d8b6a881f3f4e5fc0e0da43e19a305e08eb6813
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.

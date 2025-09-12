@@ -5,7 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
+<<<<<<< HEAD
 	<string>Horse Auction</string>
+=======
+	<string>Horse Auction App</string>
+>>>>>>> 4d8b6a881f3f4e5fc0e0da43e19a305e08eb6813
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +17,11 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
+<<<<<<< HEAD
 	<string>horse_auction</string>
+=======
+	<string>horse_auction_app</string>
+>>>>>>> 4d8b6a881f3f4e5fc0e0da43e19a305e08eb6813
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
