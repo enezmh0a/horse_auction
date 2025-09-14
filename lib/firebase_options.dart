@@ -79,4 +79,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'horse-auction-dev1.firebasestorage.app',
     measurementId: 'G-N8H1VH9Q41',
   );
+
 }
