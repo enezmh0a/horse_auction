@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/horse_auction_app.iml" filepath="$PROJECT_DIR$/horse_auction_app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/horse_auction_app_android.iml" filepath="$PROJECT_DIR$/android/horse_auction_app_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/horse_auction.iml" filepath="$PROJECT_DIR$/horse_auction.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/horse_auction_android.iml" filepath="$PROJECT_DIR$/android/horse_auction_android.iml" />
     </modules>
   </component>
 </project>

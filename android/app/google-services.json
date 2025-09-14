@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "1006357064889",
-    "project_id": "horse-auction-saudi",
-    "storage_bucket": "horse-auction-saudi.firebasestorage.app"
+    "project_number": "578694441278",
+    "project_id": "horse-auction-dev1",
+    "storage_bucket": "horse-auction-dev1.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1006357064889:android:125bd03368bd6146cabf68",
+        "mobilesdk_app_id": "1:578694441278:android:f11aaf8d365e9a3abde46f",
         "android_client_info": {
-          "package_name": "com.example.horse_auction_app"
+          "package_name": "com.enezmh0a.horse_auction"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAuILnW-gJJ3Ora_mIknGoZAE-5g27zCnw"
+          "current_key": "AIzaSyCHnDJVhMB6syz15iay_SxiZynwH3r1wd0"
         }
       ],
       "services": {

@@ -1,17 +1,1 @@
-{
-  "hosting": {
-"site": "horse-auction-saudi",
-"public": "build/web",
-"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-"headers": [
-  {
-    "source": "**/*.@(js|css)",
-    "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000" }]
-  },
-  {
-    "source": "assets/**",
-    "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000" }]
-  }
-]
-  }
-}
+{"hosting":{"site":"horse-auction-saudi","public":"build/web","ignore":["firebase.json","**/.*","**/node_modules/**"],"headers":[{"source":"**/*.@(js|css)","headers":[{"key":"Cache-Control","value":"public, max-age=31536000"}]},{"source":"assets/**","headers":[{"key":"Cache-Control","value":"public, max-age=31536000"}]}]},"flutter":{"platforms":{"android":{"default":{"projectId":"horse-auction-dev1","appId":"1:578694441278:android:f11aaf8d365e9a3abde46f","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"horse-auction-dev1","configurations":{"android":"1:578694441278:android:f11aaf8d365e9a3abde46f","macos":"1:578694441278:ios:141ff2fb4bc490a6bde46f","web":"1:578694441278:web:2fc001437f397fa6bde46f","windows":"1:578694441278:web:8756e94c811bfc86bde46f"}}}}}}

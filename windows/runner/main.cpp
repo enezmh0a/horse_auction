@@ -27,11 +27,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   FlutterWindow window(project);
   Win32Window::Point origin(10, 10);
   Win32Window::Size size(1280, 720);
-<<<<<<< HEAD
   if (!window.Create(L"horse_auction", origin, size)) {
-=======
-  if (!window.Create(L"horse_auction_app", origin, size)) {
->>>>>>> 4d8b6a881f3f4e5fc0e0da43e19a305e08eb6813
     return EXIT_FAILURE;
   }
   window.SetQuitOnClose(true);

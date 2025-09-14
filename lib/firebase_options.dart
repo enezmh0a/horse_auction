@@ -23,12 +23,12 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
-      case TargetPlatform.macOS:
         throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
+          'DefaultFirebaseOptions have not been configured for ios - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
+      case TargetPlatform.macOS:
+        return macos;
       case TargetPlatform.windows:
         return windows;
       case TargetPlatform.linux:
@@ -44,38 +44,39 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCKjLI8jKB3q1uTQBTe_7mYHSSbqjcIcbo',
-    appId: '1:1006357064889:web:abd6e5b1eac292c8cabf68',
-    messagingSenderId: '1006357064889',
-    projectId: 'horse-auction-saudi',
-    authDomain: 'horse-auction-saudi.firebaseapp.com',
-    storageBucket: 'horse-auction-saudi.firebasestorage.app',
+    apiKey: 'AIzaSyCE-0vVqBa2ERUJGeWYSp8tRVfbfp5HxTs',
+    appId: '1:578694441278:web:2fc001437f397fa6bde46f',
+    messagingSenderId: '578694441278',
+    projectId: 'horse-auction-dev1',
+    authDomain: 'horse-auction-dev1.firebaseapp.com',
+    storageBucket: 'horse-auction-dev1.firebasestorage.app',
+    measurementId: 'G-YKHYJVQPK3',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAuILnW-gJJ3Ora_mIknGoZAE-5g27zCnw',
-    appId: '1:1006357064889:android:125bd03368bd6146cabf68',
-    messagingSenderId: '1006357064889',
-    projectId: 'horse-auction-saudi',
-    storageBucket: 'horse-auction-saudi.firebasestorage.app',
+    apiKey: 'AIzaSyCHnDJVhMB6syz15iay_SxiZynwH3r1wd0',
+    appId: '1:578694441278:android:f11aaf8d365e9a3abde46f',
+    messagingSenderId: '578694441278',
+    projectId: 'horse-auction-dev1',
+    storageBucket: 'horse-auction-dev1.firebasestorage.app',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDDw8BBO3Sno6yXxViQP_X4Tw3tEfkX1cg',
-    appId: '1:1006357064889:ios:314b04c3f88532eecabf68',
-    messagingSenderId: '1006357064889',
-    projectId: 'horse-auction-saudi',
-    storageBucket: 'horse-auction-saudi.firebasestorage.app',
-    iosBundleId: 'com.example.horseAuctionApp',
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyDjJNypC0ag-PMaQ3ae9Atvu8LdoHAi8GQ',
+    appId: '1:578694441278:ios:141ff2fb4bc490a6bde46f',
+    messagingSenderId: '578694441278',
+    projectId: 'horse-auction-dev1',
+    storageBucket: 'horse-auction-dev1.firebasestorage.app',
+    iosBundleId: 'com.example.horseAuction',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCKjLI8jKB3q1uTQBTe_7mYHSSbqjcIcbo',
-    appId: '1:1006357064889:web:63125d205a2d8d70cabf68',
-    messagingSenderId: '1006357064889',
-    projectId: 'horse-auction-saudi',
-    authDomain: 'horse-auction-saudi.firebaseapp.com',
-    storageBucket: 'horse-auction-saudi.firebasestorage.app',
+    apiKey: 'AIzaSyCE-0vVqBa2ERUJGeWYSp8tRVfbfp5HxTs',
+    appId: '1:578694441278:web:8756e94c811bfc86bde46f',
+    messagingSenderId: '578694441278',
+    projectId: 'horse-auction-dev1',
+    authDomain: 'horse-auction-dev1.firebaseapp.com',
+    storageBucket: 'horse-auction-dev1.firebasestorage.app',
+    measurementId: 'G-N8H1VH9Q41',
   );
-
 }
