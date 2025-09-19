@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() { return request.auth != null; }
+
+    match /lots/{lotId} {
+      // Public read for listing/details
+      allow read: if true;
+
+      // Lock lots from client writes (Phase-I)
+      allow create, update, delete: if false;
+
+      match /bids/{bidId} {
+        // Create bid (no status field required)
+        allow create: if isSignedIn()
+          && request.resource.data.userId == request.auth.uid
+          && request.resource.data.amount is number
+          && get(/databases/$(database)/documents/lots/$(lotId)).data.active == true
+          && request.resource.data.amount >= (
+               (
+                 get(/databases/$(database)/documents/lots/$(lotId)).data.currentHighest != null
+                   ? get(/databases/$(database)/documents/lots/$(lotId)).data.currentHighest
+                   : (
+                       get(/databases/$(database)/documents/lots/$(lotId)).data.startingPrice != null
+                         ? get(/databases/$(database)/documents/lots/$(lotId)).data.startingPrice
+                         : 0
+                     )
+               )
+               +
+               (
+                 get(/databases/$(database)/documents/lots/$(lotId)).data.minIncrement != null
+                   ? get(/databases/$(database)/documents/lots/$(lotId)).data.minIncrement
+                   : 50
+               )
+             );
+
+        // Bidder can delete their own bid (optional)
+        allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+
+        // Read bids
+        allow read: if true;
+
+        // No client updates to existing bids
+        allow update: if false;
+      }
+    }
+  }
+}

@@ -21,9 +21,15 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for android - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -52,23 +58,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'horse-auction-saudi.firebasestorage.app',
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAuILnW-gJJ3Ora_mIknGoZAE-5g27zCnw',
-    appId: '1:1006357064889:android:125bd03368bd6146cabf68',
-    messagingSenderId: '1006357064889',
-    projectId: 'horse-auction-saudi',
-    storageBucket: 'horse-auction-saudi.firebasestorage.app',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDDw8BBO3Sno6yXxViQP_X4Tw3tEfkX1cg',
-    appId: '1:1006357064889:ios:314b04c3f88532eecabf68',
-    messagingSenderId: '1006357064889',
-    projectId: 'horse-auction-saudi',
-    storageBucket: 'horse-auction-saudi.firebasestorage.app',
-    iosBundleId: 'com.example.horseAuctionApp',
-  );
-
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyCKjLI8jKB3q1uTQBTe_7mYHSSbqjcIcbo',
     appId: '1:1006357064889:web:63125d205a2d8d70cabf68',
@@ -77,5 +66,4 @@ class DefaultFirebaseOptions {
     authDomain: 'horse-auction-saudi.firebaseapp.com',
     storageBucket: 'horse-auction-saudi.firebasestorage.app',
   );
-
 }
