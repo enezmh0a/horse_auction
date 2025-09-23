@@ -1,24 +1,35 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'lot.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-part 'auction.g.dart';
-
-@JsonSerializable(explicitToJson: true)
 class Auction {
   final String id;
-  final String title;
-  final List<Lot> lots;
-  final DateTime startTime;
-  final DateTime endTime;
+  final String name;
+  final String status; // optional: 'upcoming' | 'live' | 'finished'
+  final Timestamp? tsStart;
+  final Timestamp? tsEnd;
 
   Auction({
     required this.id,
-    required this.title,
-    required this.lots,
-    required this.startTime,
-    required this.endTime,
+    required this.name,
+    required this.status,
+    this.tsStart,
+    this.tsEnd,
   });
 
-  factory Auction.fromJson(Map<String, dynamic> json) => _$AuctionFromJson(json);
-  Map<String, dynamic> toJson() => _$AuctionToJson(this);
+  factory Auction.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final d = doc.data() ?? const <String, dynamic>{};
+    Timestamp? _asTs(dynamic v) {
+      if (v is Timestamp) return v;
+      if (v is int) return Timestamp.fromMillisecondsSinceEpoch(v);
+      if (v is num) return Timestamp.fromMillisecondsSinceEpoch(v.toInt());
+      return null;
+    }
+
+    return Auction(
+      id: doc.id,
+      name: (d['name'] as String?)?.trim() ?? '',
+      status: (d['status'] as String?)?.trim() ?? '',
+      tsStart: _asTs(d['tsStart']),
+      tsEnd: _asTs(d['tsEnd']),
+    );
+  }
 }

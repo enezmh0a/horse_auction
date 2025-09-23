@@ -1,42 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/horse.dart';
-import '../models/lot.dart';
+import 'package:horse_auction_app/models/lot.dart';
 
 class LotsService {
-  LotsService(this._db);
-  final FirebaseFirestore _db;
+  LotsService._();
+  static final LotsService instance = LotsService._();
 
-  CollectionReference<Map<String, dynamic>> get _lots =>
-      _db.collection('lots');
+  final _db = FirebaseFirestore.instance;
 
-  /// Create or overwrite a lot
-  Future<void> upsertLot(Lot lot) async {
-    await _lots.doc(lot.id).set(lot.toJson());
-  }
+  CollectionReference<Map<String, dynamic>> get _lots => _db.collection('lots');
 
-  /// Update partial fields
-  Future<void> updateLot(String lotId, Map<String, dynamic> data) async {
-    await _lots.doc(lotId).update(data);
-  }
-
-  /// Get a single lot
-  Future<Lot?> getLot(String lotId) async {
-    final snap = await _lots.doc(lotId).get();
-    if (!snap.exists) return null;
-    return Lot.fromJson(snap.data()!);
-  }
-
-  /// Stream approved/visible lots (customize filters as needed)
-  Stream<List<Lot>> streamLots({bool onlyActive = true}) {
+  /// Base query; pass status = null for "all"
+  Query<Map<String, dynamic>> lotsQuery({String? status}) {
     Query<Map<String, dynamic>> q = _lots;
-    if (onlyActive) {
-      q = q.where('auctionEnd', isGreaterThan: Timestamp.now());
+
+    if (status != null && status.isNotEmpty) {
+      q = q.where('status', isEqualTo: status);
     }
-    return q.orderBy('auctionEnd').snapshots().map((s) {
-      return s.docs.map((d) => Lot.fromJson(d.data())).toList();
-    });
+
+    // Order if these fields exist. If they don't, Firestore still works.
+    // Prefer tsStart desc, then title as a fallback.
+    q = q.orderBy('tsStart', descending: true).orderBy('title');
+
+    return q;
   }
 
-  /// Helper to generate new lot ids
-  String newLotId() => _lots.doc().id;
+  Stream<QuerySnapshot<Map<String, dynamic>>> lotsStreamAll() =>
+      lotsQuery(status: null).snapshots();
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> lotsStreamLive() =>
+      lotsQuery(status: 'live').snapshots();
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> lotsStreamClosed() =>
+      lotsQuery(status: 'closed').snapshots();
+
+  /// Helper for mapping snapshot → List<Lot>
+  static List<Lot> mapLots(QuerySnapshot<Map<String, dynamic>> snap) {
+    return snap.docs.map(Lot.fromDoc).toList(growable: false);
+  }
 }

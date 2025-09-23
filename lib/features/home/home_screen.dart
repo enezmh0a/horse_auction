@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:horse_auction_app/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:horse_auction_app/l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -16,8 +16,8 @@ class HomeScreen extends StatelessWidget {
           Card(
             child: ListTile(
               leading: const Icon(Icons.gavel),
-              title: Text(l.homeLive),
-              subtitle: Text(l.homeLiveSub),
+              title: Text(l.homeLive!),
+              subtitle: Text(l.homeLiveSub ?? ''),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => context.go('/lots'),
             ),
@@ -26,8 +26,8 @@ class HomeScreen extends StatelessWidget {
           Card(
             child: ListTile(
               leading: const Icon(Icons.timer),
-              title: Text(l.homeEnding),
-              subtitle: Text(l.homeEndingSub),
+              title: Text(l.homeEnding ?? ''),
+              subtitle: Text(l.homeEndingSub ?? ''),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => context.go('/lots'),
             ),
@@ -36,8 +36,8 @@ class HomeScreen extends StatelessWidget {
           Card(
             child: ListTile(
               leading: const Icon(Icons.storefront),
-              title: Text(l.homeSell),
-              subtitle: Text(l.homeSellSub),
+              title: Text(l.homeSell!),
+              subtitle: Text(l.homeSellSub!),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => context.go('/seller'),
             ),

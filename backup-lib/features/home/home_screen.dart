@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:horse_auction_app/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

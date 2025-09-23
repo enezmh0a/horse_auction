@@ -15,6 +15,7 @@ class HorseDetailsScreen extends StatefulWidget {
 class _HorseDetailsScreenState extends State<HorseDetailsScreen> {
   final _bidController = TextEditingController();
   bool _isLoading = false;
+  final FirestoreService _firestoreService = FirestoreService.instance;
 
   @override
   void dispose() {
@@ -39,9 +40,11 @@ class _HorseDetailsScreenState extends State<HorseDetailsScreen> {
     });
 
     try {
-      await FirestoreService.placeBid(
+      await _firestoreService.placeBid(
         horseId: widget.horseId,
-        amount: amount,
+        lotId: widget
+            .horseId, // Provide the required lotId argument; adjust if needed
+        amount: amount.toInt(),
         userId: userId,
       );
       _bidController.clear();
@@ -84,7 +87,8 @@ class _HorseDetailsScreenState extends State<HorseDetailsScreen> {
           final horse = snapshot.data!.data()!;
           final currentHighest = horse['currentHighest'] ?? 0;
           final startingPrice = horse['startingPrice'] ?? 0;
-          final displayPrice = currentHighest > 0 ? currentHighest : startingPrice;
+          final displayPrice =
+              currentHighest > 0 ? currentHighest : startingPrice;
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
@@ -93,15 +97,12 @@ class _HorseDetailsScreenState extends State<HorseDetailsScreen> {
               children: [
                 if (horse['imageUrl'] != null && horse['imageUrl'].isNotEmpty)
                   Image.network(horse['imageUrl'],
-                      height: 250,
-                      width: double.infinity,
-                      fit: BoxFit.cover),
+                      height: 250, width: double.infinity, fit: BoxFit.cover),
                 const SizedBox(height: 16),
                 // Updated Text Styles
                 Text(horse['name'] ?? 'No Name',
                     style: Theme.of(context).textTheme.headlineMedium),
-                Text(
-                    '${horse['breed']} • ${horse['age']} years old',
+                Text('${horse['breed']} • ${horse['age']} years old',
                     style: Theme.of(context).textTheme.titleMedium),
                 const SizedBox(height: 24),
                 Text('Current Bid: \$${displayPrice.toStringAsFixed(2)}',
@@ -114,7 +115,8 @@ class _HorseDetailsScreenState extends State<HorseDetailsScreen> {
                     Expanded(
                       child: TextField(
                         controller: _bidController,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
                         decoration: const InputDecoration(
                           labelText: 'Your Bid Amount',
                           prefixText: '\$',
@@ -155,8 +157,8 @@ class _HorseDetailsScreenState extends State<HorseDetailsScreen> {
   }
 
   Widget _buildBidsList(String horseId) {
-    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-      stream: FirestoreService.bidsStream(horseId),
+    return StreamBuilder<List<Map<String, dynamic>>>(
+      stream: _firestoreService.bidsStream(horseId),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Padding(
@@ -164,7 +166,7 @@ class _HorseDetailsScreenState extends State<HorseDetailsScreen> {
             child: Text('Loading bids...'),
           );
         }
-        final bids = snapshot.data!.docs;
+        final bids = snapshot.data!;
         if (bids.isEmpty) {
           return const Padding(
             padding: EdgeInsets.only(top: 8.0),
@@ -176,7 +178,7 @@ class _HorseDetailsScreenState extends State<HorseDetailsScreen> {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: bids.length,
           itemBuilder: (context, index) {
-            final bid = bids[index].data();
+            final bid = bids[index];
             return ListTile(
               leading: const Icon(Icons.gavel),
               title: Text('\$${bid['amount']}'),

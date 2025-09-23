@@ -9,80 +9,44 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get lotsTitle => 'Lots';
+  String get appTitle => 'Horse Auctions';
 
   @override
-  String get language => 'Language';
+  String get lots => 'Lots';
 
   @override
-  String get english => 'English';
+  String get all => 'All';
 
   @override
-  String get arabic => 'Arabic';
+  String get live => 'Live';
 
   @override
-  String get systemLanguage => 'System';
+  String get closed => 'Closed';
+
+  @override
+  String get bid => 'Bid';
+
+  @override
+  String get current => 'Current';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get step => 'Step';
+
+  @override
+  String get noData => 'Nothing to show';
 
   @override
   String get errorLoadingLots => 'Error loading lots';
 
   @override
-  String get noLots => 'No lots yet';
+  String get seedLots => 'Seed lots';
 
   @override
-  String get horseDetails => 'Horse details';
+  String get seeded => 'Seeded a few lots';
 
   @override
-  String get cityLabel => 'City';
-
-  @override
-  String get highestLabel => 'Highest';
-
-  @override
-  String get startingLabel => 'Starting';
-
-  @override
-  String get currentHighestLabel => 'Current highest';
-
-  @override
-  String get minLabel => 'Min step';
-
-  @override
-  String get enterAmount => 'Enter amount';
-
-  @override
-  String get decrement => 'Decrement';
-
-  @override
-  String get increment => 'Increment';
-
-  @override
-  String get placeBid => 'Place bid';
-
-  @override
-  String get bidPlaced => 'Bid placed';
-
-  @override
-  String get bidFailed => 'Bid failed';
-
-  @override
-  String get recentBids => 'Recent bids';
-
-  @override
-  String get noBidsYet => 'No bids yet';
-
-  @override
-  String get currency => 'SAR';
-
-  @override
-  String get byUser => 'By';
-
-  @override
-  String get closeAuction => 'Close auction';
-
-  @override
-  String get reopen => 'Reopen';
-
-  @override
-  String get error => 'Error';
+  String get seedFailed => 'Failed to seed lots';
 }

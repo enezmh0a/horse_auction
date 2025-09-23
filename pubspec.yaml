@@ -11,12 +11,15 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
+
+  # FlutterFire (don’t use `firebase_functions`; use `cloud_functions`)
   firebase_core: ^4.1.0
-  cloud_firestore: ^6.0.1
   firebase_auth: ^6.0.2
+  cloud_firestore: ^6.0.1
   cloud_functions: ^6.0.1
+  flutter_gen: ^5.12.0
+  go_router: ^16.2.2
 
 flutter:
-  generate: true
   uses-material-design: true
-
+  generate: true

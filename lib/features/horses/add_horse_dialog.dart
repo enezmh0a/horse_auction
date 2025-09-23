@@ -17,7 +17,8 @@ class _AddHorseDialogState extends State<AddHorseDialog> {
   final _ageController = TextEditingController();
   final _ownerController = TextEditingController();
   final _startPriceController = TextEditingController();
-  final _minIncrementController = TextEditingController(text: '50'); // default 50
+  final _minIncrementController =
+      TextEditingController(text: '50'); // default 50
   final _imageUrlController = TextEditingController();
 
   bool _saving = false;
@@ -84,12 +85,14 @@ class _AddHorseDialogState extends State<AddHorseDialog> {
               TextFormField(
                 controller: _nameController,
                 decoration: const InputDecoration(labelText: 'Name'),
-                validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
+                validator: (v) =>
+                    (v == null || v.trim().isEmpty) ? 'Required' : null,
               ),
               TextFormField(
                 controller: _breedController,
                 decoration: const InputDecoration(labelText: 'Breed'),
-                validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
+                validator: (v) =>
+                    (v == null || v.trim().isEmpty) ? 'Required' : null,
               ),
               TextFormField(
                 controller: _ageController,
@@ -105,11 +108,13 @@ class _AddHorseDialogState extends State<AddHorseDialog> {
               TextFormField(
                 controller: _ownerController,
                 decoration: const InputDecoration(labelText: 'Owner'),
-                validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
+                validator: (v) =>
+                    (v == null || v.trim().isEmpty) ? 'Required' : null,
               ),
               TextFormField(
                 controller: _startPriceController,
-                decoration: const InputDecoration(labelText: 'Starting Price (SAR)'),
+                decoration:
+                    const InputDecoration(labelText: 'Starting Price (SAR)'),
                 keyboardType: TextInputType.number,
                 validator: (v) {
                   if (v == null || v.trim().isEmpty) return 'Required';
@@ -120,7 +125,8 @@ class _AddHorseDialogState extends State<AddHorseDialog> {
               ),
               TextFormField(
                 controller: _minIncrementController,
-                decoration: const InputDecoration(labelText: 'Min Increment (SAR)'),
+                decoration:
+                    const InputDecoration(labelText: 'Min Increment (SAR)'),
                 keyboardType: TextInputType.number,
                 validator: (v) {
                   if (v == null || v.trim().isEmpty) return 'Required';
@@ -131,7 +137,8 @@ class _AddHorseDialogState extends State<AddHorseDialog> {
               ),
               TextFormField(
                 controller: _imageUrlController,
-                decoration: const InputDecoration(labelText: 'Image URL (optional)'),
+                decoration:
+                    const InputDecoration(labelText: 'Image URL (optional)'),
               ),
             ],
           ),
@@ -144,7 +151,8 @@ class _AddHorseDialogState extends State<AddHorseDialog> {
         ),
         FilledButton(
           onPressed: _saving ? null : _save,
-          child: _saving ? const CircularProgressIndicator() : const Text('Save'),
+          child:
+              _saving ? const CircularProgressIndicator() : const Text('Save'),
         ),
       ],
     );

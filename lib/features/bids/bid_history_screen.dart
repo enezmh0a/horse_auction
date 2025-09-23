@@ -11,7 +11,8 @@ class BidHistoryScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Bid History')),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: FirestoreService.bidsStream(horseId),
+        stream: FirestoreService.instance.bidsStream(horseId)
+            as Stream<QuerySnapshot<Map<String, dynamic>>>,
         builder: (context, snap) {
           if (snap.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -25,9 +26,11 @@ class BidHistoryScreen extends StatelessWidget {
             separatorBuilder: (_, __) => const Divider(height: 0),
             itemBuilder: (context, i) {
               final b = docs[i].data();
-              final amount = (b['amount'] is num) ? (b['amount'] as num).toInt() : 0;
+              final amount =
+                  (b['amount'] is num) ? (b['amount'] as num).toInt() : 0;
               final ts = b['createdAt'];
-              final when = (ts is Timestamp) ? ts.toDate().toLocal().toString() : '—';
+              final when =
+                  (ts is Timestamp) ? ts.toDate().toLocal().toString() : '—';
               final bidderId = (b['bidderId'] ?? '—') as String;
               return ListTile(
                 leading: const Icon(Icons.gavel),

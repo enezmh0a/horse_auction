@@ -1,37 +1,57 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'horse.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-part 'lot.g.dart';
-
-@JsonSerializable(explicitToJson: true)
 class Lot {
   final String id;
-  final Horse horse;
-
-  /// Reserve price in SAR
-  final int reservePrice;
-
-  /// Current highest bid in SAR
-  final int currentBid;
-
-  final String sellerId;
-
-  /// True when currentBid >= reservePrice
-  final bool reserveMet;
-
-  /// Auction end time (ISO8601)
-  final DateTime auctionEnd;
+  final String title;
+  final String status; // e.g., 'published' | 'live' | 'closed'
+  final int startPrice;
+  final int lastBid;
+  final String exhibitor;
+  final Timestamp? tsStart;
+  final Timestamp? tsEnd;
+  final String? horseId;
+  final String? auctionId;
 
   Lot({
     required this.id,
-    required this.horse,
-    required this.reservePrice,
-    required this.currentBid,
-    required this.sellerId,
-    required this.reserveMet,
-    required this.auctionEnd,
+    required this.title,
+    required this.status,
+    required this.startPrice,
+    required this.lastBid,
+    required this.exhibitor,
+    this.tsStart,
+    this.tsEnd,
+    this.horseId,
+    this.auctionId,
   });
 
-  factory Lot.fromJson(Map<String, dynamic> json) => _$LotFromJson(json);
-  Map<String, dynamic> toJson() => _$LotToJson(this);
+  /// Safe mapping: tolerant of missing/typed fields
+  factory Lot.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final d = doc.data() ?? const <String, dynamic>{};
+    Timestamp? _asTs(dynamic v) {
+      if (v is Timestamp) return v;
+      if (v is int) return Timestamp.fromMillisecondsSinceEpoch(v);
+      if (v is num) return Timestamp.fromMillisecondsSinceEpoch(v.toInt());
+      return null;
+    }
+
+    int _asInt(dynamic v, [int fallback = 0]) {
+      if (v is int) return v;
+      if (v is num) return v.toInt();
+      return fallback;
+    }
+
+    return Lot(
+      id: doc.id,
+      title: (d['title'] as String?)?.trim() ?? '',
+      status: (d['status'] as String?)?.trim() ?? '',
+      startPrice: _asInt(d['startPrice']),
+      lastBid: _asInt(d['lastBid']),
+      exhibitor: (d['exhibitor'] as String?)?.trim() ?? '',
+      tsStart: _asTs(d['tsStart']),
+      tsEnd: _asTs(d['tsEnd']),
+      horseId: (d['horseId'] as String?)?.trim(),
+      auctionId: (d['auctionId'] as String?)?.trim(),
+    );
+  }
 }

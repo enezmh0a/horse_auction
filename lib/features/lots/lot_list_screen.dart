@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:horse_auction_app/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:horse_auction_app/l10n/app_localizations.dart';
 
 class LotListScreen extends StatelessWidget {
   const LotListScreen({super.key});
@@ -9,12 +9,14 @@ class LotListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
 
-    final demoLots = List.generate(8, (i) => {
-          'id': (i + 1).toString(),
-          'name': 'حصان عربي رقم ${i + 1}',
-          'currentBid': 5000 * (i + 1),
-          'reserveMet': i % 2 == 0,
-        });
+    final demoLots = List.generate(
+        8,
+        (i) => {
+              'id': (i + 1).toString(),
+              'name': 'حصان عربي رقم ${i + 1}',
+              'currentBid': 5000 * (i + 1),
+              'reserveMet': i % 2 == 0,
+            });
 
     return ListView.builder(
       padding: const EdgeInsets.all(12),

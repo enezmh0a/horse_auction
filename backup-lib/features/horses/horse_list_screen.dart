@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:horse_auction_app/services/firestore_service.dart';
-import 'package:horse_auction_app/features/horses/horse_detail_screen.dart';
 import 'package:horse_auction_app/features/horses/add_horse_dialog.dart';
+
+import 'horse_detail_screen.dart';
 
 class HorseListScreen extends StatelessWidget {
   const HorseListScreen({super.key});
@@ -19,21 +20,20 @@ class HorseListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Horse Auction Lots')),
-      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: FirestoreService.lotsStream(),
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+        stream: FirestoreService.instance.lotsStream(),
         builder: (context, snap) {
           if (snap.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          final docs = snap.data?.docs ?? const [];
+          final docs = snap.data ?? const [];
           if (docs.isEmpty) {
             return const Center(child: Text('No horses available yet'));
           }
           return ListView.builder(
             itemCount: docs.length,
             itemBuilder: (_, i) {
-              final d = docs[i];
-              final data = d.data();
+              final data = docs[i];
               final name = (data['name'] ?? '') as String? ?? '';
               final breed = (data['breed'] ?? '') as String? ?? '';
               final starting = _num(data['startingPrice']);
@@ -51,8 +51,7 @@ class HorseListScreen extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      // Corrected typo from HorseDetailScreen to HorseDetailsScreen
-                      builder: (_) => HorseDetailsScreen(horseId: d.id),
+                      builder: (_) => HorseDetailsScreen(horseId: data['id']),
                     ),
                   );
                 },

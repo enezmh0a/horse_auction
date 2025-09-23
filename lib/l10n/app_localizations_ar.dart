@@ -9,80 +9,44 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get lotsTitle => 'الخيول المعروضة';
+  String get appTitle => 'مزادات الخيل';
 
   @override
-  String get language => 'اللغة';
+  String get lots => 'الدفعات';
 
   @override
-  String get english => 'الإنجليزية';
+  String get all => 'الكل';
 
   @override
-  String get arabic => 'العربية';
+  String get live => 'مباشر';
 
   @override
-  String get systemLanguage => 'لغة النظام';
+  String get closed => 'مغلق';
 
   @override
-  String get errorLoadingLots => 'حدث خطأ أثناء تحميل الخيول';
+  String get bid => 'مزاد';
 
   @override
-  String get noLots => 'لا توجد خيول حتى الآن';
+  String get current => 'الحالي';
 
   @override
-  String get horseDetails => 'تفاصيل الحصان';
+  String get next => 'التالي';
 
   @override
-  String get cityLabel => 'المدينة';
+  String get step => 'الزيادة';
 
   @override
-  String get highestLabel => 'أعلى سعر';
+  String get noData => 'لا يوجد شيء للعرض';
 
   @override
-  String get startingLabel => 'سعر البداية';
+  String get errorLoadingLots => 'حدث خطأ أثناء تحميل الدُفعات';
 
   @override
-  String get currentHighestLabel => 'السعر الحالي الأعلى';
+  String get seedLots => 'إضافة بيانات تجريبية';
 
   @override
-  String get minLabel => 'أقل زيادة';
+  String get seeded => 'تمت إضافة عينات';
 
   @override
-  String get enterAmount => 'أدخل المبلغ';
-
-  @override
-  String get decrement => 'إنقاص';
-
-  @override
-  String get increment => 'زيادة';
-
-  @override
-  String get placeBid => 'تقديم مزايدة';
-
-  @override
-  String get bidPlaced => 'تم تسجيل المزايدة';
-
-  @override
-  String get bidFailed => 'فشل تسجيل المزايدة';
-
-  @override
-  String get recentBids => 'أحدث المزايدات';
-
-  @override
-  String get noBidsYet => 'لا توجد مزايدات بعد';
-
-  @override
-  String get currency => 'ريال';
-
-  @override
-  String get byUser => 'بواسطة';
-
-  @override
-  String get closeAuction => 'إغلاق المزاد';
-
-  @override
-  String get reopen => 'إعادة الفتح';
-
-  @override
-  String get error => 'خطأ';
+  String get seedFailed => 'فشل في إضافة العينات';
 }

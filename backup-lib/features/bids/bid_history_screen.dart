@@ -10,24 +10,26 @@ class BidHistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Bid History')),
-      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: FirestoreService.bidsStream(horseId),
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+        stream: FirestoreService.instance.bidsStream(horseId),
         builder: (context, snap) {
           if (snap.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (!snap.hasData || snap.data!.docs.isEmpty) {
+          if (!snap.hasData || snap.data!.isEmpty) {
             return const Center(child: Text('No bids yet'));
           }
-          final docs = snap.data!.docs;
+          final docs = snap.data!;
           return ListView.separated(
             itemCount: docs.length,
             separatorBuilder: (_, __) => const Divider(height: 0),
             itemBuilder: (context, i) {
-              final b = docs[i].data();
-              final amount = (b['amount'] is num) ? (b['amount'] as num).toInt() : 0;
+              final b = docs[i];
+              final amount =
+                  (b['amount'] is num) ? (b['amount'] as num).toInt() : 0;
               final ts = b['createdAt'];
-              final when = (ts is Timestamp) ? ts.toDate().toLocal().toString() : '—';
+              final when =
+                  (ts is Timestamp) ? ts.toDate().toLocal().toString() : '—';
               final bidderId = (b['bidderId'] ?? '—') as String;
               return ListTile(
                 leading: const Icon(Icons.gavel),

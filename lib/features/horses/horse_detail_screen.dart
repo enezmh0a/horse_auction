@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:horse_auction_app/l10n/app_localizations.dart';
 import '../../services/firestore_service.dart';
 import '../../widgets/gallery_banner.dart';
-import '../../l10n/generated/app_localizations.dart';
 
 class HorseDetailScreen extends StatefulWidget {
   const HorseDetailScreen({super.key, required this.lotId});
@@ -26,7 +25,9 @@ class _HorseDetailScreenState extends State<HorseDetailScreen> {
   List<String> _readImages(Map<String, dynamic> data) {
     final a = (data['imageUrls'] as List?)?.cast<String>();
     final b = (data['images'] as List?)?.cast<String>();
-    return (a ?? b ?? const <String>[]).where((e) => e.trim().isNotEmpty).toList();
+    return (a ?? b ?? const <String>[])
+        .where((e) => e.trim().isNotEmpty)
+        .toList();
   }
 
   int _intOrZero(Object? v) => (v is num) ? v.toInt() : 0;
@@ -55,7 +56,8 @@ class _HorseDetailScreenState extends State<HorseDetailScreen> {
           final breed = (data['breed'] as String?) ?? 'Arabian';
 
           final start = _intOrZero(data['startingPrice']);
-          final highest = _intOrZero(data['currentHighest']).clamp(start, 1 << 31);
+          final highest =
+              _intOrZero(data['currentHighest']).clamp(start, 1 << 31);
           final step = _intOrZero(data['minIncrement']).clamp(1, 1 << 20);
           final status = (data['status'] as String?) ?? 'open';
 
@@ -64,9 +66,11 @@ class _HorseDetailScreenState extends State<HorseDetailScreen> {
           // seed input with a sensible amount
           final suggested = (highest > 0 ? highest + step : start + step);
           final effective = _typedBid ?? suggested;
-          if (_controller.text.isEmpty || int.tryParse(_controller.text) == null) {
+          if (_controller.text.isEmpty ||
+              int.tryParse(_controller.text) == null) {
             _controller.text = effective.toString();
-            _controller.selection = TextSelection.collapsed(offset: _controller.text.length);
+            _controller.selection =
+                TextSelection.collapsed(offset: _controller.text.length);
           }
 
           return LayoutBuilder(
@@ -94,29 +98,35 @@ class _HorseDetailScreenState extends State<HorseDetailScreen> {
                     final now = int.tryParse(_controller.text) ?? suggested;
                     final next = now + step;
                     _controller.text = next.toString();
-                    _controller.selection = TextSelection.collapsed(offset: _controller.text.length);
+                    _controller.selection = TextSelection.collapsed(
+                        offset: _controller.text.length);
                     setState(() => _typedBid = next);
                   },
                   onMinus: () {
                     final now = int.tryParse(_controller.text) ?? suggested;
                     final next = (now - step).clamp(step, 1 << 30);
                     _controller.text = next.toString();
-                    _controller.selection = TextSelection.collapsed(offset: _controller.text.length);
+                    _controller.selection = TextSelection.collapsed(
+                        offset: _controller.text.length);
                     setState(() => _typedBid = next);
                   },
                   controller: _controller,
                   onChanged: (v) => setState(() => _typedBid = int.tryParse(v)),
                   onPlaceBid: () async {
-  final amount = int.tryParse(_controller.text) ?? suggested;
-  final ok = await FirestoreService.instance.placeBid(
-    lotId: widget.lotId,
-    amount: amount,
-    userId: 'guest-web', // <-- add this line
-  );
-  final msg = ok ? (t?.bidPlaced ?? 'Bid placed') : (t?.bidFailed ?? 'Bid failed');
-  if (!mounted) return;
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
-},
+                    final amount = int.tryParse(_controller.text) ?? suggested;
+                    final ok = await FirestoreService.instance.placeBid(
+                      lotId: widget.lotId,
+                      horseId: widget.lotId, // Added required horseId parameter
+                      amount: amount,
+                      userId: 'guest-web', // <-- add this line
+                    );
+                    final msg = ok
+                        ? (t?.bidPlaced ?? 'Bid placed')
+                        : (t?.bidFailed ?? 'Bid failed');
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(msg)));
+                  },
                 ),
               );
 
@@ -192,7 +202,6 @@ class _HorseDetailScreenState extends State<HorseDetailScreen> {
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const Divider(height: 22),
-
             Row(
               children: [
                 IconButton(
@@ -214,7 +223,7 @@ class _HorseDetailScreenState extends State<HorseDetailScreen> {
                   ),
                 ),
                 IconButton(
-                  tooltip: t?.increment ?? 'Increase',
+                  tooltip: t?.decrement ?? 'Increase',
                   onPressed: onPlus,
                   icon: const Icon(Icons.add_circle_outline),
                 ),
@@ -229,7 +238,6 @@ class _HorseDetailScreenState extends State<HorseDetailScreen> {
                 label: Text(t?.placeBid ?? 'Place bid'),
               ),
             ),
-
             const SizedBox(height: 8),
             if (status == 'closed')
               Text(

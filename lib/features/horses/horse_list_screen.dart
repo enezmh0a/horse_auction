@@ -1,6 +1,6 @@
 // at top:
 import 'package:flutter/material.dart';
-import '../../l10n/generated/app_localizations.dart';
+import 'package:horse_auction_app/l10n/app_localizations.dart';
 import '../../services/firestore_service.dart';
 
 class HorseListScreen extends StatelessWidget {
@@ -25,7 +25,8 @@ class HorseListScreen extends StatelessWidget {
             itemBuilder: (_) => [
               PopupMenuItem(value: 'en', child: Text(t?.english ?? 'English')),
               PopupMenuItem(value: 'ar', child: Text(t?.arabic ?? 'العربية')),
-              PopupMenuItem(value: 'system', child: Text(t?.systemLanguage ?? 'System')),
+              PopupMenuItem(
+                  value: 'system', child: Text(t?.systemLanguage ?? 'System')),
             ],
           ),
         ],
@@ -34,7 +35,8 @@ class HorseListScreen extends StatelessWidget {
         stream: FirestoreService.instance.lotsStream(),
         builder: (context, snap) {
           if (snap.hasError) {
-            return Center(child: Text(t?.errorLoadingLots ?? 'Error loading lots'));
+            return Center(
+                child: Text(t?.errorLoadingLots ?? 'Error loading lots'));
           }
           if (!snap.hasData) {
             return const Center(child: CircularProgressIndicator());
@@ -48,7 +50,8 @@ class HorseListScreen extends StatelessWidget {
             separatorBuilder: (_, __) => const Divider(height: 1),
             itemBuilder: (_, i) {
               final lot = lots[i];
-              final id = (lot['id'] as String?) ?? (lot['lotId'] as String?) ?? '';
+              final id =
+                  (lot['id'] as String?) ?? (lot['lotId'] as String?) ?? '';
               final name = (lot['name'] as String?) ?? id;
               final city = (lot['city'] as String?) ?? '';
               final highest = (lot['currentHighest'] is num)
@@ -60,15 +63,16 @@ class HorseListScreen extends StatelessWidget {
 
               return ListTile(
                 leading: images.isNotEmpty
-                    ? Image.network(images.first, width: 64, height: 64, fit: BoxFit.cover)
+                    ? Image.network(images.first,
+                        width: 64, height: 64, fit: BoxFit.cover)
                     : const Icon(Icons.image_not_supported),
                 title: Text(name),
                 subtitle: Text('${t?.cityLabel ?? "City"}: $city • '
-                               '${t?.highestLabel ?? "Highest"}: $highest'),
+                    '${t?.highestLabel ?? "Highest"}: $highest'),
                 onTap: () {
                   if (id.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                     const SnackBar(content: Text('Missing lot id')),
+                      const SnackBar(content: Text('Missing lot id')),
                     );
                     return;
                   }

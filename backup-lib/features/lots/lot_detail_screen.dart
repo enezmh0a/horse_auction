@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:horse_auction_app/gen_l10n/app_localizations.dart';
+
+import '../../gen_l10n/app_localizations.dart';
 
 class LotDetailScreen extends StatelessWidget {
   final String lotId;
@@ -14,7 +15,8 @@ class LotDetailScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Lot $lotId • Arabian Stallion', style: Theme.of(context).textTheme.headlineSmall),
+          Text('Lot $lotId • Arabian Stallion',
+              style: Theme.of(context).textTheme.headlineSmall),
           const SizedBox(height: 8),
           Row(
             children: const [
