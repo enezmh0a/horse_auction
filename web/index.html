@@ -24,14 +24,17 @@
   </head>
   <body>
     <script>
-      window.addEventListener('load', function (ev) {
-        // flutter_bootstrap.js will load main.dart.js
-        _flutter.loader.loadEntrypoint({serviceWorker: {serviceWorkerVersion: null}})
-          .then(function(engineInitializer) { return engineInitializer.initializeEngine(); })
-          .then(function(appRunner) { return appRunner.runApp(); });
-      });
-    </script>
-    <script src="flutter.js" defer></script>
-    <script src="flutter_bootstrap.js" defer></script>
+  window.addEventListener('load', function() {
+    const loader = new FlutterLoader();
+    loader.load({
+      serviceWorker: { serviceWorkerVersion: {{flutter_service_worker_version}} },
+      onEntrypointLoaded: async function(engineInitializer) {
+        const appRunner = await engineInitializer.initializeEngine();
+        await appRunner.runApp();
+      }
+    });
+  });
+</script>
+
   </body>
 </html>

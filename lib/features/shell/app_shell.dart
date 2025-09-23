@@ -1,45 +1,61 @@
-// lib/features/shell/app_shell.dart
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:horse_auction_app/features/dashboard/dashboard_page.dart';
 import 'package:horse_auction_app/features/horses/horses_page.dart';
 import 'package:horse_auction_app/features/services/services_page.dart';
-import 'package:horse_auction_app/features/about/about_page.dart';
-// reuse your working Lots page
-import 'package:horse_auction_app/features/home/lots_home_tabs.dart';
+import 'package:horse_auction_app/l10n/app_localizations.dart';
+import 'package:horse_auction_app/l10n/locale_controller.dart';
 
 class AppShell extends StatelessWidget {
   const AppShell({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+
     return DefaultTabController(
-      length: 6,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Horse Auctions'),
-          bottom: const TabBar(
-            isScrollable: true,
+          title: Text(l?.appTitle ?? 'Horse Auctions'),
+          actions: [
+            IconButton(
+              tooltip: l?.language ?? 'Language',
+              icon: const Icon(Icons.language),
+              onPressed: () async {
+                final choice = await showMenu<String>(
+                  context: context,
+                  position: const RelativeRect.fromLTRB(1000, 80, 16, 0),
+                  items: [
+                    PopupMenuItem(
+                        value: 'en', child: Text(l?.langEnglish ?? 'English')),
+                    PopupMenuItem(
+                        value: 'ar', child: Text(l?.langArabic ?? 'العربية')),
+                  ],
+                );
+                if (choice != null) {
+                  LocaleController.instance.setLocale(Locale(choice));
+                }
+              },
+            ),
+          ],
+          bottom: TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.dashboard_outlined), text: 'Dashboard'),
-              Tab(icon: Icon(Icons.list_alt), text: 'Lots'),
-              Tab(icon: Icon(Icons.horse), text: 'Horses'),
+              // reusing your existing tab strings for now
               Tab(
-                  icon: Icon(Icons.miscellaneous_services_outlined),
-                  text: 'Services'),
-              Tab(icon: Icon(Icons.info_outline), text: 'About'),
-              Tab(icon: Icon(Icons.mail_outline), text: 'Contact'),
+                  text: l?.tabAll ?? 'Dashboard',
+                  icon: const Icon(Icons.dashboard)),
+              Tab(text: l?.tabLive ?? 'Horses', icon: const Icon(Icons.pets)),
+              Tab(
+                  text: l?.tabClosed ?? 'Services',
+                  icon: const Icon(Icons.miscellaneous_services)),
             ],
           ),
         ),
         body: const TabBarView(
           children: [
             DashboardPage(),
-            LotsHomeTabs(),
             HorsesPage(),
             ServicesPage(),
-            AboutPage(showContact: false),
-            AboutPage(showContact: true),
           ],
         ),
       ),
