@@ -9,22 +9,34 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get appTitle => 'مزادات الخيل';
+  String get appTitle => 'مزادات الخيول';
 
   @override
-  String get lots => 'الدفعات';
+  String get lotsTitle => 'اللوتات';
 
   @override
-  String get all => 'الكل';
+  String get language => 'اللغة';
 
   @override
-  String get live => 'مباشر';
+  String get langEnglish => 'الإنجليزية';
 
   @override
-  String get closed => 'مغلق';
+  String get langArabic => 'العربية';
 
   @override
-  String get bid => 'مزاد';
+  String get tabAll => 'الكل';
+
+  @override
+  String get tabLive => 'مباشر';
+
+  @override
+  String get tabClosed => 'مغلق';
+
+  @override
+  String get errorLoadingLots => 'حدث خطأ عند تحميل اللوتات';
+
+  @override
+  String get noData => 'لا توجد بيانات';
 
   @override
   String get current => 'الحالي';
@@ -36,17 +48,32 @@ class AppLocalizationsAr extends AppLocalizations {
   String get step => 'الزيادة';
 
   @override
-  String get noData => 'لا يوجد شيء للعرض';
+  String get statusLive => 'مباشر';
 
   @override
-  String get errorLoadingLots => 'حدث خطأ أثناء تحميل الدُفعات';
+  String get statusClosed => 'مغلق';
 
   @override
-  String get seedLots => 'إضافة بيانات تجريبية';
+  String get bid => 'مزايدة';
 
   @override
-  String get seeded => 'تمت إضافة عينات';
+  String get bidPlaced => 'تم تقديم المزايدة';
 
   @override
-  String get seedFailed => 'فشل في إضافة العينات';
+  String get placeBid => 'تقديم مزايدة';
+
+  @override
+  String get amount => 'المبلغ';
+
+  @override
+  String get min => 'الحد الأدنى';
+
+  @override
+  String get cancel => 'إلغاء';
+
+  @override
+  String get confirm => 'تأكيد';
+
+  @override
+  String get seedLots => 'تعبئة لوتات';
 }

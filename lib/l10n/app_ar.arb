@@ -1,17 +1,33 @@
 {
   "@@locale": "ar",
-  "appTitle": "مزادات الخيل",
-  "lots": "الدفعات",
-  "all": "الكل",
-  "live": "مباشر",
-  "closed": "مغلق",
-  "bid": "مزاد",
+  "appTitle": "مزادات الخيول",
+  "lotsTitle": "اللوتات",
+  "language": "اللغة",
+  "langEnglish": "الإنجليزية",
+  "langArabic": "العربية",
+
+  "tabAll": "الكل",
+  "tabLive": "مباشر",
+  "tabClosed": "مغلق",
+
+  "errorLoadingLots": "حدث خطأ عند تحميل اللوتات",
+  "noData": "لا توجد بيانات",
+
   "current": "الحالي",
   "next": "التالي",
   "step": "الزيادة",
-  "noData": "لا يوجد شيء للعرض",
-  "errorLoadingLots": "حدث خطأ أثناء تحميل الدُفعات",
-  "seedLots": "إضافة بيانات تجريبية",
-  "seeded": "تمت إضافة عينات",
-  "seedFailed": "فشل في إضافة العينات"
+
+  "statusLive": "مباشر",
+  "statusClosed": "مغلق",
+
+  "bid": "مزايدة",
+  "bidPlaced": "تم تقديم المزايدة",
+
+  "placeBid": "تقديم مزايدة",
+  "amount": "المبلغ",
+  "min": "الحد الأدنى",
+  "cancel": "إلغاء",
+  "confirm": "تأكيد",
+
+  "seedLots": "تعبئة لوتات"
 }

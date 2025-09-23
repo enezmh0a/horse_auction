@@ -1,17 +1,33 @@
 {
   "@@locale": "en",
   "appTitle": "Horse Auctions",
-  "lots": "Lots",
-  "all": "All",
-  "live": "Live",
-  "closed": "Closed",
-  "bid": "Bid",
+  "lotsTitle": "Lots",
+  "language": "Language",
+  "langEnglish": "English",
+  "langArabic": "Arabic",
+
+  "tabAll": "All",
+  "tabLive": "Live",
+  "tabClosed": "Closed",
+
+  "errorLoadingLots": "Error loading lots",
+  "noData": "Nothing to show",
+
   "current": "Current",
   "next": "Next",
   "step": "Step",
-  "noData": "Nothing to show",
-  "errorLoadingLots": "Error loading lots",
-  "seedLots": "Seed lots",
-  "seeded": "Seeded a few lots",
-  "seedFailed": "Failed to seed lots"
+
+  "statusLive": "Live",
+  "statusClosed": "Closed",
+
+  "bid": "Bid",
+  "bidPlaced": "Bid placed",
+
+  "placeBid": "Place bid",
+  "amount": "Amount",
+  "min": "Min",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+
+  "seedLots": "Seed lots"
 }

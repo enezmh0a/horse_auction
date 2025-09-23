@@ -101,35 +101,59 @@ abstract class AppLocalizations {
   /// **'Horse Auctions'**
   String get appTitle;
 
-  /// No description provided for @lots.
+  /// No description provided for @lotsTitle.
   ///
   /// In en, this message translates to:
   /// **'Lots'**
-  String get lots;
+  String get lotsTitle;
 
-  /// No description provided for @all.
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @langEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get langEnglish;
+
+  /// No description provided for @langArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic'**
+  String get langArabic;
+
+  /// No description provided for @tabAll.
   ///
   /// In en, this message translates to:
   /// **'All'**
-  String get all;
+  String get tabAll;
 
-  /// No description provided for @live.
+  /// No description provided for @tabLive.
   ///
   /// In en, this message translates to:
   /// **'Live'**
-  String get live;
+  String get tabLive;
 
-  /// No description provided for @closed.
+  /// No description provided for @tabClosed.
   ///
   /// In en, this message translates to:
   /// **'Closed'**
-  String get closed;
+  String get tabClosed;
 
-  /// No description provided for @bid.
+  /// No description provided for @errorLoadingLots.
   ///
   /// In en, this message translates to:
-  /// **'Bid'**
-  String get bid;
+  /// **'Error loading lots'**
+  String get errorLoadingLots;
+
+  /// No description provided for @noData.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to show'**
+  String get noData;
 
   /// No description provided for @current.
   ///
@@ -149,35 +173,65 @@ abstract class AppLocalizations {
   /// **'Step'**
   String get step;
 
-  /// No description provided for @noData.
+  /// No description provided for @statusLive.
   ///
   /// In en, this message translates to:
-  /// **'Nothing to show'**
-  String get noData;
+  /// **'Live'**
+  String get statusLive;
 
-  /// No description provided for @errorLoadingLots.
+  /// No description provided for @statusClosed.
   ///
   /// In en, this message translates to:
-  /// **'Error loading lots'**
-  String get errorLoadingLots;
+  /// **'Closed'**
+  String get statusClosed;
+
+  /// No description provided for @bid.
+  ///
+  /// In en, this message translates to:
+  /// **'Bid'**
+  String get bid;
+
+  /// No description provided for @bidPlaced.
+  ///
+  /// In en, this message translates to:
+  /// **'Bid placed'**
+  String get bidPlaced;
+
+  /// No description provided for @placeBid.
+  ///
+  /// In en, this message translates to:
+  /// **'Place bid'**
+  String get placeBid;
+
+  /// No description provided for @amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amount;
+
+  /// No description provided for @min.
+  ///
+  /// In en, this message translates to:
+  /// **'Min'**
+  String get min;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
 
   /// No description provided for @seedLots.
   ///
   /// In en, this message translates to:
   /// **'Seed lots'**
   String get seedLots;
-
-  /// No description provided for @seeded.
-  ///
-  /// In en, this message translates to:
-  /// **'Seeded a few lots'**
-  String get seeded;
-
-  /// No description provided for @seedFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to seed lots'**
-  String get seedFailed;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../i18n/locale_controller.dart';
+import '../l10n/locale_controller.dart';
 
 class LangToggleButton extends StatelessWidget {
   const LangToggleButton({super.key});

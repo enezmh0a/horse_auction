@@ -12,19 +12,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Horse Auctions';
 
   @override
-  String get lots => 'Lots';
+  String get lotsTitle => 'Lots';
 
   @override
-  String get all => 'All';
+  String get language => 'Language';
 
   @override
-  String get live => 'Live';
+  String get langEnglish => 'English';
 
   @override
-  String get closed => 'Closed';
+  String get langArabic => 'Arabic';
 
   @override
-  String get bid => 'Bid';
+  String get tabAll => 'All';
+
+  @override
+  String get tabLive => 'Live';
+
+  @override
+  String get tabClosed => 'Closed';
+
+  @override
+  String get errorLoadingLots => 'Error loading lots';
+
+  @override
+  String get noData => 'Nothing to show';
 
   @override
   String get current => 'Current';
@@ -36,17 +48,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get step => 'Step';
 
   @override
-  String get noData => 'Nothing to show';
+  String get statusLive => 'Live';
 
   @override
-  String get errorLoadingLots => 'Error loading lots';
+  String get statusClosed => 'Closed';
+
+  @override
+  String get bid => 'Bid';
+
+  @override
+  String get bidPlaced => 'Bid placed';
+
+  @override
+  String get placeBid => 'Place bid';
+
+  @override
+  String get amount => 'Amount';
+
+  @override
+  String get min => 'Min';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get confirm => 'Confirm';
 
   @override
   String get seedLots => 'Seed lots';
-
-  @override
-  String get seeded => 'Seeded a few lots';
-
-  @override
-  String get seedFailed => 'Failed to seed lots';
 }
