@@ -1,16 +1,17 @@
-# Flutter / Dart
-.dart_tool/
-.packages
-.pub-cache/
-.pub/
+# Flutter/Dart build outputs
 build/
-**/Generated.xcconfig
-**/flutter_export_environment.sh
-**/ephemeral/
-**/*.imbue
-# VS Code
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# IDE / tooling
 .vscode/
-# Platform build outputs
-windows/x64/
-android/.gradle/
-ios/Pods/
+.idea/
+.melos_tool/
+
+# Web build cache
+.melos_tool/
+
+# Generated localization (keep ARB + re-export, ignore generated .dart)
+lib/l10n/generated/
+lib/l10n/app_localizations_*.dart
