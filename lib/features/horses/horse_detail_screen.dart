@@ -1,311 +1,276 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:horse_auction_app/l10n/app_localizations.dart';
-import '../../services/firestore_service.dart';
-import '../../widgets/gallery_banner.dart';
+import 'package:horse_auction_app/widgets/safe_network_image.dart';
 
-class HorseDetailScreen extends StatefulWidget {
-  const HorseDetailScreen({super.key, required this.lotId});
+class HorseDetailScreen extends StatelessWidget {
   final String lotId;
-
-  @override
-  State<HorseDetailScreen> createState() => _HorseDetailScreenState();
-}
-
-class _HorseDetailScreenState extends State<HorseDetailScreen> {
-  final _controller = TextEditingController();
-  int? _typedBid;
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  List<String> _readImages(Map<String, dynamic> data) {
-    final a = (data['imageUrls'] as List?)?.cast<String>();
-    final b = (data['images'] as List?)?.cast<String>();
-    return (a ?? b ?? const <String>[])
-        .where((e) => e.trim().isNotEmpty)
-        .toList();
-  }
-
-  int _intOrZero(Object? v) => (v is num) ? v.toInt() : 0;
+  const HorseDetailScreen({super.key, required this.lotId});
 
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context);
+    final l = AppLocalizations.of(context);
+    return StreamBuilder<DocumentSnapshot>(
+      stream:
+          FirebaseFirestore.instance.collection('lots').doc(lotId).snapshots(),
+      builder: (context, snap) {
+        if (snap.hasError) {
+          return Scaffold(
+              appBar: AppBar(), body: Center(child: Text(l?.error ?? 'Error')));
+        }
+        if (!snap.hasData || !snap.data!.exists) {
+          return const Scaffold(
+              body: Center(child: CircularProgressIndicator()));
+        }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(t?.horseDetails ?? 'Horse details'),
+        final lot = snap.data!.data() as Map<String, dynamic>;
+        final name = (lot['name'] ?? 'Unnamed').toString();
+        final images = (lot['images'] as List?)?.cast<String>() ?? const [];
+        final breed = (lot['breed'] ?? '').toString();
+        final age = (lot['age'] ?? '').toString();
+        final state = (lot['state'] ?? '').toString();
+        final current = (lot['current'] ?? 0).toInt();
+        final minInc = (lot['minIncrement'] ?? 100).toInt();
+        final start = (lot['startingBid'] ?? 0).toInt();
+
+        return Scaffold(
+          appBar: AppBar(title: Text(name, overflow: TextOverflow.ellipsis)),
+          body: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              _Gallery(images: images),
+              const SizedBox(height: 16),
+              Text(name, style: Theme.of(context).textTheme.headlineSmall),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  _chip(context, '${l?.breed ?? "Breed"}: $breed'),
+                  _chip(context, '${l?.age ?? "Age"}: $age'),
+                  _chip(context, '${l?.state ?? "State"}: $state'),
+                  _chip(context, '${l?.current ?? "Current"}: $current'),
+                  _chip(context, '${l?.minPlus ?? "Min +"}: $minInc'),
+                  _chip(context, '${l?.start ?? "Start"}: $start'),
+                ],
+              ),
+              const SizedBox(height: 16),
+              _InlineBidBox(lotId: lotId, current: current, step: minInc),
+              const SizedBox(height: 24),
+              Text('Recent bids',
+                  style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 8),
+              _BidList(lotId: lotId),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _chip(BuildContext context, String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(12),
       ),
-      body: StreamBuilder<Map<String, dynamic>?>(
-        stream: FirestoreService.instance.streamLot(widget.lotId),
-        builder: (context, snap) {
-          if (snap.hasError) {
-            return const Center(child: Text('Error loading horse'));
-          }
-          if (!snap.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      child: Text(text),
+    );
+  }
+}
 
-          final data = snap.data ?? {};
-          final name = (data['name'] as String?) ?? widget.lotId;
-          final city = (data['city'] as String?) ?? 'Riyadh';
-          final breed = (data['breed'] as String?) ?? 'Arabian';
+class _Gallery extends StatefulWidget {
+  final List<String> images;
+  const _Gallery({required this.images});
 
-          final start = _intOrZero(data['startingPrice']);
-          final highest =
-              _intOrZero(data['currentHighest']).clamp(start, 1 << 31);
-          final step = _intOrZero(data['minIncrement']).clamp(1, 1 << 20);
-          final status = (data['status'] as String?) ?? 'open';
+  @override
+  State<_Gallery> createState() => _GalleryState();
+}
 
-          final images = _readImages(data);
+class _GalleryState extends State<_Gallery> {
+  int index = 0;
 
-          // seed input with a sensible amount
-          final suggested = (highest > 0 ? highest + step : start + step);
-          final effective = _typedBid ?? suggested;
-          if (_controller.text.isEmpty ||
-              int.tryParse(_controller.text) == null) {
-            _controller.text = effective.toString();
-            _controller.selection =
-                TextSelection.collapsed(offset: _controller.text.length);
-          }
-
-          return LayoutBuilder(
-            builder: (context, c) {
-              final wide = c.maxWidth > 900;
-
-              final gallery = GalleryBanner(
-                urls: images,
-                height: 240, // smaller hero now
-              );
-
-              final side = SizedBox(
-                width: wide ? 420 : double.infinity,
-                child: _rightPanel(
-                  context: context,
-                  t: t,
-                  name: name,
-                  city: city,
-                  breed: breed,
-                  start: start,
-                  highest: highest,
-                  step: step,
-                  status: status,
-                  onPlus: () {
-                    final now = int.tryParse(_controller.text) ?? suggested;
-                    final next = now + step;
-                    _controller.text = next.toString();
-                    _controller.selection = TextSelection.collapsed(
-                        offset: _controller.text.length);
-                    setState(() => _typedBid = next);
-                  },
-                  onMinus: () {
-                    final now = int.tryParse(_controller.text) ?? suggested;
-                    final next = (now - step).clamp(step, 1 << 30);
-                    _controller.text = next.toString();
-                    _controller.selection = TextSelection.collapsed(
-                        offset: _controller.text.length);
-                    setState(() => _typedBid = next);
-                  },
-                  controller: _controller,
-                  onChanged: (v) => setState(() => _typedBid = int.tryParse(v)),
-                  onPlaceBid: () async {
-                    final amount = int.tryParse(_controller.text) ?? suggested;
-                    final ok = await FirestoreService.instance.placeBid(
-                      lotId: widget.lotId,
-                      horseId: widget.lotId, // Added required horseId parameter
-                      amount: amount,
-                      userId: 'guest-web', // <-- add this line
-                    );
-                    final msg = ok
-                        ? (t?.bidPlaced ?? 'Bid placed')
-                        : (t?.bidFailed ?? 'Bid failed');
-                    if (!mounted) return;
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(msg)));
-                  },
-                ),
-              );
-
-              return SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: wide
-                    ? Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                gallery,
-                                const SizedBox(height: 16),
-                                _bidsSection(context, t),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 18),
-                          side,
-                        ],
-                      )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          gallery,
-                          const SizedBox(height: 16),
-                          side,
-                          const SizedBox(height: 16),
-                          _bidsSection(context, t),
-                        ],
+  @override
+  Widget build(BuildContext context) {
+    final imgs = widget.images.isNotEmpty ? widget.images : [''];
+    return Column(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: SafeNetworkImage(
+            url: imgs[index],
+            height: 260,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+        ),
+        if (imgs.length > 1) ...[
+          const SizedBox(height: 8),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List.generate(imgs.length, (i) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: GestureDetector(
+                    onTap: () => setState(() => index = i),
+                    child: Opacity(
+                      opacity: i == index ? 1 : .5,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: SafeNetworkImage(
+                          url: imgs[i],
+                          width: 72,
+                          height: 56,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _rightPanel({
-    required BuildContext context,
-    required AppLocalizations? t,
-    required String name,
-    required String city,
-    required String breed,
-    required int start,
-    required int highest,
-    required int step,
-    required String status,
-    required VoidCallback onPlus,
-    required VoidCallback onMinus,
-    required TextEditingController controller,
-    required ValueChanged<String> onChanged,
-    required Future<void> Function() onPlaceBid,
-  }) {
-    return Card(
-      elevation: 1.5,
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(name, style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 6),
-            Text('$breed • ${t?.cityLabel ?? "City"}: $city'),
-            const SizedBox(height: 6),
-            Text(
-              '${t?.startingLabel ?? "Starting"}: $start • '
-              '${t?.currentHighestLabel ?? "Highest"}: $highest • '
-              '${t?.minLabel ?? "Min"} +$step',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const Divider(height: 22),
-            Row(
-              children: [
-                IconButton(
-                  tooltip: t?.decrement ?? 'Decrease',
-                  onPressed: onMinus,
-                  icon: const Icon(Icons.remove_circle_outline),
-                ),
-                Expanded(
-                  child: TextField(
-                    controller: controller,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: InputDecoration(
-                      labelText: t?.enterAmount ?? 'Enter amount',
-                      border: const OutlineInputBorder(),
-                      isDense: true,
                     ),
-                    onChanged: onChanged,
                   ),
-                ),
-                IconButton(
-                  tooltip: t?.decrement ?? 'Increase',
-                  onPressed: onPlus,
-                  icon: const Icon(Icons.add_circle_outline),
-                ),
-              ],
+                );
+              }),
             ),
-            const SizedBox(height: 10),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton.icon(
-                onPressed: status == 'closed' ? null : onPlaceBid,
-                icon: const Icon(Icons.gavel),
-                label: Text(t?.placeBid ?? 'Place bid'),
-              ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _InlineBidBox extends StatefulWidget {
+  final String lotId;
+  final int current;
+  final int step;
+  const _InlineBidBox(
+      {required this.lotId, required this.current, required this.step});
+
+  @override
+  State<_InlineBidBox> createState() => _InlineBidBoxState();
+}
+
+class _InlineBidBoxState extends State<_InlineBidBox> {
+  final controller = TextEditingController();
+  bool _busy = false;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.text = (widget.current + widget.step).toString();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: controller,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              labelText:
+                  '${l?.placeBid ?? "Place bid"} (${l?.amount ?? "Amount"})',
             ),
-            const SizedBox(height: 8),
-            if (status == 'closed')
-              Text(
-                'Closed',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.error,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-          ],
+          ),
         ),
-      ),
+        const SizedBox(width: 12),
+        FilledButton.icon(
+          onPressed: _busy
+              ? null
+              : () async {
+                  final v = int.tryParse(controller.text.trim()) ?? 0;
+                  if (v < widget.current + widget.step) return;
+                  setState(() => _busy = true);
+                  final ok = await _tx(widget.lotId, v);
+                  setState(() => _busy = false);
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(ok
+                          ? (l?.bidPlaced ?? 'Bid placed!')
+                          : (l?.error ?? 'Error')),
+                    ),
+                  );
+                },
+          icon: const Icon(Icons.gavel),
+          label: Text(l?.placeBid ?? 'Place bid'),
+        )
+      ],
     );
   }
 
-  Widget _bidsSection(BuildContext context, AppLocalizations? t) {
-    return Card(
-      elevation: 1.5,
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(t?.recentBids ?? 'Recent bids',
-                style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 8),
-            StreamBuilder<List<Map<String, dynamic>>>(
-              stream: FirestoreService.instance.bidsStream(widget.lotId),
-              builder: (context, snap) {
-                if (snap.hasError) {
-                  return const Text('Error loading bids');
-                }
-                if (!snap.hasData) {
-                  return const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: LinearProgressIndicator(),
-                  );
-                }
-                final bids = snap.data!;
-                if (bids.isEmpty) {
-                  return const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text('No bids yet'),
-                  );
-                }
-                return ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: bids.length,
-                  separatorBuilder: (_, __) => const Divider(height: 8),
-                  itemBuilder: (_, i) {
-                    final b = bids[i];
-                    final amount =
-                        (b['amount'] is num) ? (b['amount'] as num).toInt() : 0;
-                    final by = (b['userId'] as String?) ?? 'user';
-                    return ListTile(
-                      dense: true,
-                      leading: const Icon(Icons.attach_money),
-                      title: Text('${t?.currency ?? 'SAR'} $amount'),
-                      subtitle: Text('${t?.byUser ?? "By"}: $by'),
-                    );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+  Future<bool> _tx(String lotId, int amount) async {
+    try {
+      final db = FirebaseFirestore.instance;
+      await db.runTransaction((tx) async {
+        final ref = db.collection('lots').doc(lotId);
+        final snap = await tx.get(ref);
+        final data = snap.data() as Map<String, dynamic>;
+        final current = (data['current'] ?? 0).toInt();
+        final step = (data['minIncrement'] ?? 100).toInt();
+        if (amount < current + step) throw Exception('too low');
+
+        tx.update(ref,
+            {'current': amount, 'updatedAt': FieldValue.serverTimestamp()});
+        tx.set(ref.collection('bids').doc(), {
+          'amount': amount,
+          'status': 'accepted',
+          'bidder': 'Anonymous',
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      });
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+}
+
+class _BidList extends StatelessWidget {
+  final String lotId;
+  const _BidList({required this.lotId});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('lots')
+          .doc(lotId)
+          .collection('bids')
+          .orderBy('createdAt', descending: true)
+          .snapshots(),
+      builder: (context, snap) {
+        if (!snap.hasData) return const SizedBox.shrink();
+
+        // If Firestore ever delivered a duplicate locally, collapse by id
+        final docs = {
+          for (final d in snap.data!.docs) d.id: d,
+        }.values.toList();
+
+        return Column(
+          children: docs.map((d) {
+            final m = d.data() as Map<String, dynamic>;
+            final amount = (m['amount'] ?? 0).toInt();
+            final status = (m['status'] ?? '').toString().toUpperCase();
+            final ts = (m['createdAt'] as Timestamp?)?.toDate();
+            final dt = ts?.toIso8601String() ?? '';
+            final color = status == 'ACCEPTED'
+                ? Colors.green
+                : status == 'REJECTED'
+                    ? Colors.red
+                    : Colors.grey;
+
+            return ListTile(
+              dense: true,
+              leading: Icon(Icons.show_chart, color: color),
+              title: Text('SAR $amount'),
+              subtitle: Text(dt),
+              trailing: Text(status, style: TextStyle(color: color)),
+            );
+          }).toList(),
+        );
+      },
     );
   }
 }

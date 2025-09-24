@@ -1,33 +1,17 @@
 {
-  "@@locale": "en",
-  "appTitle": "Horse Auctions",
-  "lotsTitle": "Lots",
-  "language": "Language",
-  "langEnglish": "English",
-  "langArabic": "Arabic",
-
-  "tabAll": "All",
-  "tabLive": "Live",
-  "tabClosed": "Closed",
-
-  "errorLoadingLots": "Error loading lots",
-  "noData": "Nothing to show",
-
-  "current": "Current",
-  "next": "Next",
-  "step": "Step",
-
-  "statusLive": "Live",
-  "statusClosed": "Closed",
-
-  "bid": "Bid",
-  "bidPlaced": "Bid placed",
+  "servicesTitle": "Services",
+  "tierPlatinum": "Platinum",
+  "tierPlatinumDesc": "Top exposure, concierge support, featured placement.",
+  "tierGold": "Gold",
+  "tierGoldDesc": "High visibility listing and promo slots.",
+  "tierSilver": "Silver",
+  "tierSilverDesc": "Great starter package to get listed quickly.",
 
   "placeBid": "Place bid",
   "amount": "Amount",
   "min": "Min",
-  "cancel": "Cancel",
-  "confirm": "Confirm",
-
-  "seedLots": "Seed lots"
+  "seedLots": "Seed lots",
+  "seedDone": "Seed created.",
+  "alreadySeeded": "Already seeded.",
+  "bidPlaced": "Bid placed!"
 }

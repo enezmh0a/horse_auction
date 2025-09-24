@@ -9,71 +9,23 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Horse Auctions';
+  String get servicesTitle => 'Services';
 
   @override
-  String get lotsTitle => 'Lots';
+  String get tierPlatinum => 'Platinum';
 
   @override
-  String get language => 'Language';
+  String get tierPlatinumDesc => 'Top exposure, concierge support, featured placement.';
 
   @override
-  String get langEnglish => 'English';
+  String get tierGold => 'Gold';
 
   @override
-  String get langArabic => 'Arabic';
+  String get tierGoldDesc => 'High visibility listing and promo slots.';
 
   @override
-  String get tabAll => 'All';
+  String get tierSilver => 'Silver';
 
   @override
-  String get tabLive => 'Live';
-
-  @override
-  String get tabClosed => 'Closed';
-
-  @override
-  String get errorLoadingLots => 'Error loading lots';
-
-  @override
-  String get noData => 'Nothing to show';
-
-  @override
-  String get current => 'Current';
-
-  @override
-  String get next => 'Next';
-
-  @override
-  String get step => 'Step';
-
-  @override
-  String get statusLive => 'Live';
-
-  @override
-  String get statusClosed => 'Closed';
-
-  @override
-  String get bid => 'Bid';
-
-  @override
-  String get bidPlaced => 'Bid placed';
-
-  @override
-  String get placeBid => 'Place bid';
-
-  @override
-  String get amount => 'Amount';
-
-  @override
-  String get min => 'Min';
-
-  @override
-  String get cancel => 'Cancel';
-
-  @override
-  String get confirm => 'Confirm';
-
-  @override
-  String get seedLots => 'Seed lots';
+  String get tierSilverDesc => 'Great starter package to get listed quickly.';
 }

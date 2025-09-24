@@ -9,71 +9,23 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get appTitle => 'مزادات الخيول';
+  String get servicesTitle => 'الخدمات';
 
   @override
-  String get lotsTitle => 'اللوتات';
+  String get tierPlatinum => 'بلاتينيوم';
 
   @override
-  String get language => 'اللغة';
+  String get tierPlatinumDesc => 'أعلى ظهور، دعم مخصص، إبراز مميز.';
 
   @override
-  String get langEnglish => 'الإنجليزية';
+  String get tierGold => 'ذهبي';
 
   @override
-  String get langArabic => 'العربية';
+  String get tierGoldDesc => 'ظهور عالٍ ومساحات ترويجية.';
 
   @override
-  String get tabAll => 'الكل';
+  String get tierSilver => 'فضي';
 
   @override
-  String get tabLive => 'مباشر';
-
-  @override
-  String get tabClosed => 'مغلق';
-
-  @override
-  String get errorLoadingLots => 'حدث خطأ عند تحميل اللوتات';
-
-  @override
-  String get noData => 'لا توجد بيانات';
-
-  @override
-  String get current => 'الحالي';
-
-  @override
-  String get next => 'التالي';
-
-  @override
-  String get step => 'الزيادة';
-
-  @override
-  String get statusLive => 'مباشر';
-
-  @override
-  String get statusClosed => 'مغلق';
-
-  @override
-  String get bid => 'مزايدة';
-
-  @override
-  String get bidPlaced => 'تم تقديم المزايدة';
-
-  @override
-  String get placeBid => 'تقديم مزايدة';
-
-  @override
-  String get amount => 'المبلغ';
-
-  @override
-  String get min => 'الحد الأدنى';
-
-  @override
-  String get cancel => 'إلغاء';
-
-  @override
-  String get confirm => 'تأكيد';
-
-  @override
-  String get seedLots => 'تعبئة لوتات';
+  String get tierSilverDesc => 'حزمة بداية ممتازة للإدراج بسرعة.';
 }

@@ -1,33 +1,17 @@
 {
-  "@@locale": "ar",
-  "appTitle": "مزادات الخيول",
-  "lotsTitle": "اللوتات",
-  "language": "اللغة",
-  "langEnglish": "الإنجليزية",
-  "langArabic": "العربية",
-
-  "tabAll": "الكل",
-  "tabLive": "مباشر",
-  "tabClosed": "مغلق",
-
-  "errorLoadingLots": "حدث خطأ عند تحميل اللوتات",
-  "noData": "لا توجد بيانات",
-
-  "current": "الحالي",
-  "next": "التالي",
-  "step": "الزيادة",
-
-  "statusLive": "مباشر",
-  "statusClosed": "مغلق",
-
-  "bid": "مزايدة",
-  "bidPlaced": "تم تقديم المزايدة",
+  "servicesTitle": "الخدمات",
+  "tierPlatinum": "بلاتينيوم",
+  "tierPlatinumDesc": "أعلى ظهور، دعم مميّز، إبراز في الواجهة.",
+  "tierGold": "ذهبي",
+  "tierGoldDesc": "ظهور عالٍ ومساحات ترويجية.",
+  "tierSilver": "فضي",
+  "tierSilverDesc": "حزمة بداية ممتازة للإدراج بسرعة.",
 
   "placeBid": "تقديم مزايدة",
   "amount": "المبلغ",
   "min": "الحد الأدنى",
-  "cancel": "إلغاء",
-  "confirm": "تأكيد",
-
-  "seedLots": "تعبئة لوتات"
+  "seedLots": "إنشاء بيانات تجريبية",
+  "seedDone": "تم إنشاء البيانات.",
+  "alreadySeeded": "تم الإنشاء مسبقًا.",
+  "bidPlaced": "تم تقديم المزايدة!"
 }

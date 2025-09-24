@@ -1,267 +1,65 @@
-import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/intl.dart' as intl;
 
-import 'app_localizations_ar.dart';
-import 'app_localizations_en.dart';
+class AppLocalizations {
+  final Locale locale;
+  const AppLocalizations(this.locale);
 
-// ignore_for_file: type=lint
+  static const LocalizationsDelegate<AppLocalizations> delegate = _L();
 
-/// Callers can lookup localized strings with an instance of AppLocalizations
-/// returned by `AppLocalizations.of(context)`.
-///
-/// Applications need to include `AppLocalizations.delegate()` in their app's
-/// `localizationDelegates` list, and the locales they support in the app's
-/// `supportedLocales` list. For example:
-///
-/// ```dart
-/// import 'l10n/app_localizations.dart';
-///
-/// return MaterialApp(
-///   localizationsDelegates: AppLocalizations.localizationsDelegates,
-///   supportedLocales: AppLocalizations.supportedLocales,
-///   home: MyApplicationHome(),
-/// );
-/// ```
-///
-/// ## Update pubspec.yaml
-///
-/// Please make sure to update your pubspec.yaml to include the following
-/// packages:
-///
-/// ```yaml
-/// dependencies:
-///   # Internationalization support.
-///   flutter_localizations:
-///     sdk: flutter
-///   intl: any # Use the pinned version from flutter_localizations
-///
-///   # Rest of dependencies
-/// ```
-///
-/// ## iOS Applications
-///
-/// iOS applications define key application metadata, including supported
-/// locales, in an Info.plist file that is built into the application bundle.
-/// To configure the locales supported by your app, you’ll need to edit this
-/// file.
-///
-/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
-/// Then, in the Project Navigator, open the Info.plist file under the Runner
-/// project’s Runner folder.
-///
-/// Next, select the Information Property List item, select Add Item from the
-/// Editor menu, then select Localizations from the pop-up menu.
-///
-/// Select and expand the newly-created Localizations item then, for each
-/// locale your application supports, add a new item and select the locale
-/// you wish to add from the pop-up menu in the Value field. This list should
-/// be consistent with the languages listed in the AppLocalizations.supportedLocales
-/// property.
-abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  static AppLocalizations of(BuildContext context) =>
+      Localizations.of<AppLocalizations>(context, AppLocalizations)!;
 
-  final String localeName;
+  // Strings used in UI
+  String get title => _t('Horse Auctions', 'مزادات الخيول');
+  String get servicesTitle => _t('Services', 'الخدمات');
+  String get horsesTitle => _t('Horses', 'الخيل');
 
-  static AppLocalizations? of(BuildContext context) {
-    return Localizations.of<AppLocalizations>(context, AppLocalizations);
-  }
+  String get langEnglish => _t('English', 'الإنجليزية');
+  String get langArabic => _t('Arabic', 'العربية');
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  String get seedLots => _t('Seed lots', 'إنشاء بيانات تجريبية');
+  String get alreadySeeded => _t('Already seeded', 'تم الإنشاء مسبقاً.');
+  String get seedDone => _t('Seeded.', 'تم إنشاء البيانات.');
+  String get working => _t('Working…', 'جاري التنفيذ…');
 
-  /// A list of this localizations delegate along with the default localizations
-  /// delegates.
-  ///
-  /// Returns a list of localizations delegates containing this delegate along with
-  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
-  /// and GlobalWidgetsLocalizations.delegate.
-  ///
-  /// Additional delegates can be added by appending to this list in
-  /// MaterialApp. This list does not have to be used at all if a custom list
-  /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  String get placeBid => _t('Place bid', 'تقديم مزايدة');
+  String get amount => _t('Amount', 'المبلغ');
+  String get yourBidInteger =>
+      _t('Your bid (integer)', 'مبلغ المزايدة (رقم صحيح)');
+  String get min => _t('Min', 'الحد الأدنى');
+  String get confirm => _t('Confirm', 'تأكيد');
+  String get cancel => _t('Cancel', 'إلغاء');
+  String get invalidNumber => _t('Invalid number', 'رقم غير صالح');
+  String get badStep => _t('Amount is not aligned with bid step',
+      'المبلغ غير مطابق لقيمة زيادة المزايدة');
+  String get bidPlaced => _t('Bid placed!', 'تم تقديم المزايدة!');
+  String get bid => _t('Bid', 'مزايدة');
 
-  /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[
-    Locale('ar'),
-    Locale('en')
-  ];
+  String get current => _t('Current', 'الحالي');
+  String get step => _t('Step', 'الزيادة');
+  String get stateLive => _t('Live', 'مباشر');
+  String get stateClosed => _t('Closed', 'مغلق');
 
-  /// No description provided for @appTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Horse Auctions'**
-  String get appTitle;
+  String get error => _t('Error', 'خطأ');
 
-  /// No description provided for @lotsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Lots'**
-  String get lotsTitle;
+  String get emptyLots => _t('No horses yet', 'لا توجد خيول بعد');
+  String get emptyLotsHint => _t('Add horse data or wire a service later.',
+      'أضف بيانات الخيول أو اربط خدمة لاحقاً.');
 
-  /// No description provided for @language.
-  ///
-  /// In en, this message translates to:
-  /// **'Language'**
-  String get language;
-
-  /// No description provided for @langEnglish.
-  ///
-  /// In en, this message translates to:
-  /// **'English'**
-  String get langEnglish;
-
-  /// No description provided for @langArabic.
-  ///
-  /// In en, this message translates to:
-  /// **'Arabic'**
-  String get langArabic;
-
-  /// No description provided for @tabAll.
-  ///
-  /// In en, this message translates to:
-  /// **'All'**
-  String get tabAll;
-
-  /// No description provided for @tabLive.
-  ///
-  /// In en, this message translates to:
-  /// **'Live'**
-  String get tabLive;
-
-  /// No description provided for @tabClosed.
-  ///
-  /// In en, this message translates to:
-  /// **'Closed'**
-  String get tabClosed;
-
-  /// No description provided for @errorLoadingLots.
-  ///
-  /// In en, this message translates to:
-  /// **'Error loading lots'**
-  String get errorLoadingLots;
-
-  /// No description provided for @noData.
-  ///
-  /// In en, this message translates to:
-  /// **'Nothing to show'**
-  String get noData;
-
-  /// No description provided for @current.
-  ///
-  /// In en, this message translates to:
-  /// **'Current'**
-  String get current;
-
-  /// No description provided for @next.
-  ///
-  /// In en, this message translates to:
-  /// **'Next'**
-  String get next;
-
-  /// No description provided for @step.
-  ///
-  /// In en, this message translates to:
-  /// **'Step'**
-  String get step;
-
-  /// No description provided for @statusLive.
-  ///
-  /// In en, this message translates to:
-  /// **'Live'**
-  String get statusLive;
-
-  /// No description provided for @statusClosed.
-  ///
-  /// In en, this message translates to:
-  /// **'Closed'**
-  String get statusClosed;
-
-  /// No description provided for @bid.
-  ///
-  /// In en, this message translates to:
-  /// **'Bid'**
-  String get bid;
-
-  /// No description provided for @bidPlaced.
-  ///
-  /// In en, this message translates to:
-  /// **'Bid placed'**
-  String get bidPlaced;
-
-  /// No description provided for @placeBid.
-  ///
-  /// In en, this message translates to:
-  /// **'Place bid'**
-  String get placeBid;
-
-  /// No description provided for @amount.
-  ///
-  /// In en, this message translates to:
-  /// **'Amount'**
-  String get amount;
-
-  /// No description provided for @min.
-  ///
-  /// In en, this message translates to:
-  /// **'Min'**
-  String get min;
-
-  /// No description provided for @cancel.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
-  String get cancel;
-
-  /// No description provided for @confirm.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm'**
-  String get confirm;
-
-  /// No description provided for @seedLots.
-  ///
-  /// In en, this message translates to:
-  /// **'Seed lots'**
-  String get seedLots;
+  String _t(String en, String ar) => locale.languageCode == 'ar' ? ar : en;
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
-  const _AppLocalizationsDelegate();
+class _L extends LocalizationsDelegate<AppLocalizations> {
+  const _L();
+  @override
+  bool isSupported(Locale locale) =>
+      const ['en', 'ar'].contains(locale.languageCode);
 
   @override
-  Future<AppLocalizations> load(Locale locale) {
-    return SynchronousFuture<AppLocalizations>(lookupAppLocalizations(locale));
-  }
+  Future<AppLocalizations> load(Locale locale) async =>
+      AppLocalizations(locale);
 
   @override
-  bool isSupported(Locale locale) => <String>['ar', 'en'].contains(locale.languageCode);
-
-  @override
-  bool shouldReload(_AppLocalizationsDelegate old) => false;
-}
-
-AppLocalizations lookupAppLocalizations(Locale locale) {
-
-
-  // Lookup logic when only language code is specified.
-  switch (locale.languageCode) {
-    case 'ar': return AppLocalizationsAr();
-    case 'en': return AppLocalizationsEn();
-  }
-
-  throw FlutterError(
-    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-    'an issue with the localizations generation tool. Please file an issue '
-    'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
-  );
+  bool shouldReload(covariant LocalizationsDelegate<AppLocalizations> old) =>
+      false;
 }

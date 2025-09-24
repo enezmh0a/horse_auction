@@ -1,10 +1,15 @@
-// dashboard_page.dart
 import 'package:flutter/material.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Dashboard'));
+    return Center(
+      child: Text(
+        'Dashboard',
+        style: Theme.of(context).textTheme.headlineSmall,
+      ),
+    );
   }
 }
