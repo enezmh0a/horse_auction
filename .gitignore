@@ -50,3 +50,7 @@ tools/node_modules/node-forge/lib/pem.js
 *.crt
 .env
 .env.*
+
+functions/serviceAccount.json
+
+functions/*.json
