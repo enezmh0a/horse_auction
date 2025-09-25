@@ -28,3 +28,14 @@ lib/l10n/app_localizations_*.dart
 # node modules
 node_modules/
 tools/node_modules/
+# scrubbed secrets / keys
+functions/serviceAccount.json
+tools/node_modules/jose/dist/browser/lib/format_pem.js
+tools/node_modules/node-forge/lib/pem.js
+*.pem
+*.p12
+*.pfx
+*.key
+*.crt
+.env
+.env.*
