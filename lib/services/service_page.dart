@@ -8,7 +8,7 @@ class ServicesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(l?.servicesTitle ?? 'Services')),
+      appBar: AppBar(title: Text(l.servicesTitle ?? 'Services')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: const [

@@ -1,32 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+/// Simple locale controller + scope (no persistence).
 class LocaleController extends ChangeNotifier {
-  static const _key = 'locale_code';
-  static final LocaleController instance = LocaleController._();
-  LocaleController._();
+  Locale? _locale;
 
-  Locale _locale = const Locale('en');
-  Locale get locale => _locale;
+  Locale? get locale => _locale;
 
-  Future<void> load() async {
-    final sp = await SharedPreferences.getInstance();
-    final code = sp.getString(_key);
-    if (code != null && code.isNotEmpty) {
-      _locale = Locale(code);
-      notifyListeners();
-    }
-  }
-
-  Future<void> setLocale(String code) async {
-    if (code == _locale.languageCode) return;
-    _locale = Locale(code);
+  /// Set app locale (null = follow system).
+  void setLocale(Locale? locale) {
+    _locale = locale;
     notifyListeners();
-    final sp = await SharedPreferences.getInstance();
-    await sp.setString(_key, code);
   }
 
-  void toggle() {
-    setLocale(_locale.languageCode == 'ar' ? 'en' : 'ar');
+  /// Convenience so you can write: LocaleController.of(context)
+  static LocaleController of(BuildContext context) =>
+      LocaleControllerScope.of(context);
+}
+
+/// Inherited notifier to expose the controller down the tree.
+class LocaleControllerScope extends InheritedNotifier<LocaleController> {
+  const LocaleControllerScope({
+    super.key,
+    required LocaleController controller,
+    required Widget child,
+  }) : super(notifier: controller, child: child);
+
+  static LocaleController of(BuildContext context) {
+    final scope =
+        context.dependOnInheritedWidgetOfExactType<LocaleControllerScope>();
+    assert(scope != null, 'LocaleControllerScope not found in context');
+    return scope!.notifier!;
+  }
+
+  @override
+  bool updateShouldNotify(covariant InheritedNotifier<LocaleController> old) {
+    return notifier != old.notifier;
   }
 }

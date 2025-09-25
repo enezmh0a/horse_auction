@@ -20,23 +20,23 @@ class LotDetailsPage extends StatelessWidget {
 
         if (snap.hasError) {
           return Scaffold(
-            appBar: AppBar(title: Text(l?.appTitle ?? 'Horse Auctions')),
-            body: Center(
-                child: Text(l?.errorLoadingLots ?? 'Error loading lots')),
+            appBar: AppBar(title: Text(l.appTitle ?? 'Horse Auctions')),
+            body:
+                Center(child: Text(l.errorLoadingLots ?? 'Error loading lots')),
           );
         }
         if (!snap.hasData) {
           return Scaffold(
-            appBar: AppBar(title: Text(l?.appTitle ?? 'Horse Auctions')),
+            appBar: AppBar(title: Text(l.appTitle ?? 'Horse Auctions')),
             body: const Center(child: CircularProgressIndicator()),
           );
         }
         if (!snap.data!.exists) {
           return Scaffold(
-            appBar: AppBar(title: Text(l?.appTitle ?? 'Horse Auctions')),
+            appBar: AppBar(title: Text(l.appTitle ?? 'Horse Auctions')),
             body: Center(
-                child: Text(l?.errorGeneric('Lot not found') ??
-                    'Error: Lot not found')),
+                child: Text(
+                    l.errorGeneric('Lot not found') ?? 'Error: Lot not found')),
           );
         }
 
@@ -69,7 +69,9 @@ class LotDetailsPage extends StatelessWidget {
                     child: imageUrl.isNotEmpty
                         ? Image.network(imageUrl, fit: BoxFit.cover)
                         : Container(
-                            color: Theme.of(context).colorScheme.surfaceVariant,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest,
                             child: const Icon(Icons.image, size: 72),
                           ),
                   ),
@@ -96,21 +98,21 @@ class LotDetailsPage extends StatelessWidget {
                   runSpacing: 8,
                   children: [
                     _FactChip(
-                        label: l?.startPrice ?? 'Start',
+                        label: l.startPrice ?? 'Start',
                         value: _sar(startPrice)),
                     _FactChip(
-                      label: l?.lastBid ?? 'Last bid',
+                      label: l.lastBid ?? 'Last bid',
                       value: lastBid > 0 ? _sar(lastBid) : '—',
                     ),
                     if (exhibitor.isNotEmpty)
                       _FactChip(
-                          label: l?.exhibitor ?? 'Exhibitor', value: exhibitor),
+                          label: l.exhibitor ?? 'Exhibitor', value: exhibitor),
                     if (tsStart != null)
                       _FactChip(
-                          label: l?.started ?? 'Started',
+                          label: l.started ?? 'Started',
                           value: _fmtTs(tsStart)),
                     if (tsEnd != null)
-                      _FactChip(label: l?.ends ?? 'Ends', value: _fmtTs(tsEnd)),
+                      _FactChip(label: l.ends ?? 'Ends', value: _fmtTs(tsEnd)),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -125,12 +127,12 @@ class LotDetailsPage extends StatelessWidget {
                         : () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                  content: Text(l?.biddingDisabled ??
+                                  content: Text(l.biddingDisabled ??
                                       'Bidding disabled for this lot')),
                             );
                           },
                     icon: const Icon(Icons.gavel),
-                    label: Text(l?.bid ?? 'Bid'),
+                    label: Text(l.bid ?? 'Bid'),
                   ),
                 ),
 
@@ -139,7 +141,7 @@ class LotDetailsPage extends StatelessWidget {
                 // Description (optional)
                 if ((data['description'] ?? '').toString().isNotEmpty) ...[
                   Text(
-                    l?.lots ?? 'Details',
+                    l.lots ?? 'Details',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
@@ -158,7 +160,7 @@ class LotDetailsPage extends StatelessWidget {
                       .snapshots(),
                   builder: (context, bidSnap) {
                     if (bidSnap.hasError) {
-                      return Text(l?.errorGeneric('Failed to load bids') ??
+                      return Text(l.errorGeneric('Failed to load bids') ??
                           'Error: Failed to load bids');
                     }
                     if (!bidSnap.hasData) {
@@ -209,7 +211,7 @@ class LotDetailsPage extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text(
-                l?.errorGeneric('Not signed in') ?? 'Error: Not signed in')),
+                l.errorGeneric('Not signed in') ?? 'Error: Not signed in')),
       );
       return;
     }
@@ -219,23 +221,23 @@ class LotDetailsPage extends StatelessWidget {
       context: context,
       builder: (ctx) {
         return AlertDialog(
-          title: Text(l?.bidOn(lotName) ?? 'Bid on $lotName'),
+          title: Text(l.bidOn(lotName) ?? 'Bid on $lotName'),
           content: TextField(
             controller: ctrl,
             keyboardType: TextInputType.number,
             decoration:
-                InputDecoration(hintText: l?.enterAmount ?? 'Enter amount'),
+                InputDecoration(hintText: l.enterAmount ?? 'Enter amount'),
           ),
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(ctx),
-                child: Text(l?.cancel ?? 'Cancel')),
+                child: Text(l.cancel ?? 'Cancel')),
             FilledButton(
               onPressed: () {
                 final v = int.tryParse(ctrl.text.trim());
                 Navigator.pop(ctx, v);
               },
-              child: Text(l?.ok ?? 'OK'),
+              child: Text(l.ok ?? 'OK'),
             ),
           ],
         );
@@ -252,25 +254,25 @@ class LotDetailsPage extends StatelessWidget {
       final data = res.data;
       if (data['ok'] == true) {
         final next = data['nextMin'];
-        final msg = l?.bidPlacedNext('${next ?? '—'}') ??
+        final msg = l.bidPlacedNext('${next ?? '—'}') ??
             'Bid placed. Next min: ${next ?? '—'}';
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(msg)));
       } else {
         final min = data['minAllowed'] ?? data['min'] ?? data['nextMin'];
-        final msg = l?.bidRejectedMin('$min') ?? 'Bid rejected. Minimum: $min';
+        final msg = l.bidRejectedMin('$min') ?? 'Bid rejected. Minimum: $min';
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(msg)));
       }
     } on FirebaseFunctionsException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(l?.errorGeneric(e.message ?? e.code) ??
+            content: Text(l.errorGeneric(e.message ?? e.code) ??
                 'Error: ${e.message ?? e.code}')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l?.errorGeneric('$e') ?? 'Error: $e')),
+        SnackBar(content: Text(l.errorGeneric('$e') ?? 'Error: $e')),
       );
     }
   }
@@ -288,7 +290,7 @@ class _FactChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(999),
       ),
       child: Row(
@@ -311,7 +313,7 @@ class _StatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
-    final text = status.isEmpty ? (l?.unknown ?? 'Unknown') : status;
+    final text = status.isEmpty ? (l.unknown ?? 'Unknown') : status;
     final color = switch (status) {
       'live' => Colors.green,
       'closed' => Colors.red,

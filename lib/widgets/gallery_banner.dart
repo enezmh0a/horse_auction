@@ -54,7 +54,7 @@ class _GalleryBannerState extends State<GalleryBanner> {
             height: heroH,
             width: double.infinity,
             color: widget.heroBackground ??
-                theme.colorScheme.surfaceVariant.withOpacity(0.6),
+                theme.colorScheme.surfaceContainerHighest.withOpacity(0.6),
             child: urls.isEmpty
                 ? Center(
                     child: Icon(Icons.image_not_supported_outlined,

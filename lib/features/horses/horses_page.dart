@@ -1,258 +1,212 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../../models/lot.dart';
-import '../../services/lots_service.dart';
-import '../../services/bid_service.dart';
-import '../../services/admin_service.dart';
+import 'package:horse_auction_app/services/lots_service.dart'; // << Lot + LotsService
+import 'package:horse_auction_app/widgets/bid_box.dart'; // << BidBox.show()
 
-class HorsesPage extends StatefulWidget {
+class HorsesPage extends StatelessWidget {
   const HorsesPage({super.key});
-  @override
-  State<HorsesPage> createState() => _HorsesPageState();
-}
-
-class _HorsesPageState extends State<HorsesPage> {
-  bool _posting = false;
-  bool _seeding = false;
 
   @override
   Widget build(BuildContext context) {
-    final ar = Localizations.localeOf(context).languageCode == 'ar';
-
     return Scaffold(
-      floatingActionButton: _seedFab(context, ar),
-      body: StreamBuilder<List<Lot>>(
-        stream: LotsService.instance.streamLots(),
-        builder: (context, snap) {
-          if (snap.hasError) {
-            return Center(
-                child: Text(ar ? 'خطأ في التحميل' : 'Failed to load'));
-          }
-          if (!snap.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          final lots = snap.data!;
+      body: ValueListenableBuilder<List<Lot>>(
+        valueListenable: LotsService.instance.lots,
+        builder: (context, lots, _) {
           if (lots.isEmpty) {
-            return _emptyState(ar);
+            return const _EmptyState();
           }
           return ListView.separated(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 120),
             itemCount: lots.length,
             separatorBuilder: (_, __) => const SizedBox(height: 12),
-            itemBuilder: (_, i) => _lotTile(context, lots[i], ar),
+            itemBuilder: (context, i) => _LotTile(lot: lots[i]),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        icon: const Icon(Icons.auto_awesome),
+        label: const Text('Seed lots'),
+        onPressed: () {
+          final res = LotsService.instance.seedLotsOnce();
+          final msg = (res == 'already') ? 'Already seeded' : 'Seeded';
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(msg)),
           );
         },
       ),
     );
   }
+}
 
-  Widget _emptyState(bool ar) => Center(
-        child: Opacity(
-          opacity: .7,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.pets, size: 64),
-              const SizedBox(height: 8),
-              Text(ar ? 'لا توجد خيول بعد' : 'No horses yet'),
-              const SizedBox(height: 4),
-              Text(
-                ar
-                    ? 'اضغط زر الإنشاء لإضافة بيانات تجريبية'
-                    : 'Use Seed to add demo data',
-                style: const TextStyle(fontSize: 12),
-              ),
-            ],
-          ),
+class _LotTile extends StatelessWidget {
+  final Lot lot;
+  const _LotTile({super.key, required this.lot});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context); // <-- define theme once
+
+    // choose first image (asset or http)
+    final String? img = lot.images.isNotEmpty ? lot.images.first : null;
+
+    Widget _thumbPlaceholder(ThemeData theme) {
+      return Container(
+        width: 56,
+        height: 56,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surfaceVariant,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Icon(
+          Icons.image_not_supported_outlined,
+          color: theme.colorScheme.outline,
+          size: 22,
         ),
       );
+    }
 
-  Widget _lotTile(BuildContext context, Lot lot, bool ar) {
-    final stateChip = Chip(
-      label: Text(lot.state == AuctionState.live
-          ? (ar ? 'مباشر' : 'Live')
-          : (ar ? 'مغلق' : 'Closed')),
-      visualDensity: VisualDensity.compact,
-    );
-
-    final cityChip = Chip(
-      label: Text('${ar ? 'المدينة' : 'City'}: ${lot.city}'),
-      visualDensity: VisualDensity.compact,
-    );
-
-    final stepChip = Chip(
-      label: Text('${ar ? 'الزيادة' : 'Step'}: SAR ${lot.step}'),
-      visualDensity: VisualDensity.compact,
-    );
-
-    final currChip = Chip(
-      label: Text('${ar ? 'الحالي' : 'Current'}: SAR ${lot.current}'),
-      visualDensity: VisualDensity.compact,
-    );
-
-    return Card(
-      elevation: 0,
-      color: Theme.of(context).colorScheme.surface,
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(16),
-        leading: _thumb(lot.images),
-        title: Text(lot.title.isEmpty ? '—' : lot.title,
-            maxLines: 1, overflow: TextOverflow.ellipsis),
-        subtitle: Wrap(
-          spacing: 8,
-          runSpacing: -8,
-          children: [stateChip, cityChip, stepChip, currChip],
+    Widget thumb;
+    if (img != null &&
+        (img.startsWith('http://') || img.startsWith('https://'))) {
+      thumb = ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.network(
+          img,
+          width: 56,
+          height: 56,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => _thumbPlaceholder(theme),
         ),
-        trailing: FilledButton.icon(
-          onPressed: lot.state == AuctionState.closed
-              ? null
-              : () => _showBidDialog(context, lot.id, lot.minBid, ar),
-          icon: const Icon(Icons.gavel),
-          label: Text(ar ? 'مزايدة' : 'Bid'),
+      );
+    } else if (img != null) {
+      thumb = ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.asset(
+          img,
+          width: 56,
+          height: 56,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => _thumbPlaceholder(theme),
         ),
-      ),
-    );
-  }
+      );
+    } else {
+      thumb = _thumbPlaceholder(theme);
+    }
 
-  Widget _thumb(List<String> images) {
-    final url = images.isNotEmpty ? images.first : null;
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: SizedBox(
-        width: 64,
-        height: 64,
-        child: url == null
-            ? Container(
-                color: Colors.black12,
-                child: const Icon(Icons.image_not_supported))
-            : Image.network(url, fit: BoxFit.cover, errorBuilder: (_, __, ___) {
-                return Container(
-                    color: Colors.black12,
-                    child: const Icon(Icons.broken_image));
-              }),
-      ),
-    );
-  }
+    // ...use `thumb` in your row/list tile as before
 
-  Future<void> _showBidDialog(
-      BuildContext rootContext, String lotId, int min, bool ar) async {
-    final controller = TextEditingController(text: '$min');
-    bool posting = false;
-
-    await showDialog(
-      context: rootContext,
-      barrierDismissible: !posting,
-      builder: (dialogContext) {
-        return StatefulBuilder(builder: (context, setStateDialog) {
-          Future<void> submit() async {
-            final parsed = int.tryParse(controller.text.trim());
-            if (parsed == null) {
-              ScaffoldMessenger.of(rootContext).showSnackBar(
-                SnackBar(content: Text(ar ? 'رقم غير صالح' : 'Invalid number')),
-              );
-              return;
-            }
-            if (mounted) setStateDialog(() => posting = true);
-            try {
-              await BidService.instance
-                  .placeBidTx(lotId: lotId, amount: parsed);
-              if (!rootContext.mounted) return;
-              Navigator.pop(dialogContext);
-              ScaffoldMessenger.of(rootContext).showSnackBar(
-                SnackBar(
-                    content: Text(ar ? 'تم تقديم المزايدة' : 'Bid placed!')),
-              );
-            } on StateError catch (e) {
-              if (!rootContext.mounted) return;
-              String msg = ar ? 'خطأ' : 'Error';
-              switch (e.message) {
-                case 'LOW_BID':
-                  msg = '${ar ? "الحد الأدنى" : "Min"}: $min';
-                  break;
-                case 'BAD_STEP':
-                  msg = ar
-                      ? 'المبلغ لا يطابق الزيادة'
-                      : 'Amount not aligned with step';
-                  break;
-                case 'CLOSED':
-                  msg = ar ? 'المزاد مغلق' : 'Auction is closed';
-                  break;
-              }
-              ScaffoldMessenger.of(rootContext)
-                  .showSnackBar(SnackBar(content: Text(msg)));
-            } catch (e) {
-              if (!rootContext.mounted) return;
-              ScaffoldMessenger.of(rootContext).showSnackBar(
-                SnackBar(content: Text('${ar ? "خطأ" : "Error"}: $e')),
-              );
-            } finally {
-              if (mounted) setStateDialog(() => posting = false);
-            }
-          }
-
-          return AlertDialog(
-            title: Text(ar ? 'تقديم مزايدة' : 'Place bid'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(ar ? 'المبلغ' : 'Amount')),
-                const SizedBox(height: 8),
-                TextField(
-                  enabled: !posting,
-                  controller: controller,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    hintText: '12345',
-                    helperText: '${ar ? "الحد الأدنى" : "Min"}: $min',
+    return Material(
+      color: theme.colorScheme.surface,
+      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            thumb,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(lot.title,
+                      style: theme.textTheme.titleMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      _chip(context, lot.live ? 'Live' : 'Closed',
+                          icon: lot.live ? Icons.play_arrow : Icons.lock_clock),
+                      _chip(context, 'City: ${lot.city}'),
+                      _chip(context, 'Step: SAR ${lot.step}'),
+                      _chip(context, 'Current: SAR ${lot.current}'),
+                    ],
                   ),
-                  onSubmitted: (_) => submit(),
-                ),
-              ],
+                ],
+              ),
             ),
-            actions: [
-              TextButton(
-                onPressed: posting ? null : () => Navigator.pop(dialogContext),
-                child: Text(ar ? 'إلغاء' : 'Cancel'),
-              ),
-              FilledButton(
-                onPressed: posting ? null : submit,
-                child: Text(ar ? 'تأكيد' : 'Confirm'),
-              ),
-            ],
-          );
-        });
-      },
+            const SizedBox(width: 12),
+            _BidButton(lot: lot),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _seedFab(BuildContext context, bool ar) {
-    return FloatingActionButton.extended(
-      icon: const Icon(Icons.auto_fix_high),
-      label: Text(ar ? 'إنشاء بيانات تجريبية' : 'Seed lots'),
-      onPressed: _seeding
-          ? null
-          : () async {
-              setState(() => _seeding = true);
-              try {
-                final res = await AdminService.instance.seedLotsOnce();
-                if (!mounted) return;
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text(res == 'already'
-                          ? (ar ? 'تم إنشاؤها مسبقاً.' : 'Already seeded.')
-                          : (ar ? 'تم الإنشاء.' : 'Seeded.'))),
-                );
-              } catch (e) {
-                if (!mounted) return;
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('${ar ? "خطأ" : "Error"}: $e')),
-                );
-              } finally {
-                if (mounted) setState(() => _seeding = false);
-              }
-            },
+  Widget _chip(BuildContext context, String text, {IconData? icon}) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceVariant,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 16),
+            const SizedBox(width: 6),
+          ],
+          Text(text, style: theme.textTheme.labelMedium),
+        ],
+      ),
+    );
+  }
+
+  Widget _thumbPlaceholder(ThemeData theme) => Container(
+        width: 56,
+        height: 56,
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surfaceVariant,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: const Icon(Icons.image_not_supported_outlined, size: 22),
+      );
+}
+
+class _BidButton extends StatelessWidget {
+  const _BidButton({required this.lot});
+  final Lot lot;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: lot.live ? () => BidBox.show(context, lot: lot) : null,
+      icon: const Icon(Icons.gavel_rounded, size: 18),
+      label: const Text('Bid'),
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        shape: const StadiumBorder(),
+      ),
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  const _EmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.pets, size: 48, color: theme.colorScheme.onSurface),
+            const SizedBox(height: 12),
+            Text('No horses yet', style: theme.textTheme.titleMedium),
+            const SizedBox(height: 6),
+            Text('Add horse data or seed demo lots.',
+                style: theme.textTheme.bodySmall),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -7,7 +7,7 @@ class Lot {
   final String city;
   final int step;
   final bool live;
-  final List<String> images; // first item is used as thumbnail
+  final List<String> images; // network URLs
   final int current;
 
   const Lot({
@@ -68,30 +68,6 @@ class LotsService {
     _setAll(list);
   }
 
-  /// Clears all lots (useful before reseeding).
-  void clear() => _setAll(const []);
-
-  /// Remote thumbnails that always load (you can swap to local assets later).
-  static const List<String> _thumbs = [
-    'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=960&q=60&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=960&q=60&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=960&q=60&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=960&q=60&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=960&q=60&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=960&q=60&auto=format&fit=crop',
-  ];
-
-  /// If you add local images later, put them under `assets/horses/` and list
-  /// them here. (Optional)
-  static const List<String> _localThumbs = [
-    // 'assets/horses/1.jpg',
-    // 'assets/horses/2.jpg',
-    // 'assets/horses/3.jpg',
-    // 'assets/horses/4.jpg',
-    // 'assets/horses/5.jpg',
-    // 'assets/horses/6.jpg',
-  ];
-
   /// Seeds demo lots once; returns 'already' if data exists.
   String seedLotsOnce() {
     if (lots.value.isNotEmpty) return 'already';
@@ -106,20 +82,21 @@ class LotsService {
       'Lot Y',
       'Lot Z',
     ];
-    final currents = [20000, 15200, 2600, 1900, 20100, 3200];
+
+    // Helper to create stable, cacheable placeholder images
+    String _img(String seed) => 'https://picsum.photos/seed/$seed/800/600';
 
     final data = List<Lot>.generate(6, (i) {
       final live = i != 1 && i != 5;
       final step = 100;
-      final curr = currents[i % currents.length];
+      final curr = [20000, 15200, 2600, 1900, 20100, 3200][i % 6];
 
-      // Put a reliable remote image first so UI shows a thumbnail.
-      final remote = _thumbs[i % _thumbs.length];
-      // If you’ve added local assets, you can optionally include one as well.
-      final List<String> pics = [remote];
-      if (_localThumbs.isNotEmpty) {
-        pics.add(_localThumbs[i % _localThumbs.length]);
-      }
+      // 3 images per lot
+      final imgs = <String>[
+        _img('horse_${i}_a'),
+        _img('horse_${i}_b'),
+        _img('horse_${i}_c'),
+      ];
 
       return Lot(
         id: _randId(r),
@@ -128,18 +105,12 @@ class LotsService {
         step: step,
         live: live,
         current: curr,
-        images: pics,
+        images: imgs,
       );
     });
 
     _setAll(data);
     return 'done';
-  }
-
-  /// Force reseed regardless of existing data.
-  String forceReseed() {
-    clear();
-    return seedLotsOnce();
   }
 
   static String _randId(Random r) {

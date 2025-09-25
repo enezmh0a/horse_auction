@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:horse_auction_app/features/home/home_page.dart';
-import 'package:horse_auction_app/features/horses/horses_page.dart';
-import 'package:horse_auction_app/features/services/services_page.dart';
+import 'package:flutter/services.dart';
+
+import '../../core/locale_controller.dart';
+import '../../l10n/app_localizations.dart';
+
+import '../home/home_page.dart';
+import '../horses/horses_page.dart';
+import '../services/services_page.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -15,58 +20,58 @@ class _AppShellState extends State<AppShell> {
 
   @override
   Widget build(BuildContext context) {
-    Widget body;
-    switch (_index) {
-      case 0:
-        body = const HomePage();
-        break;
-      case 1:
-        body = const HorsesPage();
-        break;
-      case 2:
-      default:
-        body = const ServicesPage();
-    }
+    final l = AppLocalizations.of(context);
+
+    final pages = const [
+      HomePage(),
+      HorsesPage(),
+      ServicesPage(),
+    ];
 
     return Scaffold(
-      body: body,
+      appBar: AppBar(
+        title: Text(l.title),
+        actions: [
+          PopupMenuButton<Locale>(
+            tooltip: l.language,
+            icon: const Icon(Icons.public),
+            onSelected: (locale) {
+              LocaleController.of(context).setLocale(locale);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(l.restartedApplied)),
+              );
+            },
+            itemBuilder: (context) => <PopupMenuEntry<Locale>>[
+              PopupMenuItem(
+                  value: const Locale('en'), child: Text(l.langEnglish)),
+              PopupMenuItem(
+                  value: const Locale('ar'), child: Text(l.langArabic)),
+            ],
+          ),
+        ],
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
+      body: IndexedStack(index: _index, children: pages),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,
         onDestinationSelected: (i) => setState(() => _index = i),
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-            label: 'Home',
+            icon: const Icon(Icons.home_outlined),
+            selectedIcon: const Icon(Icons.home),
+            label: l.homeTitle,
           ),
           NavigationDestination(
-            icon: Icon(Icons.pets_outlined),
-            selectedIcon: Icon(Icons.pets),
-            label: 'Horses',
+            icon: const Icon(Icons.pets_outlined),
+            selectedIcon: const Icon(Icons.pets),
+            label: l.horsesTitle,
           ),
           NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
-            label: 'Services',
+            icon: const Icon(Icons.settings_outlined),
+            selectedIcon: const Icon(Icons.settings),
+            label: l.servicesTitle,
           ),
         ],
-      ),
-      // Simple language button that just tells user to restart (no LocaleController needed).
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(top: 8, right: 8),
-        child: IconButton.filledTonal(
-          tooltip: 'Language',
-          icon: const Icon(Icons.language),
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Restart the app to apply language'),
-                duration: Duration(seconds: 2),
-              ),
-            );
-          },
-        ),
       ),
     );
   }

@@ -1,65 +1,103 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
-class AppLocalizations {
-  final Locale locale;
-  const AppLocalizations(this.locale);
+abstract class AppLocalizations {
+  const AppLocalizations();
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _L();
-
+  // Accessor
   static AppLocalizations of(BuildContext context) =>
       Localizations.of<AppLocalizations>(context, AppLocalizations)!;
 
-  // Strings used in UI
-  String get title => _t('Horse Auctions', 'مزادات الخيول');
-  String get servicesTitle => _t('Services', 'الخدمات');
-  String get horsesTitle => _t('Horses', 'الخيل');
+  // Delegate + supported locales
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
-  String get langEnglish => _t('English', 'الإنجليزية');
-  String get langArabic => _t('Arabic', 'العربية');
+  static const supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('ar'),
+  ];
 
-  String get seedLots => _t('Seed lots', 'إنشاء بيانات تجريبية');
-  String get alreadySeeded => _t('Already seeded', 'تم الإنشاء مسبقاً.');
-  String get seedDone => _t('Seeded.', 'تم إنشاء البيانات.');
-  String get working => _t('Working…', 'جاري التنفيذ…');
+  // ====== Strings used across your UI ======
+  String get title; // AppBar title
+  String get language; // Language tooltip
+  String get langEnglish; // English label
+  String get langArabic; // Arabic label
+  String get restartedApplied; // Shown after toggling language
+  String get restartToApply; // (alias, used by older code)
 
-  String get placeBid => _t('Place bid', 'تقديم مزايدة');
-  String get amount => _t('Amount', 'المبلغ');
-  String get yourBidInteger =>
-      _t('Your bid (integer)', 'مبلغ المزايدة (رقم صحيح)');
-  String get min => _t('Min', 'الحد الأدنى');
-  String get confirm => _t('Confirm', 'تأكيد');
-  String get cancel => _t('Cancel', 'إلغاء');
-  String get invalidNumber => _t('Invalid number', 'رقم غير صالح');
-  String get badStep => _t('Amount is not aligned with bid step',
-      'المبلغ غير مطابق لقيمة زيادة المزايدة');
-  String get bidPlaced => _t('Bid placed!', 'تم تقديم المزايدة!');
-  String get bid => _t('Bid', 'مزايدة');
-
-  String get current => _t('Current', 'الحالي');
-  String get step => _t('Step', 'الزيادة');
-  String get stateLive => _t('Live', 'مباشر');
-  String get stateClosed => _t('Closed', 'مغلق');
-
-  String get error => _t('Error', 'خطأ');
-
-  String get emptyLots => _t('No horses yet', 'لا توجد خيول بعد');
-  String get emptyLotsHint => _t('Add horse data or wire a service later.',
-      'أضف بيانات الخيول أو اربط خدمة لاحقاً.');
-
-  String _t(String en, String ar) => locale.languageCode == 'ar' ? ar : en;
+  String get homeTitle;
+  String get horsesTitle;
+  String get servicesTitle;
 }
 
-class _L extends LocalizationsDelegate<AppLocalizations> {
-  const _L();
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
   @override
   bool isSupported(Locale locale) =>
-      const ['en', 'ar'].contains(locale.languageCode);
+      const ['en', 'ar'].contains(locale.languageCode.toLowerCase());
 
   @override
-  Future<AppLocalizations> load(Locale locale) async =>
-      AppLocalizations(locale);
+  Future<AppLocalizations> load(Locale locale) async {
+    switch (locale.languageCode.toLowerCase()) {
+      case 'ar':
+        return const _AppLocalizationsAr();
+      case 'en':
+      default:
+        return const _AppLocalizationsEn();
+    }
+  }
 
   @override
-  bool shouldReload(covariant LocalizationsDelegate<AppLocalizations> old) =>
-      false;
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
+}
+
+// English
+class _AppLocalizationsEn extends AppLocalizations {
+  const _AppLocalizationsEn();
+
+  @override
+  String get title => 'Horse Auctions';
+  @override
+  String get language => 'Language';
+  @override
+  String get langEnglish => 'English';
+  @override
+  String get langArabic => 'العربية';
+  @override
+  String get restartedApplied => 'Language changed.';
+  @override
+  String get restartToApply => 'Language changed.';
+
+  @override
+  String get homeTitle => 'Home';
+  @override
+  String get horsesTitle => 'Horses';
+  @override
+  String get servicesTitle => 'Services';
+}
+
+// Arabic
+class _AppLocalizationsAr extends AppLocalizations {
+  const _AppLocalizationsAr();
+
+  @override
+  String get title => 'مزادات الخيل';
+  @override
+  String get language => 'اللغة';
+  @override
+  String get langEnglish => 'English';
+  @override
+  String get langArabic => 'العربية';
+  @override
+  String get restartedApplied => 'تم تغيير اللغة.';
+  @override
+  String get restartToApply => 'تم تغيير اللغة.';
+
+  @override
+  String get homeTitle => 'الرئيسية';
+  @override
+  String get horsesTitle => 'الخيل';
+  @override
+  String get servicesTitle => 'الخدمات';
 }

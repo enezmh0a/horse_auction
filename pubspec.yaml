@@ -8,12 +8,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^2.24.2
-  cloud_firestore: ^4.15.8
-  shared_preferences: ^2.2.3
   flutter_localizations:
     sdk: flutter
-
+  
 # (optional) Arabic font that looks nice
 fonts:
   - family: NotoNaskhArabic
@@ -25,3 +22,5 @@ fonts:
 flutter:
   uses-material-design: true
   generate: true
+assets:
+    - assets/horses/

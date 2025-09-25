@@ -47,14 +47,14 @@ class _LotList extends StatelessWidget {
 
         if (snap.hasError) {
           return Center(
-              child: Text(l?.errorGeneric('${snap.error}') ?? 'Error'));
+              child: Text(l.errorGeneric('${snap.error}') ?? 'Error'));
         }
         if (!snap.hasData) {
           return const Center(child: CircularProgressIndicator());
         }
         final docs = snap.data!.docs;
         if (docs.isEmpty) {
-          return Center(child: Text(l?.noLots ?? 'No lots'));
+          return Center(child: Text(l.noLots ?? 'No lots'));
         }
 
         return ListView.separated(
@@ -76,7 +76,7 @@ class _LotList extends StatelessWidget {
                 children: [
                   if (status == 'live')
                     IconButton(
-                      tooltip: AppLocalizations.of(context)?.bid ?? 'Bid',
+                      tooltip: AppLocalizations.of(context).bid ?? 'Bid',
                       icon: const Icon(Icons.gavel),
                       onPressed: () =>
                           _promptAndPlaceBid(context, lotId: lotId, lot: lot),
@@ -96,13 +96,13 @@ class _LotList extends StatelessWidget {
     final l = AppLocalizations.of(context);
     switch (status) {
       case 'live':
-        return l?.live ?? 'Live';
+        return l.live ?? 'Live';
       case 'closed':
-        return l?.closed ?? 'Closed';
+        return l.closed ?? 'Closed';
       case 'published':
-        return l?.published ?? 'Published';
+        return l.published ?? 'Published';
       default:
-        return status.isEmpty ? (l?.unknown ?? 'Unknown') : status;
+        return status.isEmpty ? (l.unknown ?? 'Unknown') : status;
     }
   }
 
@@ -156,16 +156,16 @@ class _LotList extends StatelessWidget {
                 runSpacing: 8,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  _kv(ctx, l?.live ?? 'Live',
+                  _kv(ctx, l.live ?? 'Live',
                       lot['status'] == 'live' ? '✓' : '—'),
-                  _kv(ctx, l?.startPrice ?? 'Start',
+                  _kv(ctx, l.startPrice ?? 'Start',
                       '${lot['startPrice'] ?? lot['startingBid'] ?? 0}'),
-                  _kv(ctx, l?.lastBid ?? 'Last bid', '$currentAmount'),
-                  _kv(ctx, l?.minStep ?? 'Min step', '$step'),
-                  _kv(ctx, l?.nextBid ?? 'Next', '$nextMin'),
-                  _kv(ctx, l?.started ?? 'Started', fmtTs(lot['openAt'])),
-                  _kv(ctx, l?.ends ?? 'Ends', fmtTs(lot['closeAt'])),
-                  _kv(ctx, l?.exhibitor ?? 'Exhibitor',
+                  _kv(ctx, l.lastBid ?? 'Last bid', '$currentAmount'),
+                  _kv(ctx, l.minStep ?? 'Min step', '$step'),
+                  _kv(ctx, l.nextBid ?? 'Next', '$nextMin'),
+                  _kv(ctx, l.started ?? 'Started', fmtTs(lot['openAt'])),
+                  _kv(ctx, l.ends ?? 'Ends', fmtTs(lot['closeAt'])),
+                  _kv(ctx, l.exhibitor ?? 'Exhibitor',
                       '${lot['exhibitorId'] ?? '—'}'),
                 ],
               ),
@@ -177,7 +177,7 @@ class _LotList extends StatelessWidget {
                     Navigator.pop(ctx);
                     _promptAndPlaceBid(context, lotId: lotId, lot: lot);
                   },
-                  child: Text(l?.bid ?? 'Bid'),
+                  child: Text(l.bid ?? 'Bid'),
                 ),
               ),
               const SizedBox(height: 8),
@@ -220,7 +220,7 @@ class _LotList extends StatelessWidget {
 
     if (lot['status'] != 'live') {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l?.lotNotLive ?? 'Lot is not live')),
+        SnackBar(content: Text(l.lotNotLive ?? 'Lot is not live')),
       );
       return;
     }
@@ -240,25 +240,25 @@ class _LotList extends StatelessWidget {
       builder: (ctx) {
         final l = AppLocalizations.of(ctx);
         return AlertDialog(
-          title: Text((l?.bidOn(lot['name'] ?? lotId)) ??
+          title: Text((l.bidOn(lot['name'] ?? lotId)) ??
               'Bid on ${lot['name'] ?? lotId}'),
           content: TextField(
             controller: ctrl,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               labelText:
-                  (l?.amountLabel(clientMin)) ?? 'Amount (min $clientMin)',
+                  (l.amountLabel(clientMin)) ?? 'Amount (min $clientMin)',
             ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: Text(l?.cancel ?? 'Cancel'),
+              child: Text(l.cancel ?? 'Cancel'),
             ),
             FilledButton(
               onPressed: () =>
                   Navigator.pop(ctx, int.tryParse(ctrl.text.trim())),
-              child: Text(l?.ok ?? 'OK'),
+              child: Text(l.ok ?? 'OK'),
             ),
           ],
         );
@@ -270,7 +270,7 @@ class _LotList extends StatelessWidget {
     if (amount < clientMin) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(l?.bidRejectedMin('$clientMin') ??
+            content: Text(l.bidRejectedMin('$clientMin') ??
                 'Bid below minimum: $clientMin')),
       );
       return;
@@ -292,7 +292,7 @@ class _LotList extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              l?.bidPlacedNext('${next ?? '—'}') ??
+              l.bidPlacedNext('${next ?? '—'}') ??
                   'Bid placed. Next min: ${next ?? '—'}',
             ),
           ),
@@ -302,7 +302,7 @@ class _LotList extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              l?.bidRejectedMin('${min ?? clientMin}') ??
+              l.bidRejectedMin('${min ?? clientMin}') ??
                   'Bid rejected. Min: ${min ?? clientMin}',
             ),
           ),
@@ -311,12 +311,12 @@ class _LotList extends StatelessWidget {
     } on FirebaseFunctionsException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(l?.errorGeneric(e.message ?? e.code) ??
+            content: Text(l.errorGeneric(e.message ?? e.code) ??
                 'Error: ${e.message ?? e.code}')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l?.errorGeneric('$e') ?? 'Error: $e')),
+        SnackBar(content: Text(l.errorGeneric('$e') ?? 'Error: $e')),
       );
     }
   }
