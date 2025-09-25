@@ -39,3 +39,14 @@ tools/node_modules/node-forge/lib/pem.js
 *.crt
 .env
 .env.*
+# scrubbed secrets / keys
+functions/serviceAccount.json
+tools/node_modules/jose/dist/browser/lib/format_pem.js
+tools/node_modules/node-forge/lib/pem.js
+*.pem
+*.p12
+*.pfx
+*.key
+*.crt
+.env
+.env.*
