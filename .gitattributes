@@ -39,3 +39,7 @@
 *.mp3  binary
 *.exe  binary
 *.dll  binary
+windows/runner/*.cpp      text eol=lf
+windows/runner/*.h        text eol=lf
+windows/runner/*.rc       text eol=lf
+windows/runner/*.manifest text eol=lf
