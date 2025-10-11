@@ -1,0 +1,52 @@
+name: Windows smoke build
+
+on:
+  push:        # run on every push to any branch
+  pull_request:  # and on PRs
+  workflow_dispatch:  # allow manual runs from Actions tab
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter 3.35.5
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.5'
+          channel: 'stable'
+          cache: true
+
+      - name: flutter doctor
+        run: flutter doctor -v
+
+      - name: Pub get (with cache)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            **/.dart_tool
+          key: ${{ runner.os }}-pubcache-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pubcache-
+      - run: flutter pub get
+
+      - name: Static analysis
+        run: flutter analyze
+
+      # If you have tests, keep this. If not, comment it out.
+      - name: Run tests (if any)
+        run: flutter test || echo "No tests"
+
+      - name: Build Windows (debug)
+        run: flutter build windows --debug
+
+      - name: Archive build output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-debug-build
+          path: build/windows/runner/Debug
