@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:horse_auction_app/gen_l10n/app_localizations.dart';
+import 'package:horse_auction_app/l10n/generated/app_localizations.dart';
 
 class LotDetailScreen extends StatelessWidget {
   final String lotId;
