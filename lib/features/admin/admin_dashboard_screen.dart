@@ -1,131 +1,93 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../../services/admin_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AdminDashboardScreen extends StatefulWidget {
+import '../../data/providers/user_providers.dart'; // <<< NEW IMPORT ADDED
+import '../lots/lot_feed_page.dart'; // Placeholder for other admin pages
+import 'admin_user_list_screen.dart';
+
+class AdminDashboardScreen extends ConsumerWidget {
   const AdminDashboardScreen({super.key});
 
   @override
-  State<AdminDashboardScreen> createState() => _AdminDashboardScreenState();
-}
-
-class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
-  bool _busy = false;
-  String? _msg;
-
-  @override
-  Widget build(BuildContext context) {
-    final db = FirebaseFirestore.instance;
-
-    Stream<int> _countLots(String status, [String? tier]) {
-      var q = db.collection('lots').where('status', isEqualTo: status);
-      if (tier != null) q = q.where('priceTier', isEqualTo: tier);
-      return q.snapshots().map((s) => s.size);
-    }
-
-    final latestBids = db.collectionGroup('bids')
-        .orderBy('createdAt', descending: true)
-        .limit(20)
-        .snapshots();
-
-    Widget _card(String title, Stream<int> s) => StreamBuilder<int>(
-      stream: s,
-      builder: (_, snap) => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-              Text('${snap.data ?? 0}', style: const TextStyle(fontSize: 20)),
-            ],
-          ),
-        ),
-      ),
-    );
-
-    Future<void> _run(String which) async {
-      setState(() { _busy = true; _msg = null; });
-      try {
-        final svc = AdminService.instance;
-        final res = which == 'tiers'
-            ? await svc.backfillPriceTiers()
-            : await svc.closeExpiredLotsNow();
-        setState(() { _msg = '$which OK: $res'; });
-      } catch (e) {
-        setState(() { _msg = 'Error: $e'; });
-      } finally {
-        if (mounted) setState(() { _busy = false; });
-      }
-    }
+  Widget build(BuildContext context, WidgetRef ref) {
+    // This is the line that required the import:
+    final profileAsync = ref.watch(currentUserModelProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Admin Dashboard')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Wrap(spacing: 12, runSpacing: 12, children: [
-              ElevatedButton.icon(
-                onPressed: _busy ? null : () => _run('tiers'),
-                icon: const Icon(Icons.auto_fix_high),
-                label: const Text('Backfill price tiers'),
-              ),
-              ElevatedButton.icon(
-                onPressed: _busy ? null : () => _run('close'),
-                icon: const Icon(Icons.lock_clock),
-                label: const Text('Close expired now'),
-              ),
-              if (_busy) const Padding(
-                padding: EdgeInsets.only(left: 8), child: CircularProgressIndicator(strokeWidth: 2)),
-            ]),
-            if (_msg != null) Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(_msg!, style: const TextStyle(color: Colors.blueGrey)),
-            ),
+      appBar: AppBar(
+        title: const Text('Admin Dashboard'),
+        backgroundColor: Colors.deepOrange,
+      ),
+      body: profileAsync.when(
+        data: (user) {
+          if (user == null || !user.isAdmin) {
+            return const Center(child: Text('Access Denied: Not an Admin.'));
+          }
 
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 12, runSpacing: 12,
-              children: [
-                _card('Live auctions', _countLots('live')),
-                _card('Bronze live', _countLots('live','bronze')),
-                _card('Silver live', _countLots('live','silver')),
-                _card('Gold live', _countLots('live','gold')),
-                _card('Diamond live', _countLots('live','diamond')),
-                _card('Platinum live', _countLots('live','platinum')),
-              ],
-            ),
-            const SizedBox(height: 16),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Latest bids', style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            const SizedBox(height: 8),
-            Expanded(
-              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: latestBids,
-                builder: (_, snap) {
-                  if (!snap.hasData) return const Center(child: CircularProgressIndicator());
-                  final docs = snap.data!.docs;
-                  return ListView.separated(
-                    itemCount: docs.length,
-                    separatorBuilder: (_, __) => const Divider(height: 1),
-                    itemBuilder: (_, i) {
-                      final d = docs[i].data();
-                      return ListTile(
-                        title: Text('SAR ${d['amount'] ?? 0}'),
-                        subtitle: Text('user: ${d['userId'] ?? ''}'),
-                        trailing: Text((d['createdAt'] as Timestamp?)?.toDate().toLocal().toString().split('.').first ?? ''),
-                      );
-                    },
+          return ListView(
+            padding: const EdgeInsets.all(16.0),
+            children: <Widget>[
+              _buildCard(
+                context,
+                title: 'User Management',
+                icon: Icons.people,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => const AdminUserListScreen()),
                   );
                 },
               ),
-            ),
-          ],
+              _buildCard(
+                context,
+                title: 'Auction Lot Review',
+                icon: Icons.gavel,
+                onTap: () {
+                  // Navigate to a dedicated lot review screen (LotFeedPage is a placeholder)
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => const LotFeedPage()),
+                  );
+                },
+              ),
+              _buildCard(
+                context,
+                title: 'System Settings',
+                icon: Icons.settings,
+                onTap: () {
+                  // Implementation TBD
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Settings functionality TBD')),
+                  );
+                },
+              ),
+            ],
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, s) => Center(child: Text('Error loading profile: $e')),
+      ),
+    );
+  }
+
+  Widget _buildCard(BuildContext context,
+      {required String title,
+      required IconData icon,
+      required VoidCallback onTap}) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: ListTile(
+        leading: Icon(icon, size: 30, color: Colors.deepOrange),
+        title: Text(
+          title,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
+        trailing: const Icon(Icons.arrow_forward_ios),
+        onTap: onTap,
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       ),
     );
   }

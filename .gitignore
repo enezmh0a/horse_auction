@@ -54,3 +54,4 @@ tools/node_modules/node-forge/lib/pem.js
 functions/serviceAccount.json
 
 functions/*.json
+/graveyard_*/

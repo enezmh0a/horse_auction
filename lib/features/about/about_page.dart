@@ -22,12 +22,12 @@ class AboutPage extends StatelessWidget {
           ),
         ),
         if (showContact)
-          Card(
+          const Card(
             elevation: 0,
             child: ListTile(
-              leading: const Icon(Icons.email_outlined),
-              title: const Text('contact@horseauctions.example'),
-              subtitle: const Text('Riyadh • +966-555-000-000'),
+              leading: Icon(Icons.email_outlined),
+              title: Text('contact@horseauctions.example'),
+              subtitle: Text('Riyadh • +966-555-000-000'),
             ),
           ),
       ],

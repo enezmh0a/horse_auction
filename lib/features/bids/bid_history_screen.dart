@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:horse_auction_app/services/firestore_service.dart';
+import 'package:horse_auction_baseline/services/firestore_service.dart';
 
 class BidHistoryScreen extends StatelessWidget {
   final String horseId;

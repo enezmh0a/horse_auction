@@ -1,17 +1,28 @@
 {
-  "servicesTitle": "Services",
-  "tierPlatinum": "Platinum",
-  "tierPlatinumDesc": "Top exposure, concierge support, featured placement.",
-  "tierGold": "Gold",
-  "tierGoldDesc": "High visibility listing and promo slots.",
-  "tierSilver": "Silver",
-  "tierSilverDesc": "Great starter package to get listed quickly.",
-
+  "@@locale": "en",
+  "appTitle": "Horse Auction",
+  "live": "Live",
+  "lots": "Lots",
+  "results": "Results",
+  "current": "Current",
+  "minIncrement": "Min increment",
+  "timeLeft": "Time left",
+  "yourBid": "Your bid",
   "placeBid": "Place bid",
-  "amount": "Amount",
-  "min": "Min",
-  "seedLots": "Seed lots",
-  "seedDone": "Seed created.",
-  "alreadySeeded": "Already seeded.",
-  "bidPlaced": "Bid placed!"
+  "liveTab": "Live",
+  "lotsTab": "Lots",
+  "resultsTab": "Results",
+  "toggleLanguage": "Toggle language",
+  "noLiveLots": "No live lots right now.",
+  "noLotsAvailable": "No lots available.",
+  "noResults": "No results yet.",
+  "bidPlaced": "Bid placed: {amount}",
+  "@bidPlaced": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "bidTooLow": "Your bid is too low",
+  "sold": "Sold",
+  "finalPrice": "Final"
 }

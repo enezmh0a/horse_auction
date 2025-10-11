@@ -21,15 +21,9 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -51,7 +45,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCKjLI8jKB3q1uTQBTe_7mYHSSbqjcIcbo',
-    appId: '1:1006357064889:web:abd6e5b1eac292c8cabf68',
+    appId: '1:1006357064889:web:63125d205a2d8d70cabf68',
     messagingSenderId: '1006357064889',
     projectId: 'horse-auction-saudi',
     authDomain: 'horse-auction-saudi.firebaseapp.com',
@@ -60,10 +54,28 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyCKjLI8jKB3q1uTQBTe_7mYHSSbqjcIcbo',
-    appId: '1:1006357064889:web:63125d205a2d8d70cabf68',
+    appId: '1:1006357064889:web:b251f9a722beab3ccabf68',
     messagingSenderId: '1006357064889',
     projectId: 'horse-auction-saudi',
     authDomain: 'horse-auction-saudi.firebaseapp.com',
     storageBucket: 'horse-auction-saudi.firebasestorage.app',
   );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyDDw8BBO3Sno6yXxViQP_X4Tw3tEfkX1cg',
+    appId: '1:1006357064889:ios:314b04c3f88532eecabf68',
+    messagingSenderId: '1006357064889',
+    projectId: 'horse-auction-saudi',
+    storageBucket: 'horse-auction-saudi.firebasestorage.app',
+    iosBundleId: 'com.example.horseAuctionApp',
+  );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyAuILnW-gJJ3Ora_mIknGoZAE-5g27zCnw',
+    appId: '1:1006357064889:android:125bd03368bd6146cabf68',
+    messagingSenderId: '1006357064889',
+    projectId: 'horse-auction-saudi',
+    storageBucket: 'horse-auction-saudi.firebasestorage.app',
+  );
+
 }

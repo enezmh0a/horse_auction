@@ -53,32 +53,39 @@ class _GalleryBannerState extends State<GalleryBanner> {
           child: Container(
             height: heroH,
             width: double.infinity,
-            color: widget.heroBackground ??
-                theme.colorScheme.surfaceVariant.withOpacity(0.6),
-            child: urls.isEmpty
-                ? Center(
-                    child: Icon(Icons.image_not_supported_outlined,
-                        size: 36, color: theme.colorScheme.onSurfaceVariant),
-                  )
-                : PageView.builder(
-                    controller: _pageCtrl,
-                    itemCount: urls.length,
-                    onPageChanged: (i) => setState(() => _page = i),
-                    itemBuilder: (_, i) => Center(
-                      // Show whole image (no crop) and keep the fixed height.
-                      child: Image.network(
-                        urls[i],
-                        fit: BoxFit.contain,
-                        width: double.infinity,
-                        height: heroH,
-                        errorBuilder: (_, __, ___) => Icon(
-                          Icons.broken_image_outlined,
-                          size: 36,
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
+            color:
+                widget.heroBackground ??
+                theme.colorScheme.surfaceContainerHighest.withOpacity(0.6),
+            child:
+                urls.isEmpty
+                    ? Center(
+                      child: Icon(
+                        Icons.image_not_supported_outlined,
+                        size: 36,
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
+                    )
+                    : PageView.builder(
+                      controller: _pageCtrl,
+                      itemCount: urls.length,
+                      onPageChanged: (i) => setState(() => _page = i),
+                      itemBuilder:
+                          (_, i) => Center(
+                            // Show whole image (no crop) and keep the fixed height.
+                            child: Image.network(
+                              urls[i],
+                              fit: BoxFit.contain,
+                              width: double.infinity,
+                              height: heroH,
+                              errorBuilder:
+                                  (_, __, ___) => Icon(
+                                    Icons.broken_image_outlined,
+                                    size: 36,
+                                    color: theme.colorScheme.onSurfaceVariant,
+                                  ),
+                            ),
+                          ),
                     ),
-                  ),
           ),
         ),
 
@@ -110,9 +117,10 @@ class _GalleryBannerState extends State<GalleryBanner> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: selected
-                            ? theme.colorScheme.primary
-                            : theme.dividerColor,
+                        color:
+                            selected
+                                ? theme.colorScheme.primary
+                                : theme.dividerColor,
                         width: selected ? 2 : 1,
                       ),
                     ),
@@ -122,11 +130,12 @@ class _GalleryBannerState extends State<GalleryBanner> {
                       child: Image.network(
                         urls[i],
                         fit: BoxFit.cover, // small thumbnails can be cropped
-                        errorBuilder: (_, __, ___) => Icon(
-                          Icons.image_not_supported_outlined,
-                          size: 18,
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
+                        errorBuilder:
+                            (_, __, ___) => Icon(
+                              Icons.image_not_supported_outlined,
+                              size: 18,
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
                       ),
                     ),
                   ),

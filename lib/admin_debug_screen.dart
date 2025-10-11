@@ -1,8 +1,9 @@
 // lib/admin_debug_screen.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'widgets/bid_box.dart';        // adjust path if needed
-import 'admin_debug_panel.dart';      // adjust/remove if your panel is elsewhere
+import 'widgets/bid_box.dart'; // adjust path if needed
+import 'admin_debug_panel.dart'; // adjust/remove if your panel is elsewhere
+import 'package:horse_auction_baseline/models/lot_model.dart';
 
 class AdminDebugScreen extends StatelessWidget {
   const AdminDebugScreen({super.key});
@@ -31,7 +32,13 @@ class AdminDebugScreen extends StatelessWidget {
             const SizedBox(height: 8),
 
             // Bid box (remove const if your constructor isn't const)
-            BidBox(lotId: 'lot01'),
+            BidBox(
+              initial: 0,
+              onBid: (amount) async {
+                // TODO: wire to your repo/functions
+                debugPrint('Admin bid: $amount');
+              },
+            ),
           ],
         ),
       ),

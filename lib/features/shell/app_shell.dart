@@ -1,72 +1,82 @@
+// lib/features/shell/app_shell.dart
 import 'package:flutter/material.dart';
-import 'package:horse_auction_app/features/home/home_page.dart';
-import 'package:horse_auction_app/features/horses/horses_page.dart';
-import 'package:horse_auction_app/features/services/services_page.dart';
+import 'package:horse_auction_baseline/l10n/app_localizations.dart';
+import 'package:horse_auction_baseline/core/locale_controller.dart';
+import 'package:horse_auction_baseline/services/live_bids_service.dart';
+
+import 'package:horse_auction_baseline/ui/live_page.dart';
+import 'package:horse_auction_baseline/ui/lots_page.dart';
+import 'package:horse_auction_baseline/ui/results_page.dart';
 
 class AppShell extends StatefulWidget {
-  const AppShell({super.key});
+  const AppShell({
+    super.key,
+    required this.service,
+    required this.localeController,
+  });
+
+  final LiveBidsService service;
+  final LocaleController localeController;
 
   @override
   State<AppShell> createState() => _AppShellState();
 }
 
 class _AppShellState extends State<AppShell> {
-  int _index = 0;
+  int _index = 1; // default to Lots
 
   @override
   Widget build(BuildContext context) {
-    Widget body;
-    switch (_index) {
-      case 0:
-        body = const HomePage();
-        break;
-      case 1:
-        body = const HorsesPage();
-        break;
-      case 2:
-      default:
-        body = const ServicesPage();
-    }
+    final t = AppLocalizations.of(context)!;
+
+    final pages = <Widget>[
+      LivePage(service: widget.service),
+      LotsPage(service: widget.service),
+      ResultsPage(service: widget.service),
+    ];
+
+    final titles = <String>[t.liveTab, t.lotsTab, t.resultsTab];
 
     return Scaffold(
-      body: body,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (i) => setState(() => _index = i),
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.pets_outlined),
-            selectedIcon: Icon(Icons.pets),
-            label: 'Horses',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
-            label: 'Services',
+      appBar: AppBar(
+        title: Text(titles[_index]),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.language),
+            tooltip: t.toggleLanguage,
+            onPressed: () async {
+              await widget.localeController.toggle();
+              if (mounted) setState(() {});
+            },
           ),
         ],
       ),
-      // Simple language button that just tells user to restart (no LocaleController needed).
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(top: 8, right: 8),
-        child: IconButton.filledTonal(
-          tooltip: 'Language',
-          icon: const Icon(Icons.language),
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Restart the app to apply language'),
-                duration: Duration(seconds: 2),
-              ),
-            );
-          },
-        ),
+      body: pages[_index],
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _index,
+        // IMPORTANT: use a block; don’t try to use the value of setState
+        onDestinationSelected: (i) {
+          setState(() {
+            _index = i;
+          });
+        },
+        destinations: [
+          NavigationDestination(
+            icon: const Icon(Icons.podcasts_outlined),
+            selectedIcon: const Icon(Icons.podcasts),
+            label: t.liveTab,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.grid_view_outlined),
+            selectedIcon: const Icon(Icons.grid_view),
+            label: t.lotsTab,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.flag_outlined),
+            selectedIcon: const Icon(Icons.flag),
+            label: t.resultsTab,
+          ),
+        ],
       ),
     );
   }

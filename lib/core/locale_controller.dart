@@ -1,32 +1,16 @@
+// lib/core/locale_controller.dart
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class LocaleController extends ChangeNotifier {
-  static const _key = 'locale_code';
-  static final LocaleController instance = LocaleController._();
-  LocaleController._();
+class LocaleController {
+  // App starts in English; change to 'ar' if you want Arabic by default
+  final ValueNotifier<Locale> locale = ValueNotifier<Locale>(
+    const Locale('en'),
+  );
 
-  Locale _locale = const Locale('en');
-  Locale get locale => _locale;
-
-  Future<void> load() async {
-    final sp = await SharedPreferences.getInstance();
-    final code = sp.getString(_key);
-    if (code != null && code.isNotEmpty) {
-      _locale = Locale(code);
-      notifyListeners();
-    }
-  }
-
-  Future<void> setLocale(String code) async {
-    if (code == _locale.languageCode) return;
-    _locale = Locale(code);
-    notifyListeners();
-    final sp = await SharedPreferences.getInstance();
-    await sp.setString(_key, code);
-  }
-
-  void toggle() {
-    setLocale(_locale.languageCode == 'ar' ? 'en' : 'ar');
+  Future<void> toggle() async {
+    final current = locale.value.languageCode;
+    final next = current == 'ar' ? const Locale('en') : const Locale('ar');
+    locale.value = next;
   }
 }

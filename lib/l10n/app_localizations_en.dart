@@ -9,23 +9,64 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get servicesTitle => 'Services';
+  String get appTitle => 'Horse Auction';
 
   @override
-  String get tierPlatinum => 'Platinum';
+  String get live => 'Live';
 
   @override
-  String get tierPlatinumDesc => 'Top exposure, concierge support, featured placement.';
+  String get lots => 'Lots';
 
   @override
-  String get tierGold => 'Gold';
+  String get results => 'Results';
 
   @override
-  String get tierGoldDesc => 'High visibility listing and promo slots.';
+  String get current => 'Current';
 
   @override
-  String get tierSilver => 'Silver';
+  String get minIncrement => 'Min increment';
 
   @override
-  String get tierSilverDesc => 'Great starter package to get listed quickly.';
+  String get timeLeft => 'Time left';
+
+  @override
+  String get yourBid => 'Your bid';
+
+  @override
+  String get placeBid => 'Place bid';
+
+  @override
+  String get liveTab => 'Live';
+
+  @override
+  String get lotsTab => 'Lots';
+
+  @override
+  String get resultsTab => 'Results';
+
+  @override
+  String get toggleLanguage => 'Toggle language';
+
+  @override
+  String get noLiveLots => 'No live lots right now.';
+
+  @override
+  String get noLotsAvailable => 'No lots available.';
+
+  @override
+  String get noResults => 'No results yet.';
+
+  @override
+  String bidPlaced(String amount) {
+    return 'Bid placed: $amount';
+  }
+
+  @override
+  String get bidTooLow => 'Your bid is too low';
+
+  @override
+  String get sold => 'Sold';
+
+  @override
+  String get finalPrice => 'Final';
 }
