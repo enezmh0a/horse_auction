@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "appTitle": "منصة مزاد الخيول",
   "changeLanguage": "تغيير اللغة",
   "menuLive": "مباشر",
@@ -66,4 +67,33 @@
   "@hAgo": { "placeholders": { "v": { "type": "String" } } },
   "statusConfirmed": "مؤكد",
   "statusPending": "قيد الانتظار"
+=======
+  "@@locale": "ar",
+  "lotsTitle": "الخيول المعروضة",
+  "language": "اللغة",
+  "english": "الإنجليزية",
+  "arabic": "العربية",
+  "systemLanguage": "لغة النظام",
+  "errorLoadingLots": "حدث خطأ أثناء تحميل الخيول",
+  "noLots": "لا توجد خيول حتى الآن",
+  "horseDetails": "تفاصيل الحصان",
+  "cityLabel": "المدينة",
+  "highestLabel": "أعلى سعر",
+  "startingLabel": "سعر البداية",
+  "currentHighestLabel": "السعر الحالي الأعلى",
+  "minLabel": "أقل زيادة",
+  "enterAmount": "أدخل المبلغ",
+  "decrement": "إنقاص",
+  "increment": "زيادة",
+  "placeBid": "تقديم مزايدة",
+  "bidPlaced": "تم تسجيل المزايدة",
+  "bidFailed": "فشل تسجيل المزايدة",
+  "recentBids": "أحدث المزايدات",
+  "noBidsYet": "لا توجد مزايدات بعد",
+  "currency": "ريال",
+  "byUser": "بواسطة",
+  "closeAuction": "إغلاق المزاد",
+  "reopen": "إعادة الفتح",
+  "error": "خطأ"
+>>>>>>> origin/main
 }

@@ -1,5 +1,68 @@
 <!DOCTYPE html>
 <html>
+<<<<<<< HEAD
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+    <meta name="description" content="Horse Auction" />
+=======
+<<<<<<< HEAD
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+>>>>>>> origin/main
+
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="horse_auction_app_experiment" />
+    <link rel="apple-touch-icon" href="icons/Icon-192.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <title>horse_auction_app_experiment</title>
+    <base href="/" />
+
+    <!-- IMPORTANT: do NOT add any Firebase <script> tags here.
+         FlutterFire loads the correct Web SDK internally. -->
+
+<<<<<<< HEAD
+    <link rel="manifest" href="manifest.json" />
+  </head>
+  <body>
+    <script>
+  window.addEventListener('load', function() {
+    const loader = new FlutterLoader();
+    loader.load({
+      serviceWorker: { serviceWorkerVersion: {{flutter_service_worker_version}} },
+      onEntrypointLoaded: async function(engineInitializer) {
+        const appRunner = await engineInitializer.initializeEngine();
+        await appRunner.runApp();
+      }
+    });
+  });
+</script>
+
+  </body>
+=======
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="horse_auction">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>horse_auction</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+=======
   <head>
     <meta charset="UTF-8" />
     <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
@@ -24,17 +87,16 @@
   </head>
   <body>
     <script>
-  window.addEventListener('load', function() {
-    const loader = new FlutterLoader();
-    loader.load({
-      serviceWorker: { serviceWorkerVersion: {{flutter_service_worker_version}} },
-      onEntrypointLoaded: async function(engineInitializer) {
-        const appRunner = await engineInitializer.initializeEngine();
-        await appRunner.runApp();
-      }
-    });
-  });
-</script>
-
+      window.addEventListener('load', function (ev) {
+        // flutter_bootstrap.js will load main.dart.js
+        _flutter.loader.loadEntrypoint({serviceWorker: {serviceWorkerVersion: null}})
+          .then(function(engineInitializer) { return engineInitializer.initializeEngine(); })
+          .then(function(appRunner) { return appRunner.runApp(); });
+      });
+    </script>
+    <script src="flutter.js" defer></script>
+    <script src="flutter_bootstrap.js" defer></script>
   </body>
+>>>>>>> 4d8b6a881f3f4e5fc0e0da43e19a305e08eb6813
+>>>>>>> origin/main
 </html>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # l10n.yaml
 arb-dir: lib/l10n
 template-arb-file: app_en.arb
@@ -7,3 +8,11 @@ synthetic-package: false   # <-- generate into lib/, not flutter_gen
 # Optional, but nice:
 nullable-getter: false
 use-deferred-loading: false
+=======
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-dir: lib/l10n/generated
+output-localization-file: app_localizations.dart
+synthetic-package: false
+nullable-getter: false
+>>>>>>> origin/main

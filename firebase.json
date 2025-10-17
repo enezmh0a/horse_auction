@@ -1,1 +1,21 @@
+<<<<<<< HEAD
 {"functions":{"source":"functions","predeploy":["npm --prefix \"$RESOURCE_DIR\" run build"]},"firestore":{"rules":"firestore.rules","indexes":"firestore.indexes.json"},"hosting":{"site":"horse-auction-saudi","public":"build/web","ignore":["firebase.json","**/.*","**/node_modules/**"],"headers":[{"source":"**/*.@(js|css)","headers":[{"key":"Cache-Control","value":"public, max-age=31536000"}]},{"source":"assets/**","headers":[{"key":"Cache-Control","value":"public, max-age=31536000"}]}]},"flutter":{"platforms":{"dart":{"lib/firebase_options.dart":{"projectId":"horse-auction-saudi","configurations":{"android":"1:1006357064889:android:125bd03368bd6146cabf68","ios":"1:1006357064889:ios:314b04c3f88532eecabf68","web":"1:1006357064889:web:63125d205a2d8d70cabf68","windows":"1:1006357064889:web:b251f9a722beab3ccabf68"}}},"android":{"default":{"projectId":"horse-auction-saudi","appId":"1:1006357064889:android:125bd03368bd6146cabf68","fileOutput":"android/app/google-services.json"}}}}}
+=======
+{
+  "hosting": {
+"site": "horse-auction-saudi",
+"public": "build/web",
+"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+"headers": [
+  {
+    "source": "**/*.@(js|css)",
+    "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000" }]
+  },
+  {
+    "source": "assets/**",
+    "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000" }]
+  }
+]
+  }
+}
+>>>>>>> origin/main
