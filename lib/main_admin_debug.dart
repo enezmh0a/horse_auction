@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:horse_auction_baseline/models/lot_model.dart';
 
