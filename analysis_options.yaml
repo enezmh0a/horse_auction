@@ -1,7 +1,12 @@
+<<<<<<< HEAD
+=======
+# analysis_options.yaml
+>>>>>>> 31056ae (chore: limit analyzer to frozen UI (exclude legacy firebase/riverpod code))
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
+<<<<<<< HEAD
     # any timestamped graveyard folders
     - graveyard_*/**
     # backups / experiments
@@ -27,3 +32,36 @@ analyzer:
 
   errors:
     depend_on_referenced_packages: ignore
+=======
+    # Single files we don't ship in the freeze
+    - lib/admin_debug_screen.dart
+    - lib/app.dart
+    - lib/bid_history_screen.dart
+    - lib/firebase_options.dart
+    - lib/live_feed_page.dart
+
+    # Legacy modules (Firebase/Riverpod/gen_l10n etc.)
+    - lib/core/**
+    - lib/data/**
+    - lib/features/auth/**
+    - lib/features/bids/**
+    - lib/features/home/**
+    - lib/features/horses/**
+    - lib/features/lots/**
+    - lib/features/more/**
+    - lib/features/news/**
+    - lib/features/services/pages/history_page.dart
+    - lib/features/services/pages/transport_page.dart
+    - lib/features/services/pages/veterinary_page.dart
+    - lib/l10n/**
+    - lib/models/**
+    - lib/seed/**
+    - lib/services/**
+    - lib/utils/**
+    - lib/widgets/**
+    - tools/**
+
+linter:
+  rules:
+    # keep defaults; you can relax later if you want
+>>>>>>> 31056ae (chore: limit analyzer to frozen UI (exclude legacy firebase/riverpod code))
