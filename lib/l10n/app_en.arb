@@ -1,28 +1,69 @@
 {
-  "@@locale": "en",
-  "appTitle": "Horse Auction",
-  "live": "Live",
-  "lots": "Lots",
-  "results": "Results",
-  "current": "Current",
-  "minIncrement": "Min increment",
-  "timeLeft": "Time left",
-  "yourBid": "Your bid",
+  "appTitle": "Horse Auction Baseline",
+  "changeLanguage": "Change language",
+  "menuLive": "Live",
+  "menuLots": "Lots",
+  "menuResults": "Results",
+  "menuDashboard": "Dashboard",
+  "menuServices": "Services",
+  "menuHistory": "History",
+
+  "emptyLive": "No live lots right now",
+  "emptyLots": "No lots to show",
+  "emptyResults": "No results yet",
+
+  "confirmBidTitle": "Confirm your bid",
+ "confirmBidBody": "Place a bid of {amount} SAR on {lot}?",
+"@confirmBidBody": {
+  "placeholders": {
+    "amount": { "type": "double" },
+    "lot": { "type": "String" }
+  }
+},
+  "cancel": "Cancel",
   "placeBid": "Place bid",
-  "liveTab": "Live",
-  "lotsTab": "Lots",
-  "resultsTab": "Results",
-  "toggleLanguage": "Toggle language",
-  "noLiveLots": "No live lots right now.",
-  "noLotsAvailable": "No lots available.",
-  "noResults": "No results yet.",
-  "bidPlaced": "Bid placed: {amount}",
-  "@bidPlaced": {
-    "placeholders": {
-      "amount": { "type": "String" }
-    }
-  },
-  "bidTooLow": "Your bid is too low",
-  "sold": "Sold",
-  "finalPrice": "Final"
+  "bidPlaced": "Bid placed!",
+
+  "currentBidSar": "Current: SAR {amount}",
+  "@currentBidSar": { "placeholders": { "amount": { "type": "int" } } },
+  "minIncSar": "Min +{inc}",
+  "@minIncSar": { "placeholders": { "inc": { "type": "int" } } },
+  "endsIn": "Ends in: {text}",
+  "@endsIn": { "placeholders": { "text": { "type": "String" } } },
+  "ended": "Ended",
+
+  "bidPlusMin": "Bid + Min",
+  "bidPlus2x": "Bid + 2×",
+  "bidTimes2": "Bid ×2",
+
+  "ageLabel": "Age: {v}",
+  "@ageLabel": { "placeholders": { "v": { "type": "String" } } },
+  "breedLabel": "Breed: {v}",
+  "@breedLabel": { "placeholders": { "v": { "type": "String" } } },
+  "colorLabel": "Color: {v}",
+  "@colorLabel": { "placeholders": { "v": { "type": "String" } } },
+  "heightLabel": "Height: {v}",
+  "@heightLabel": { "placeholders": { "v": { "type": "String" } } },
+
+  "finalPriceSar": "Final price: SAR {amount}",
+  "@finalPriceSar": { "placeholders": { "amount": { "type": "int" } } },
+
+  "cardTotal": "Total lots",
+  "cardLive": "Live",
+  "cardSold": "Sold",
+  "cardUpcoming": "Upcoming",
+
+  "serviceVets": "Veterinary check",
+  "serviceVetsDesc": "Book a pre-purchase exam with licensed vets.",
+  "serviceTransport": "Transport",
+  "serviceTransportDesc": "Arrange national/international transport.",
+  "serviceBoarding": "Boarding",
+  "serviceBoardingDesc": "Find boarding and training after the auction.",
+
+  "hDesertComet": "Desert Comet • Vet appointment",
+  "hGoldenMirage": "Golden Mirage • Transport booking",
+  "hAgo": "{v} ago",
+  "@hAgo": { "placeholders": { "v": { "type": "String" } } },
+  "statusConfirmed": "Confirmed",
+  "statusPending": "Pending"
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:horse_auction_baseline/models/lot_model.dart';
 
 /// Keep the class name the same so call sites don't break.
@@ -62,19 +61,18 @@ class _BiddingControlsCardState extends ConsumerState<BiddingControlsCard> {
                 ),
                 const SizedBox(width: 12),
                 ElevatedButton(
-                  onPressed:
-                      widget.onPlaceBid == null
-                          ? null
-                          : () async {
-                            final v = int.tryParse(_controller.text);
-                            if (v == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Enter a number')),
-                              );
-                              return;
-                            }
-                            await widget.onPlaceBid!(v);
-                          },
+                  onPressed: widget.onPlaceBid == null
+                      ? null
+                      : () async {
+                          final v = int.tryParse(_controller.text);
+                          if (v == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Enter a number')),
+                            );
+                            return;
+                          }
+                          await widget.onPlaceBid!(v);
+                        },
                   child: const Text('Bid'),
                 ),
               ],

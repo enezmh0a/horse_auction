@@ -1,0 +1,140 @@
+import 'package:flutter/material.dart';
+import '../../services/live_bids_service.dart';
+
+/// A simple at-a-glance dashboard that reads from LiveBidsService.
+/// It shows counts and a short "Top lots" list.
+class DashboardPage extends StatelessWidget {
+  const DashboardPage({super.key, required this.service});
+
+  final LiveBidsService service;
+
+  @override
+  Widget build(BuildContext context) {
+    // We assume the service exposes `lots` as List<Lot>.
+    final lots = service.lots;
+    final active = lots.where((l) => !l.isSold).length;
+    final sold = lots.where((l) => l.isSold).length;
+    final total = lots.length;
+
+    // Sum of current bids
+    final totalBids = lots.fold<int>(0, (sum, l) => sum + l.currentBid);
+
+    // Highest 3 lots by current bid
+    final topLots = [...lots]..sort((a, b) => b.currentBid.compareTo(a.currentBid));
+    final top3 = topLots.take(3).toList();
+
+    final textTheme = Theme.of(context).textTheme;
+
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: ListView(
+          children: [
+            Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              children: [
+                _StatCard(
+                  label: _t(context, 'totalLots', fallback: 'Total lots'),
+                  value: total.toString(),
+                ),
+                _StatCard(
+                  label: _t(context, 'activeLots', fallback: 'Active lots'),
+                  value: active.toString(),
+                ),
+                _StatCard(
+                  label: _t(context, 'soldLots', fallback: 'Sold lots'),
+                  value: sold.toString(),
+                ),
+                _StatCard(
+                  label: _t(context, 'totalBids', fallback: 'Sum of current bids'),
+                  value: _formatNumber(totalBids),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            Text(
+              _t(context, 'topLots', fallback: 'Top lots'),
+              style: textTheme.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            ...top3.map((l) => Card(
+                  child: ListTile(
+                    leading: l.thumbnail != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: Image.network(l.thumbnail!, width: 56, height: 56, fit: BoxFit.cover),
+                          )
+                        : const Icon(Icons.image_outlined),
+                    title: Text(l.title),
+                    subtitle: Text(_t(context, 'currentBid', fallback: 'Current') + ': ${_formatNumber(l.currentBid)}'),
+                    trailing: l.isSold
+                        ? const Icon(Icons.flag, color: Colors.green)
+                        : const Icon(Icons.timer_outlined),
+                  ),
+                )),
+            const SizedBox(height: 64),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatNumber(num n) {
+    // keep formatting neutral to avoid depending on intl here
+    // (we already show currency properly inside the lot pages).
+    final s = n.toString();
+    final buf = StringBuffer();
+    for (int i = 0; i < s.length; i++) {
+      final reverseIndex = s.length - 1 - i;
+      buf.write(s[reverseIndex]);
+      if ((i + 1) % 3 == 0 && reverseIndex != 0) buf.write(',');
+    }
+    return buf.toString().split('').reversed.join();
+  }
+
+  String _t(BuildContext context, String key, {required String fallback}) {
+    // Soft lookups so we don't break your current l10n.
+    // If you’ve already wired AppLocalizations, use it;
+    // otherwise show the fallback English/Arabic text.
+    try {
+      // ignore: avoid_dynamic_calls
+      final loc = Localizations.of(context, Object);
+      if (loc != null) {
+        final dynamic any = loc;
+        final getter = (any as dynamic);
+        final value = (getter).toJson?()[key] ?? (getter).$map?[key];
+        if (value is String && value.isNotEmpty) return value;
+      }
+    } catch (_) {}
+    return fallback;
+  }
+}
+
+class _StatCard extends StatelessWidget {
+  const _StatCard({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SizedBox(
+      width: 260,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: theme.textTheme.bodySmall),
+              const SizedBox(height: 6),
+              Text(value, style: theme.textTheme.headlineMedium),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

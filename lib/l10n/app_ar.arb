@@ -1,28 +1,69 @@
 {
-  "@@locale": "ar",
-  "appTitle": "مزاد الخيل",
-  "live": "البث المباشر",
-  "lots": "الخيل",
-  "results": "النتائج",
-  "current": "الحالي",
-  "minIncrement": "أقل زيادة",
-  "timeLeft": "الوقت المتبقي",
-  "yourBid": "مزايدتك",
+  "appTitle": "منصة مزاد الخيول",
+  "changeLanguage": "تغيير اللغة",
+  "menuLive": "مباشر",
+  "menuLots": "الخيول",
+  "menuResults": "النتائج",
+  "menuDashboard": "لوحة التحكم",
+  "menuServices": "الخدمات",
+  "menuHistory": "السجل",
+
+  "emptyLive": "لا توجد خيول مباشرة الآن",
+  "emptyLots": "لا توجد خيول للعرض",
+  "emptyResults": "لا توجد نتائج بعد",
+
+  "confirmBidTitle": "تأكيد المزايدة",
+ "confirmBidBody": "هل ترغب بمزايدة بقيمة {amount} SAR على \"{lot}\"؟",
+"@confirmBidBody": {
+  "placeholders": {
+    "amount": { "type": "double" },
+    "lot": { "type": "String" }
+  }
+},
+  "cancel": "إلغاء",
   "placeBid": "تأكيد المزايدة",
-  "bidPlaced": "تمت المزايدة: {amount}",
-  "liveTab": "البث المباشر",
-  "lotsTab": "الخيول",
-  "resultsTab": "النتائج",
-  "toggleLanguage": "تبديل اللغة",
-  "noLiveLots": "لا توجد خيول مباشرة حالياً.",
-  "noLotsAvailable": "لا توجد خيول متاحة.",
-  "noResults": "لا توجد نتائج بعد.",
-  "@bidPlaced": {
-    "placeholders": {
-      "amount": { "type": "String" }
-    }
-  },
-  "bidTooLow": "عرضك أقل من المسموح",
-  "sold": "مباع",
-  "finalPrice": "النهائي"
+  "bidPlaced": "تم تسجيل المزايدة!",
+
+  "currentBidSar": "SAR {amount} :الحالي",
+  "@currentBidSar": { "placeholders": { "amount": { "type": "int" } } },
+  "minIncSar": "{inc}+ :الزيادة الدنيا",
+  "@minIncSar": { "placeholders": { "inc": { "type": "int" } } },
+  "endsIn": "ينتهي خلال: {text}",
+  "@endsIn": { "placeholders": { "text": { "type": "String" } } },
+  "ended": "انتهى",
+
+  "bidPlusMin": "المزايدة + الدنيا",
+  "bidPlus2x": "المزايدة ×2",
+  "bidTimes2": "×2 مزايدة",
+
+  "ageLabel": "{v} :العمر",
+  "@ageLabel": { "placeholders": { "v": { "type": "String" } } },
+  "breedLabel": "{v} :السلالة",
+  "@breedLabel": { "placeholders": { "v": { "type": "String" } } },
+  "colorLabel": "{v} :اللون",
+  "@colorLabel": { "placeholders": { "v": { "type": "String" } } },
+  "heightLabel": "{v} :الارتفاع",
+  "@heightLabel": { "placeholders": { "v": { "type": "String" } } },
+
+  "finalPriceSar": "السعر النهائي: SAR {amount}",
+  "@finalPriceSar": { "placeholders": { "amount": { "type": "int" } } },
+
+  "cardTotal": "إجمالي الخيول",
+  "cardLive": "مباشر",
+  "cardSold": "مباع",
+  "cardUpcoming": "قادِم",
+
+  "serviceVets": "فحص بيطري",
+  "serviceVetsDesc": "احجز فحص ما قبل الشراء مع أطباء مرخّصين.",
+  "serviceTransport": "نقل",
+  "serviceTransportDesc": "رتّب نقلاً داخليًا/دوليًا آمنًا.",
+  "serviceBoarding": "إيواء",
+  "serviceBoardingDesc": "اعثر على الإيواء والتدريب بعد المزاد.",
+
+  "hDesertComet": "Desert Comet • موعد بيطري",
+  "hGoldenMirage": "Golden Mirage • حجز نقل",
+  "hAgo": "قبل {v}",
+  "@hAgo": { "placeholders": { "v": { "type": "String" } } },
+  "statusConfirmed": "مؤكد",
+  "statusPending": "قيد الانتظار"
 }

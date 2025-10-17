@@ -1,16 +1,16 @@
-// lib/core/locale_controller.dart
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class LocaleController {
-  // App starts in English; change to 'ar' if you want Arabic by default
-  final ValueNotifier<Locale> locale = ValueNotifier<Locale>(
-    const Locale('en'),
-  );
+class LocaleController extends ChangeNotifier {
+  Locale _locale = const Locale('en');
+  Locale get locale => _locale;
+  void toggle() {
+    _locale =
+        _locale.languageCode == 'en' ? const Locale('ar') : const Locale('en');
+    notifyListeners();
+  }
 
-  Future<void> toggle() async {
-    final current = locale.value.languageCode;
-    final next = current == 'ar' ? const Locale('en') : const Locale('ar');
-    locale.value = next;
+  void set(Locale loc) {
+    _locale = loc;
+    notifyListeners();
   }
 }

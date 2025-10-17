@@ -7,28 +7,26 @@ import 'package:horse_auction_baseline/models/lot_model.dart';
 import 'l10n/app_localizations.dart';
 import 'features/shell/app_shell.dart';
 
-class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
+class RootApp extends StatelessWidget {
+  const RootApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Horse Auctions',
       debugShowCheckedModeBanner: false,
-
-      // Explicit localization delegates (works even if your generated file
-      // doesn’t define localizationsDelegates/supportedLocales).
+      title: 'Horse Auctions',
+      locale: appLocale.value, // if you keep a ValueNotifier for RTL toggle
+      supportedLocales: const [Locale('en'), Locale('ar')],
       localizationsDelegates: const [
-        AppLocalizations.delegate,
+        AppLocalizationsDelegate(), // your delegate class from l10n/
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('en'),
-        // Add more if you have ARB files, e.g. Locale('ar'), Locale('fr'), …
-      ],
-
+      home: const AppShell(),
+    );
+  }
+}
       theme: ThemeData(
         colorSchemeSeed: const Color(0xFF7C4DFF),
         scaffoldBackgroundColor: const Color(0xFFF7EDF6),

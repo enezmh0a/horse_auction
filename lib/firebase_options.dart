@@ -77,5 +77,4 @@ class DefaultFirebaseOptions {
     projectId: 'horse-auction-saudi',
     storageBucket: 'horse-auction-saudi.firebasestorage.app',
   );
-
 }

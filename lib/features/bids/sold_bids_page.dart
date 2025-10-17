@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import '../../services/lots_service.dart';
-import 'package:horse_auction_baseline/services/lots_service.dart';
 
 class SoldBidsPage extends StatelessWidget {
   const SoldBidsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final closed =
-        LotsService.instance.lots.value.where((e) => !e.live).toList();
+    final closed = LotsService.instance.lots.value
+        .where((e) => !e.live)
+        .toList();
     return Scaffold(
       appBar: AppBar(title: const Text('Sold bids')),
       body: ListView.separated(
@@ -30,10 +30,12 @@ class SoldBidsPage extends StatelessWidget {
   }
 
   Widget _thumb(List<String> imgs) => ClipRRect(
-      borderRadius: BorderRadius.circular(8),
-      child: Image.asset(
-          imgs.isNotEmpty ? imgs.first : 'assets/horses/horse01.jpg',
-          width: 56,
-          height: 56,
-          fit: BoxFit.cover));
+    borderRadius: BorderRadius.circular(8),
+    child: Image.asset(
+      imgs.isNotEmpty ? imgs.first : 'assets/horses/horse01.jpg',
+      width: 56,
+      height: 56,
+      fit: BoxFit.cover,
+    ),
+  );
 }

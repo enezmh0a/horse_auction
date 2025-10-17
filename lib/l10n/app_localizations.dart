@@ -98,50 +98,86 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'Horse Auction'**
+  /// **'Horse Auction Baseline'**
   String get appTitle;
 
-  /// No description provided for @live.
+  /// No description provided for @changeLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Change language'**
+  String get changeLanguage;
+
+  /// No description provided for @menuLive.
   ///
   /// In en, this message translates to:
   /// **'Live'**
-  String get live;
+  String get menuLive;
 
-  /// No description provided for @lots.
+  /// No description provided for @menuLots.
   ///
   /// In en, this message translates to:
   /// **'Lots'**
-  String get lots;
+  String get menuLots;
 
-  /// No description provided for @results.
+  /// No description provided for @menuResults.
   ///
   /// In en, this message translates to:
   /// **'Results'**
-  String get results;
+  String get menuResults;
 
-  /// No description provided for @current.
+  /// No description provided for @menuDashboard.
   ///
   /// In en, this message translates to:
-  /// **'Current'**
-  String get current;
+  /// **'Dashboard'**
+  String get menuDashboard;
 
-  /// No description provided for @minIncrement.
+  /// No description provided for @menuServices.
   ///
   /// In en, this message translates to:
-  /// **'Min increment'**
-  String get minIncrement;
+  /// **'Services'**
+  String get menuServices;
 
-  /// No description provided for @timeLeft.
+  /// No description provided for @menuHistory.
   ///
   /// In en, this message translates to:
-  /// **'Time left'**
-  String get timeLeft;
+  /// **'History'**
+  String get menuHistory;
 
-  /// No description provided for @yourBid.
+  /// No description provided for @emptyLive.
   ///
   /// In en, this message translates to:
-  /// **'Your bid'**
-  String get yourBid;
+  /// **'No live lots right now'**
+  String get emptyLive;
+
+  /// No description provided for @emptyLots.
+  ///
+  /// In en, this message translates to:
+  /// **'No lots to show'**
+  String get emptyLots;
+
+  /// No description provided for @emptyResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No results yet'**
+  String get emptyResults;
+
+  /// No description provided for @confirmBidTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your bid'**
+  String get confirmBidTitle;
+
+  /// No description provided for @confirmBidBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Place a bid of {amount} SAR on {lot}?'**
+  String confirmBidBody(double amount, String lot);
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
 
   /// No description provided for @placeBid.
   ///
@@ -149,71 +185,173 @@ abstract class AppLocalizations {
   /// **'Place bid'**
   String get placeBid;
 
-  /// No description provided for @liveTab.
-  ///
-  /// In en, this message translates to:
-  /// **'Live'**
-  String get liveTab;
-
-  /// No description provided for @lotsTab.
-  ///
-  /// In en, this message translates to:
-  /// **'Lots'**
-  String get lotsTab;
-
-  /// No description provided for @resultsTab.
-  ///
-  /// In en, this message translates to:
-  /// **'Results'**
-  String get resultsTab;
-
-  /// No description provided for @toggleLanguage.
-  ///
-  /// In en, this message translates to:
-  /// **'Toggle language'**
-  String get toggleLanguage;
-
-  /// No description provided for @noLiveLots.
-  ///
-  /// In en, this message translates to:
-  /// **'No live lots right now.'**
-  String get noLiveLots;
-
-  /// No description provided for @noLotsAvailable.
-  ///
-  /// In en, this message translates to:
-  /// **'No lots available.'**
-  String get noLotsAvailable;
-
-  /// No description provided for @noResults.
-  ///
-  /// In en, this message translates to:
-  /// **'No results yet.'**
-  String get noResults;
-
   /// No description provided for @bidPlaced.
   ///
   /// In en, this message translates to:
-  /// **'Bid placed: {amount}'**
-  String bidPlaced(String amount);
+  /// **'Bid placed!'**
+  String get bidPlaced;
 
-  /// No description provided for @bidTooLow.
+  /// No description provided for @currentBidSar.
   ///
   /// In en, this message translates to:
-  /// **'Your bid is too low'**
-  String get bidTooLow;
+  /// **'Current: SAR {amount}'**
+  String currentBidSar(int amount);
 
-  /// No description provided for @sold.
+  /// No description provided for @minIncSar.
+  ///
+  /// In en, this message translates to:
+  /// **'Min +{inc}'**
+  String minIncSar(int inc);
+
+  /// No description provided for @endsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends in: {text}'**
+  String endsIn(String text);
+
+  /// No description provided for @ended.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended'**
+  String get ended;
+
+  /// No description provided for @bidPlusMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Bid + Min'**
+  String get bidPlusMin;
+
+  /// No description provided for @bidPlus2x.
+  ///
+  /// In en, this message translates to:
+  /// **'Bid + 2×'**
+  String get bidPlus2x;
+
+  /// No description provided for @bidTimes2.
+  ///
+  /// In en, this message translates to:
+  /// **'Bid ×2'**
+  String get bidTimes2;
+
+  /// No description provided for @ageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Age: {v}'**
+  String ageLabel(String v);
+
+  /// No description provided for @breedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Breed: {v}'**
+  String breedLabel(String v);
+
+  /// No description provided for @colorLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Color: {v}'**
+  String colorLabel(String v);
+
+  /// No description provided for @heightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Height: {v}'**
+  String heightLabel(String v);
+
+  /// No description provided for @finalPriceSar.
+  ///
+  /// In en, this message translates to:
+  /// **'Final price: SAR {amount}'**
+  String finalPriceSar(int amount);
+
+  /// No description provided for @cardTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total lots'**
+  String get cardTotal;
+
+  /// No description provided for @cardLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get cardLive;
+
+  /// No description provided for @cardSold.
   ///
   /// In en, this message translates to:
   /// **'Sold'**
-  String get sold;
+  String get cardSold;
 
-  /// No description provided for @finalPrice.
+  /// No description provided for @cardUpcoming.
   ///
   /// In en, this message translates to:
-  /// **'Final'**
-  String get finalPrice;
+  /// **'Upcoming'**
+  String get cardUpcoming;
+
+  /// No description provided for @serviceVets.
+  ///
+  /// In en, this message translates to:
+  /// **'Veterinary check'**
+  String get serviceVets;
+
+  /// No description provided for @serviceVetsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Book a pre-purchase exam with licensed vets.'**
+  String get serviceVetsDesc;
+
+  /// No description provided for @serviceTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get serviceTransport;
+
+  /// No description provided for @serviceTransportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrange national/international transport.'**
+  String get serviceTransportDesc;
+
+  /// No description provided for @serviceBoarding.
+  ///
+  /// In en, this message translates to:
+  /// **'Boarding'**
+  String get serviceBoarding;
+
+  /// No description provided for @serviceBoardingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Find boarding and training after the auction.'**
+  String get serviceBoardingDesc;
+
+  /// No description provided for @hDesertComet.
+  ///
+  /// In en, this message translates to:
+  /// **'Desert Comet • Vet appointment'**
+  String get hDesertComet;
+
+  /// No description provided for @hGoldenMirage.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden Mirage • Transport booking'**
+  String get hGoldenMirage;
+
+  /// No description provided for @hAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{v} ago'**
+  String hAgo(String v);
+
+  /// No description provided for @statusConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get statusConfirmed;
+
+  /// No description provided for @statusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get statusPending;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

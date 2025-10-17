@@ -1,23 +1,41 @@
 name: horse_auction_baseline
-description: Simple horse auction demo
+description: Simple horse auction baseline with local assets and i18n
 publish_to: "none"
-version: 1.0.0+1
+version: 1.0.0
 
 environment:
-  sdk: ">=3.9.0 <4.0.0"
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  intl: 0.20.2
+  provider: ^6.1.2
+  intl: ^0.20.2
+  cupertino_icons: ^1.0.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: 4.0.0
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
   uses-material-design: true
-  generate: true
+  generate: true   # <-- REQUIRED for gen_l10n
+  assets:
+    - assets/horses/horse01.jpg
+    - assets/horses/horse02.jpg
+    - assets/horses/horse03.jpg
+    - assets/horses/horse04.jpg
+    - assets/horses/horse05.jpg
+    - assets/horses/horse06.jpg
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/app_icon/icon.png"
+  remove_alpha_ios: true
+  min_sdk_android: 21
+  adaptive_icon_background: "#FFF5EF"
+  adaptive_icon_foreground: "assets/app_icon/icon.png"
