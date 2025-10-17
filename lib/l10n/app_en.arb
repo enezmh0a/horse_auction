@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "appTitle": "Horse Auction Baseline",
   "changeLanguage": "Change language",
   "menuLive": "Live",
@@ -66,4 +67,33 @@
   "@hAgo": { "placeholders": { "v": { "type": "String" } } },
   "statusConfirmed": "Confirmed",
   "statusPending": "Pending"
+=======
+  "@@locale": "en",
+  "lotsTitle": "Lots",
+  "language": "Language",
+  "english": "English",
+  "arabic": "Arabic",
+  "systemLanguage": "System",
+  "errorLoadingLots": "Error loading lots",
+  "noLots": "No lots yet",
+  "horseDetails": "Horse details",
+  "cityLabel": "City",
+  "highestLabel": "Highest",
+  "startingLabel": "Starting",
+  "currentHighestLabel": "Current highest",
+  "minLabel": "Min step",
+  "enterAmount": "Enter amount",
+  "decrement": "Decrement",
+  "increment": "Increment",
+  "placeBid": "Place bid",
+  "bidPlaced": "Bid placed",
+  "bidFailed": "Bid failed",
+  "recentBids": "Recent bids",
+  "noBidsYet": "No bids yet",
+  "currency": "SAR",
+  "byUser": "By",
+  "closeAuction": "Close auction",
+  "reopen": "Reopen",
+  "error": "Error"
+>>>>>>> origin/main
 }

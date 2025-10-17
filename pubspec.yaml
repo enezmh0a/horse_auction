@@ -1,28 +1,26 @@
-name: horse_auction_baseline
-description: Simple horse auction baseline with local assets and i18n
-publish_to: "none"
-version: 1.0.0
+name: horse_auction
+description: Horse auction baseline (marvelous UI – frozen)
+publish_to: 'none'
+version: 1.0.0+1
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"
+  sdk: '>=3.3.0 <4.0.0'
+  flutter: '>=3.16.0'
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  provider: ^6.1.2
-  intl: ^0.20.2
-  cupertino_icons: ^1.0.6
+  # keep/remove any others you use (e.g., provider)
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
-  generate: true   # <-- REQUIRED for gen_l10n
   assets:
     - assets/horses/horse01.jpg
     - assets/horses/horse02.jpg
@@ -30,12 +28,3 @@ flutter:
     - assets/horses/horse04.jpg
     - assets/horses/horse05.jpg
     - assets/horses/horse06.jpg
-
-flutter_launcher_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/app_icon/icon.png"
-  remove_alpha_ios: true
-  min_sdk_android: 21
-  adaptive_icon_background: "#FFF5EF"
-  adaptive_icon_foreground: "assets/app_icon/icon.png"

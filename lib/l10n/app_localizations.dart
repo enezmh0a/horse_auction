@@ -95,6 +95,7 @@ abstract class AppLocalizations {
     Locale('en')
   ];
 
+<<<<<<< HEAD
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
@@ -352,6 +353,163 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pending'**
   String get statusPending;
+=======
+  /// No description provided for @lotsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lots'**
+  String get lotsTitle;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @arabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic'**
+  String get arabic;
+
+  /// No description provided for @systemLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get systemLanguage;
+
+  /// No description provided for @errorLoadingLots.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading lots'**
+  String get errorLoadingLots;
+
+  /// No description provided for @noLots.
+  ///
+  /// In en, this message translates to:
+  /// **'No lots yet'**
+  String get noLots;
+
+  /// No description provided for @horseDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Horse details'**
+  String get horseDetails;
+
+  /// No description provided for @cityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get cityLabel;
+
+  /// No description provided for @highestLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest'**
+  String get highestLabel;
+
+  /// No description provided for @startingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting'**
+  String get startingLabel;
+
+  /// No description provided for @currentHighestLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current highest'**
+  String get currentHighestLabel;
+
+  /// No description provided for @minLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Min step'**
+  String get minLabel;
+
+  /// No description provided for @enterAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter amount'**
+  String get enterAmount;
+
+  /// No description provided for @decrement.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrement'**
+  String get decrement;
+
+  /// No description provided for @increment.
+  ///
+  /// In en, this message translates to:
+  /// **'Increment'**
+  String get increment;
+
+  /// No description provided for @placeBid.
+  ///
+  /// In en, this message translates to:
+  /// **'Place bid'**
+  String get placeBid;
+
+  /// No description provided for @bidPlaced.
+  ///
+  /// In en, this message translates to:
+  /// **'Bid placed'**
+  String get bidPlaced;
+
+  /// No description provided for @bidFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Bid failed'**
+  String get bidFailed;
+
+  /// No description provided for @recentBids.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent bids'**
+  String get recentBids;
+
+  /// No description provided for @noBidsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No bids yet'**
+  String get noBidsYet;
+
+  /// No description provided for @currency.
+  ///
+  /// In en, this message translates to:
+  /// **'SAR'**
+  String get currency;
+
+  /// No description provided for @byUser.
+  ///
+  /// In en, this message translates to:
+  /// **'By'**
+  String get byUser;
+
+  /// No description provided for @closeAuction.
+  ///
+  /// In en, this message translates to:
+  /// **'Close auction'**
+  String get closeAuction;
+
+  /// No description provided for @reopen.
+  ///
+  /// In en, this message translates to:
+  /// **'Reopen'**
+  String get reopen;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+>>>>>>> origin/main
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

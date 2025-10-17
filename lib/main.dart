@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter/foundation.dart'; // <-- add this line
 
 // Shell
 import 'features/shell/app_shell.dart';
-import 'package:flutter/foundation.dart'; // <-- add this line
 
 void main() {
   // Keep main simple to avoid zone-related issues.
