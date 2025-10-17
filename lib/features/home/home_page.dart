@@ -16,8 +16,8 @@ class HomePage extends ConsumerWidget {
       body: lotsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text(e.toString())),
-        data: (List<_LotModelFake> lots) =>
-            _buildHomeBody(context, lots as List<LotModel>),
+        data: (List<LotModel> lots) =>
+            _buildHomeBody(context, lots),
       ),
     );
   }
