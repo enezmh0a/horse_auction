@@ -11,11 +11,11 @@ class LiveFeedPage extends StatelessWidget {
     final feed = AuctionService.instance.liveFeed;
     return Scaffold(
       appBar: AppBar(title: const Text('Live Bids')),
-      body: \<List<Lot>>(
-  stream: LiveBidsService.instance.lots$,
-  builder: (context, snapshot) {
-    final lots = snapshot.data ?? const <Lot>[];
-          return _LiveFeedStreamList(event: snap.data);
+      body: StreamBuilder<List<Lot>>(
+        stream: LiveBidsService.instance.lots$,
+        builder: (context, snapshot) {
+          final lots = snapshot.data ?? const <Lot>[];
+          return _LiveFeedStreamList(event: snapshot.data);
         },
       ),
     );
