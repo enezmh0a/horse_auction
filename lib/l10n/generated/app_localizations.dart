@@ -95,6 +95,96 @@ abstract class AppLocalizations {
     Locale('en')
   ];
 
+  /// No description provided for @appTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Horse Auctions'**
+  String get appTitle;
+
+  /// No description provided for @tabHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get tabHome;
+
+  /// No description provided for @tabLots.
+  ///
+  /// In en, this message translates to:
+  /// **'Lots'**
+  String get tabLots;
+
+  /// No description provided for @tabBidding.
+  ///
+  /// In en, this message translates to:
+  /// **'Bidding'**
+  String get tabBidding;
+
+  /// No description provided for @tabSeller.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller'**
+  String get tabSeller;
+
+  /// No description provided for @tabProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get tabProfile;
+
+  /// No description provided for @homeLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Auctions'**
+  String get homeLive;
+
+  /// No description provided for @homeEnding.
+  ///
+  /// In en, this message translates to:
+  /// **'Ending Soon'**
+  String get homeEnding;
+
+  /// No description provided for @homeSell.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell a Horse'**
+  String get homeSell;
+
+  /// No description provided for @homeLiveSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Join ongoing sales with anti-sniping timers.'**
+  String get homeLiveSub;
+
+  /// No description provided for @homeEndingSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Last few minutes — place your bid now.'**
+  String get homeEndingSub;
+
+  /// No description provided for @homeSellSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a lot, set reserve, upload documents.'**
+  String get homeSellSub;
+
+  /// No description provided for @lotReserveMet.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserve Met'**
+  String get lotReserveMet;
+
+  /// No description provided for @lotReserveNotMet.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserve Not Met'**
+  String get lotReserveNotMet;
+
+  /// No description provided for @registerToBid.
+  ///
+  /// In en, this message translates to:
+  /// **'Register to Bid'**
+  String get registerToBid;
+
   /// No description provided for @lotsTitle.
   ///
   /// In en, this message translates to:
