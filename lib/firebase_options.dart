@@ -63,16 +63,16 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDDw8BBO3Sno6yXxViQP_X4Tw3tEfkX1cg',
-    appId: '1:1006357064889:ios:314b04c3f88532eecabf68',
+    appId: '1:1006357064889:ios:e8e48cdb324391f5cabf68',
     messagingSenderId: '1006357064889',
     projectId: 'horse-auction-saudi',
     storageBucket: 'horse-auction-saudi.firebasestorage.app',
-    iosBundleId: 'com.example.horseAuctionApp',
+    iosBundleId: 'com.example.horseAuction',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAuILnW-gJJ3Ora_mIknGoZAE-5g27zCnw',
-    appId: '1:1006357064889:android:125bd03368bd6146cabf68',
+    appId: '1:1006357064889:android:99d8f3bfcc131d84cabf68',
     messagingSenderId: '1006357064889',
     projectId: 'horse-auction-saudi',
     storageBucket: 'horse-auction-saudi.firebasestorage.app',
